@@ -7,16 +7,15 @@ const Header = ({ user }) => {
 
   // Функция входа через Google
   const handleLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        // window.location.origin автоматически подставит http://localhost:5173 
-        // или адрес твоего сайта после деплоя
-        redirectTo: window.location.origin 
-      }
-    });
-    if (error) console.error("Ошибка авторизации:", error.message);
-  };
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      // Это заставит Supabase использовать "Site URL", который мы указали в консоли
+      redirectTo: window.location.origin 
+    }
+  });
+  if (error) console.error("Ошибка авторизации:", error.message);
+};
 
   // Функция выхода
   const handleLogout = async () => {

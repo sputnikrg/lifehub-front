@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
 
-const PostAdPage = ({ onAddListing }) => {
+const PostAdPage = ({ onAddListing, currentUser }) => {
   const navigate = useNavigate();
-  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     type: 'wohnung',
     title: '',
@@ -14,39 +15,49 @@ const PostAdPage = ({ onAddListing }) => {
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.id]: e.target.value });
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onloadend = () => setImages(prev => [...prev, reader.result].slice(0, 4));
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newAd = {
-      ...formData,
-      id: Date.now(),
-      image: images[0] || "/assets/img/placeholder.jpg",
-      images: images,
-      price: Number(formData.price)
-    };
-    onAddListing(newAd);
-    navigate(`/${formData.type}`);
+    
+    if (!currentUser) {
+      alert("Сначала войдите через Google!");
+      return;
+    }
+
+    setLoading(true);
+
+    // Отправляем данные в таблицу 'listings' в Supabase
+    const { data, error } = await supabase
+      .from('listings')
+      .insert([
+        {
+          type: formData.type,
+          title: formData.title,
+          city: formData.city,
+          price: Number(formData.price),
+          description: formData.description,
+          user_id: currentUser.id, // Привязываем объявление к вошедшему юзеру
+          images: ["/assets/img/placeholder.jpg"] // Пока без загрузки фото, используем заглушку
+        }
+      ])
+      .select();
+
+    setLoading(false);
+
+    if (error) {
+      alert("Ошибка при сохранении: " + error.message);
+    } else {
+      // Обновляем список в App.jsx и уходим на страницу категории
+      onAddListing(data[0]);
+      navigate(`/${formData.type}`);
+    }
   };
 
   return (
     <main className="page-main">
-      <section className="page-hero">
-        <div className="container">
-          <h1>Anzeige aufgeben</h1>
-        </div>
-      </section>
-
+      <section className="page-hero"><div className="container"><h1>Anzeige aufgeben</h1></div></section>
       <div className="container">
-        {/* Форма теперь будет центрирована благодаря CSS классу form-box и контейнеру */}
         <form onSubmit={handleSubmit} className="form-box">
+          <h2>{currentUser ? `Hallo, ${currentUser.email}` : "Bitte einloggen"}</h2>
           <div className="filter-field">
             <label>Kategorie</label>
             <select id="type" value={formData.type} onChange={handleChange}>
@@ -55,39 +66,24 @@ const PostAdPage = ({ onAddListing }) => {
               <option value="dating">Dating</option>
             </select>
           </div>
-
           <div className="filter-field">
             <label>Titel</label>
             <input id="title" required onChange={handleChange} placeholder="Was bietest du an?" />
           </div>
-
           <div className="filter-field">
             <label>Stadt</label>
             <input id="city" required onChange={handleChange} placeholder="Ort" />
           </div>
-
           <div className="filter-field">
             <label>Preis / Lohn (€)</label>
             <input id="price" type="number" onChange={handleChange} placeholder="0" />
           </div>
-
-          <div className="filter-field">
-            <label>Fotos (max. 4)</label>
-            <input type="file" multiple accept="image/*" onChange={handleImageChange} />
-            <div style={{ display: 'flex', gap: '5px', marginTop: '10px' }}>
-              {images.map((img, i) => (
-                <img key={i} src={img} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} />
-              ))}
-            </div>
-          </div>
-
           <div className="filter-field">
             <label>Beschreibung</label>
             <textarea id="description" rows="4" required onChange={handleChange}></textarea>
           </div>
-
-          <button type="submit" className="card-button" style={{ border: 'none', cursor: 'pointer' }}>
-            Veröffentlichen
+          <button type="submit" className="card-button" disabled={loading}>
+            {loading ? "Wird gespeichert..." : "Veröffentlichen"}
           </button>
         </form>
       </div>
