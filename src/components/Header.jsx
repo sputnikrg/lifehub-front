@@ -1,29 +1,61 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
 
-const Header = () => {
+const Header = ({ user }) => {
   const location = useLocation();
-  const path = location.pathname;
+
+  // Функция входа через Google
+  const handleLogin = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        // window.location.origin автоматически подставит http://localhost:5173 
+        // или адрес твоего сайта после деплоя
+        redirectTo: window.location.origin 
+      }
+    });
+    if (error) console.error("Ошибка авторизации:", error.message);
+  };
+
+  // Функция выхода
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) console.error("Ошибка при выходе:", error.message);
+  };
 
   return (
     <header>
-      <div className="logo">
-        <Link to="/" className="logo-btn">
-          <img src="/assets/img/logo.png" alt="LifeHub Logo" />
-        </Link>
-      </div>
+      <Link to="/" className="logo">
+        <img src="/assets/img/logo.png" alt="LifeHub" />
+      </Link>
+
       <nav className="main-nav">
-        <span className="lang">Deutsch | Русский</span>
-        <button className="google">Mit Google anmelden</button>
+        <span>Deutsch | Русский</span>
+
+        {/* Если пользователь вошел — показываем кнопку Выйти, если нет — войти через Google */}
+        {user ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+             <span style={{ fontSize: '14px', color: '#666' }}>{user.email}</span>
+             <button onClick={handleLogout} style={{ background: '#eee', color: '#333' }}>
+               Выйти
+             </button>
+          </div>
+        ) : (
+          <button className="google" onClick={handleLogin}>
+            Mit Google anmelden
+          </button>
+        )}
+
         <Link to="/post-ad">
-          <button className={`ad ${path === '/post-ad' ? 'active' : ''}`}>
-            Anzeige aufgeben
-          </button>
+          <button className="ad">Anzeige aufgeben</button>
         </Link>
-        <Link to="/favorites">
-          <button className={`fav-link ${path === '/favorites' ? 'active' : ''}`}>
-            ❤ Favoriten
-          </button>
+
+        <Link 
+          to="/favorites" 
+          className={`fav-link ${location.pathname === '/favorites' ? 'active' : ''}`}
+        >
+          ❤️ Favoriten
         </Link>
       </nav>
     </header>

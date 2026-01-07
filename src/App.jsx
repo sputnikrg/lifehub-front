@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Импорт начальных данных
+// Импорт клиента Supabase
+import { supabase } from './supabaseClient';
+
+// Импорт начальных данных (на случай, если база пуста)
 import { listings as initialData } from './data';
 
 // Импорт компонентов и страниц
@@ -13,42 +16,82 @@ import ListingDetail from './pages/ListingDetail';
 import PostAdPage from './pages/PostAdPage';
 
 function App() {
-  // Состояние списка объявлений (загружаем из localStorage или берем начальные)
-  const [listings, setListings] = useState(() => {
-    const saved = localStorage.getItem("lifehub_listings_db");
-    return saved ? JSON.parse(saved) : initialData;
-  });
-
-  // Состояние избранного
+  const [listings, setListings] = useState([]);
+  const [user, setUser] = useState(null);
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem("lifehub_favs_v1");
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Сохранение данных при изменениях
+  // 1. СЛЕДИМ ЗА АВТОРИЗАЦИЕЙ
   useEffect(() => {
-    localStorage.setItem("lifehub_listings_db", JSON.stringify(listings));
-  }, [listings]);
+    // Проверяем сессию при загрузке
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
 
+    // Слушаем изменения (вход/выход)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // 2. ЗАГРУЖАЕМ ОБЪЯВЛЕНИЯ ИЗ SUPABASE
+  useEffect(() => {
+    const fetchListings = async () => {
+      const { data, error } = await supabase
+        .from('listings')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error("Ошибка загрузки данных:", error.message);
+        // Если в базе пусто, можно временно оставить initialData для красоты
+        if (listings.length === 0) setListings(initialData);
+      } else {
+        setListings(data);
+      }
+    };
+
+    fetchListings();
+  }, []);
+
+  // 3. СОХРАНЯЕМ ИЗБРАННОЕ (пока оставляем в localStorage для простоты)
   useEffect(() => {
     localStorage.setItem("lifehub_favs_v1", JSON.stringify(favorites));
   }, [favorites]);
 
   // --- ФУНКЦИИ ОБРАБОТКИ ---
 
-  // 1. Добавление нового объявления
+  // Добавление (теперь мы передаем эту функцию в PostAdPage, где будет логика Supabase)
   const handleAddListing = (newAd) => {
     setListings((prev) => [newAd, ...prev]);
   };
 
-  // 2. УДАЛЕНИЕ объявления
-  const handleDeleteListing = (id) => {
-    if (window.confirm("Вы уверены, что хотите удалить это объявление?")) {
-      setListings((prev) => prev.filter((item) => item.id !== id));
+  // Удаление из базы
+  const handleDeleteListing = async (id) => {
+    if (!user) {
+      alert("Войдите в систему, чтобы удалять объявления");
+      return;
+    }
+
+    if (window.confirm("Удалить это объявление?")) {
+      const { error } = await supabase
+        .from('listings')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        alert("Ошибка: " + error.message + " (Возможно, это не ваше объявление)");
+      } else {
+        setListings((prev) => prev.filter((item) => item.id !== id));
+        alert("Объявление удалено");
+      }
     }
   };
 
-  // 3. Переключение избранного
   const toggleFavorite = (id) => {
     setFavorites((prev) =>
       prev.includes(id) ? prev.filter((favId) => favId !== id) : [...prev, id]
@@ -57,47 +100,29 @@ function App() {
 
   return (
     <Router>
-      <Header />
+      {/* Передаем user в Header, чтобы показывать кнопку входа/выхода или аватар */}
+      <Header user={user} />
+      
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home listings={listings} />} />
         
-        {/* Страницы категорий с функцией удаления */}
-        <Route 
-          path="/wohnung" 
-          element={
-            <ListingsPage 
-              type="wohnung" 
-              listings={listings} 
-              favorites={favorites} 
-              onToggleFav={toggleFavorite} 
-              onDelete={handleDeleteListing} 
-            />
-          } 
-        />
-        <Route 
-          path="/job" 
-          element={
-            <ListingsPage 
-              type="job" 
-              listings={listings} 
-              favorites={favorites} 
-              onToggleFav={toggleFavorite} 
-              onDelete={handleDeleteListing} 
-            />
-          } 
-        />
-        <Route 
-          path="/dating" 
-          element={
-            <ListingsPage 
-              type="dating" 
-              listings={listings} 
-              favorites={favorites} 
-              onToggleFav={toggleFavorite} 
-              onDelete={handleDeleteListing} 
-            />
-          } 
-        />
+        {/* Маппинг страниц категорий */}
+        {['wohnung', 'job', 'dating'].map(type => (
+          <Route 
+            key={type}
+            path={`/${type}`} 
+            element={
+              <ListingsPage 
+                type={type}
+                listings={listings} 
+                favorites={favorites} 
+                onToggleFav={toggleFavorite} 
+                onDelete={handleDeleteListing}
+                currentUser={user} // Передаем юзера для проверки прав на удаление
+              />
+            } 
+          />
+        ))}
 
         <Route 
           path="/favorites" 
@@ -123,7 +148,7 @@ function App() {
 
         <Route 
           path="/post-ad" 
-          element={<PostAdPage onAddListing={handleAddListing} />} 
+          element={<PostAdPage onAddListing={handleAddListing} currentUser={user} />} 
         />
       </Routes>
     </Router>
