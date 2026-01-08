@@ -189,7 +189,7 @@ header .fav-link.active {
 .overlay .card-button:hover {
   background-color: #f8f9fa; /* Чуть сероватый при наведении */
   color: #23527c;            /* Темно-синий текст при наведении */
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2); /* Легкая тень */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);/* Легкая тень */
 }
 
 .cards {
@@ -260,7 +260,8 @@ header .fav-link.active {
   font-size: 13px;
   color: #666;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 2; /* Старое свойство для Safari/Chrome */
+  line-clamp: 2;         /* Новое стандартное свойство */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
