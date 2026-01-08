@@ -33,7 +33,7 @@ const PostAdPage = ({ onAddListing, currentUser }) => {
       for (const file of files) {
         const fileExt = file.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `${currentUser.id}/${Date.now()}-${fileName}`;
+        const filePath = `${Date.now()}-${fileName}`;
 
         const { error: uploadError } = await supabase.storage
           .from('listing-images')
