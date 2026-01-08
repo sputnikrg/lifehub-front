@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { supabase } from './supabaseClient';
 
 // Импорт начальных данных (на случай, если база пуста)
-import { listings as initialData } from './data';
+//import { listings as initialData } from './data';
 
 // Импорт компонентов и страниц
 import Header from './components/Header';
@@ -40,23 +40,22 @@ function App() {
 
   // 2. ЗАГРУЖАЕМ ОБЪЯВЛЕНИЯ ИЗ SUPABASE
   useEffect(() => {
-    const fetchListings = async () => {
-      const { data, error } = await supabase
-        .from('listings')
-        .select('*')
-        .order('created_at', { ascending: false });
+  const fetchListings = async () => {
+    // Больше не берем данные из INITIAL_DATA
+    const { data, error } = await supabase
+      .from('listings')
+      .select('*')
+      .order('created_at', { ascending: false }); // Сначала новые
 
-      if (error) {
-        console.error("Ошибка загрузки данных:", error.message);
-        // Если в базе пусто, можно временно оставить initialData для красоты
-        if (listings.length === 0) setListings(initialData);
-      } else {
-        setListings(data);
-      }
-    };
+    if (error) {
+      console.error("Ошибка при получении данных:", error.message);
+    } else {
+      setListings(data || []);
+    }
+  };
 
-    fetchListings();
-  }, []);
+  fetchListings();
+}, []);
 
   // 3. СОХРАНЯЕМ ИЗБРАННОЕ (пока оставляем в localStorage для простоты)
   useEffect(() => {

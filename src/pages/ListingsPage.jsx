@@ -1,30 +1,34 @@
 import React, { useState } from 'react';
 import ListingCard from '../components/ListingCard';
 
-const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete }) => {
+const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, currentUser }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [cityFilter, setCityFilter] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
-  const [sortBy, setSortBy] = useState("newest"); // состояние сортировки
+  const [sortBy, setSortBy] = useState("newest");
+
+  // Твой email для прав администратора
+  const ADMIN_EMAIL = "vpovolotskyi25@gmail.com";
 
   // 1. Фильтрация
   let filtered = listings.filter(item => {
     const matchesType = item.type === type;
     const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCity = item.city.toLowerCase().includes(cityFilter.toLowerCase());
-    const itemPrice = item.price || item.salary || 0;
+    // В новой базе используем только поле price
+    const itemPrice = item.price || 0;
     const matchesPrice = maxPrice ? (itemPrice <= Number(maxPrice)) : true;
     return matchesType && matchesSearch && matchesCity && matchesPrice;
   });
 
   // 2. Сортировка
   filtered.sort((a, b) => {
-    const priceA = a.price || a.salary || 0;
-    const priceB = b.price || b.salary || 0;
+    const priceA = a.price || 0;
+    const priceB = b.price || 0;
 
     if (sortBy === "price-asc") return priceA - priceB;
     if (sortBy === "price-desc") return priceB - priceA;
-    if (sortBy === "newest") return b.id - a.id; // новые ID обычно больше
+    if (sortBy === "newest") return new Date(b.created_at) - new Date(a.created_at);
     return 0;
   });
 
@@ -70,16 +74,25 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete }) => {
           </div>
 
           <div className="listing-grid">
-            {filtered.map(item => (
-              <ListingCard 
-                key={item.id} 
-                item={item} 
-                isFav={favorites.includes(item.id)}
-                onToggleFav={onToggleFav}
-                onDelete={onDelete}
-              />
-            ))}
+            {filtered.map(item => {
+              // ПРОВЕРКА ПРАВ: показывать корзину только автору или админу
+              const isOwner = currentUser && item.user_id === currentUser.id;
+              const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
+              const showDelete = isOwner || isAdmin;
+
+              return (
+                <ListingCard 
+                  key={item.id} 
+                  item={item} 
+                  isFav={favorites.includes(item.id)}
+                  onToggleFav={onToggleFav}
+                  // Если есть права, передаем onDelete, иначе null
+                  onDelete={showDelete ? onDelete : null}
+                />
+              );
+            })}
           </div>
+          {filtered.length === 0 && <p style={{textAlign: 'center', marginTop: '50px'}}>Ничего не найдено</p>}
         </div>
       </section>
     </main>
