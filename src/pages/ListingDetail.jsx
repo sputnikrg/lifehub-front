@@ -9,19 +9,34 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchListing = async () => {
+    const fetchListingAndIncrementViews = async () => {
       setLoading(true);
+      
+      // 1. Получаем данные объявления
       const { data, error } = await supabase
         .from('listings')
         .select('*')
         .eq('id', id)
         .single();
 
-      if (error) console.error("Ошибка загрузки:", error.message);
-      else setListing(data);
+      if (error) {
+        console.error("Ошибка загрузки:", error.message);
+      } else {
+        setListing(data);
+        
+        // 2. Увеличиваем счетчик просмотров в базе
+        await supabase.rpc('increment_views', { row_id: id }).catch(async () => {
+          // Если rpc не настроен, используем простой update (запасной вариант)
+          await supabase
+            .from('listings')
+            .update({ views: (data.views || 0) + 1 })
+            .eq('id', id);
+        });
+      }
       setLoading(false);
     };
-    fetchListing();
+
+    fetchListingAndIncrementViews();
   }, [id]);
 
   if (loading) return <div className="container"><h3>Laden...</h3></div>;
@@ -35,17 +50,10 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
         <button onClick={() => navigate(-1)} className="back-link" style={{marginBottom: '20px', cursor: 'pointer'}}>← Zurück</button>
         
         <div className="listing-detail-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 1fr', gap: '30px' }}>
-          
-          {/* Галерея с ограничением размера */}
           <div className="listing-gallery" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
             {listing.images && listing.images.length > 0 ? (
               listing.images.map((img, i) => (
-                <img 
-                  key={i} 
-                  src={img} 
-                  alt={listing.title} 
-                  style={{ width: '100%', borderRadius: '12px', objectFit: 'contain', maxHeight: '70vh', background: '#f5f5f5' }} 
-                />
+                <img key={i} src={img} alt={listing.title} style={{ width: '100%', borderRadius: '12px', objectFit: 'contain', maxHeight: '70vh', background: '#f5f5f5' }} />
               ))
             ) : (
               <img src="/assets/img/placeholder.jpg" alt="No images" style={{ width: '100%', borderRadius: '12px' }} />
@@ -55,13 +63,16 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
           <div className="listing-info">
             <div className="info-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h1>{listing.title}</h1>
-              <button 
-                className={`fav-btn ${isFav ? 'active' : ''}`} 
-                onClick={() => onToggleFav(listing.id)}
-                style={{ fontSize: '24px', background: 'none', border: 'none', cursor: 'pointer' }}
-              >
-                {isFav ? '❤️' : '🤍'}
-              </button>
+              <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
+                <span style={{color: '#666', fontSize: '14px'}}>👁 {listing.views || 0}</span>
+                <button 
+                  className={`fav-btn ${isFav ? 'active' : ''}`} 
+                  onClick={() => onToggleFav(listing.id)}
+                  style={{ fontSize: '24px', background: 'none', border: 'none', cursor: 'pointer' }}
+                >
+                  {isFav ? '❤️' : '🤍'}
+                </button>
+              </div>
             </div>
             <p className="price" style={{ fontSize: '28px', fontWeight: 'bold', color: '#2c3e50', margin: '10px 0' }}>
               {listing.price ? `${listing.price} €` : 'Preis auf Anfrage'}
