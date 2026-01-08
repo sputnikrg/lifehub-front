@@ -11,29 +11,28 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
   useEffect(() => {
     const fetchListingAndIncrementViews = async () => {
       setLoading(true);
-      
-      // 1. Получаем данные объявления
-      const { data, error } = await supabase
-        .from('listings')
-        .select('*')
-        .eq('id', id)
-        .single();
+      try {
+        // 1. Сначала загружаем данные объявления
+        const { data, error } = await supabase
+          .from('listings')
+          .select('*')
+          .eq('id', id)
+          .single();
 
-      if (error) {
-        console.error("Ошибка загрузки:", error.message);
-      } else {
+        if (error) throw error;
         setListing(data);
-        
-        // 2. Увеличиваем счетчик просмотров в базе
-        await supabase.rpc('increment_views', { row_id: id }).catch(async () => {
-          // Если rpc не настроен, используем простой update (запасной вариант)
-          await supabase
-            .from('listings')
-            .update({ views: (data.views || 0) + 1 })
-            .eq('id', id);
+
+        // 2. Затем пробуем обновить просмотры (фоновый процесс)
+        // Мы НЕ используем await здесь, чтобы загрузка не зависела от счетчика
+        supabase.rpc('increment_views', { row_id: id }).then(({ error: rpcError }) => {
+          if (rpcError) console.warn("Счетчик не обновился:", rpcError.message);
         });
+
+      } catch (err) {
+        console.error("Ошибка загрузки:", err.message);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchListingAndIncrementViews();
