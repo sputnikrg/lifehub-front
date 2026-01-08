@@ -119,7 +119,7 @@ const Header = ({ user }) => {
             fontWeight: 'bold',
             fontSize: isMobile ? '12px' : '14px'
           }}>
-            {isMobile ? '+' : 'Anzeige на русском'}
+            {isMobile ? '+' : 'Anzeige aufgeben'}
           </button>
         </Link>
       </nav>

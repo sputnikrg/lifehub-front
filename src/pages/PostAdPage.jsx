@@ -136,7 +136,7 @@ const PostAdPage = ({ onAddListing, currentUser }) => {
     <main className="page-main">
       <div className="container form-container" style={{ maxWidth: '600px', margin: '40px auto', background: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}>
         <h1 style={{ marginBottom: '20px', textAlign: 'center' }}>
-          {isEditMode ? "Anzeige bearbeiten ✏️" : "Neue Anzeige на русском"}
+          {isEditMode ? "Anzeige bearbeiten ✏️" : "Neue Anzeige erstellen"}
         </h1>
         
         <form onSubmit={handleSubmit} className="ad-form" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
