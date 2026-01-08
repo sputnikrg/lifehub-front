@@ -20,7 +20,17 @@ export const translations = {
     photos: "Fotos hinzufügen",
     btn_publish: "Veröffentlichen",
     btn_save: "Speichern",
+    sort_newest: "Zuerst neue",
+    sort_price_asc: "Günstigste zuerst",
+    sort_price_desc: "Teuerste zuerst",
+    no_results: "Nichts gefunden",
+    hero_title: "Finde Wohnung, Job und neue Leute",
+    hero_subtitle: "Die neuesten Angebote in ganz Deutschland",
+    my_ads_subtitle: "Hier finden Sie alle Ihre veröffentlichten Anzeigen",
+    no_my_ads: "Sie haben noch keine Anzeigen erstellt.",
+    no_favs: "Entdecke Anzeigen und füge sie zu deiner Liste hinzu!",
     back: "Zurück"
+
   },
   ru: {
     nav_favorites: "Избранное",
@@ -43,6 +53,15 @@ export const translations = {
     photos: "Добавить фото",
     btn_publish: "Опубликовать",
     btn_save: "Сохранить",
+    sort_newest: "Сначала новые",
+    sort_price_asc: "Сначала дешевые",
+    sort_price_desc: "Сначала дорогие",
+    no_results: "Ничего не найдено",
+    hero_title: "Найди жилье, работу и общение",
+    hero_subtitle: "Актуальные объявления по всей Германии",
+    my_ads_subtitle: "Здесь находятся все ваши опубликованные объявления",
+    no_my_ads: "Вы еще не создали ни одного объявления.",
+    no_favs: "У вас пока нет сохраненных объявлений.",
     back: "Назад"
   }
 };

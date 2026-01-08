@@ -1,26 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Home = () => {
-  // Данные для карточек категорий
+const Home = ({ t }) => {
+  // Данные для карточек категорий теперь используют объект t
   const categories = [
     {
       type: 'wohnung',
-      title: 'Wohnung',
+      title: t.cat_wohnung,
       img: '/assets/img/wohnung.jpg',
-      desc: 'Modernes 3-Zimmer-Apartment mit Südbalkon в центральном районе.'
+      desc: t.cat_wohnung_desc || 'Modernes Wohnen' // Можно добавить описание в translations.js позже
     },
     {
       type: 'job',
-      title: 'Job',
+      title: t.cat_job,
       img: '/assets/img/job.jpg',
-      desc: 'Entdecke spannende Karrierechancen. Найди работу своей мечты!'
+      desc: t.cat_job_desc || 'Karrierechancen'
     },
     {
       type: 'dating',
-      title: 'Dating',
+      title: t.cat_dating,
       img: '/assets/img/dating.jpg',
-      desc: 'Lerne neue Leute kennen. Найди друзей или вторую половинку.'
+      desc: t.cat_dating_desc || 'Lerne Leute kennen'
     }
   ];
 
@@ -28,8 +28,8 @@ const Home = () => {
     <>
       <section className="hero">
         <div className="hero-content">
-          <h1>Finde Wohnung, Job und neue Leute an einem Ort</h1>
-          <p>Die neuesten Angebote ganzer Deutschland</p>
+          <h1>{t.hero_title || 'LifeHub'}</h1>
+          <p>{t.hero_subtitle || 'Deutschland'}</p>
         </div>
       </section>
 
@@ -41,7 +41,7 @@ const Home = () => {
               <h2>{cat.title}</h2>
               <p>{cat.desc}</p>
               <Link to={`/${cat.type}`} className="card-button">
-                Alle ansehen &gt;
+                {t.cat_all}
               </Link>
             </div>
           </div>
