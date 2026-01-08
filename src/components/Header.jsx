@@ -5,19 +5,16 @@ import { supabase } from '../supabaseClient';
 const Header = ({ user }) => {
   const location = useLocation();
 
-  // Функция входа через Google
   const handleLogin = async () => {
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      // Это заставит Supabase использовать "Site URL", который мы указали в консоли
-      redirectTo: window.location.origin 
-    }
-  });
-  if (error) console.error("Ошибка авторизации:", error.message);
-};
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin 
+      }
+    });
+    if (error) console.error("Ошибка авторизации:", error.message);
+  };
 
-  // Функция выхода
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) console.error("Ошибка при выходе:", error.message);
@@ -32,11 +29,16 @@ const Header = ({ user }) => {
       <nav className="main-nav">
         <span>Deutsch | Русский</span>
 
-        {/* Если пользователь вошел — показываем кнопку Выйти, если нет — войти через Google */}
+        {user && (
+          <Link to="/my-listings" className="nav-link" style={{marginRight: '15px', color: '#333', textDecoration: 'none', fontWeight: '500'}}>
+            Meine Anzeigen
+          </Link>
+        )}
+
         {user ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
              <span style={{ fontSize: '14px', color: '#666' }}>{user.email}</span>
-             <button onClick={handleLogout} style={{ background: '#eee', color: '#333' }}>
+             <button onClick={handleLogout} style={{ background: '#eee', color: '#333', padding: '5px 10px', borderRadius: '5px' }}>
                Выйти
              </button>
           </div>
@@ -48,13 +50,6 @@ const Header = ({ user }) => {
 
         <Link to="/post-ad">
           <button className="ad">Anzeige aufgeben</button>
-        </Link>
-
-        <Link 
-          to="/favorites" 
-          className={`fav-link ${location.pathname === '/favorites' ? 'active' : ''}`}
-        >
-          ❤️ Favoriten
         </Link>
       </nav>
     </header>

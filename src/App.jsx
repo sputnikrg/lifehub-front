@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-// Импорт клиента Supabase
 import { supabase } from './supabaseClient';
-
-// Импорт начальных данных (на случай, если база пуста)
-//import { listings as initialData } from './data';
 
 // Импорт компонентов и страниц
 import Header from './components/Header';
@@ -14,6 +9,7 @@ import ListingsPage from './pages/ListingsPage';
 import FavoritesPage from './pages/FavoritesPage';
 import ListingDetail from './pages/ListingDetail';
 import PostAdPage from './pages/PostAdPage';
+import MyListings from './pages/MyListings'; // Импорт новой страницы
 
 function App() {
   const [listings, setListings] = useState([]);
@@ -23,14 +19,13 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // 1. СЛЕДИМ ЗА АВТОРИЗАЦИЕЙ
+  const ADMIN_EMAIL = "vpovolotskyi25@gmail.com"; 
+
   useEffect(() => {
-    // Проверяем сессию при загрузке
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
     });
 
-    // Слушаем изменения (вход/выход)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
@@ -38,55 +33,49 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // 2. ЗАГРУЖАЕМ ОБЪЯВЛЕНИЯ ИЗ SUPABASE
   useEffect(() => {
-  const fetchListings = async () => {
-    // Больше не берем данные из INITIAL_DATA
-    const { data, error } = await supabase
-      .from('listings')
-      .select('*')
-      .order('created_at', { ascending: false }); // Сначала новые
+    const fetchListings = async () => {
+      const { data, error } = await supabase
+        .from('listings')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-    if (error) {
-      console.error("Ошибка при получении данных:", error.message);
-    } else {
-      setListings(data || []);
-    }
-  };
+      if (error) {
+        console.error("Ошибка при получении данных:", error.message);
+      } else {
+        setListings(data || []);
+      }
+    };
+    fetchListings();
+  }, []);
 
-  fetchListings();
-}, []);
-
-  // 3. СОХРАНЯЕМ ИЗБРАННОЕ (пока оставляем в localStorage для простоты)
   useEffect(() => {
     localStorage.setItem("lifehub_favs_v1", JSON.stringify(favorites));
   }, [favorites]);
 
-  // --- ФУНКЦИИ ОБРАБОТКИ ---
-
-  // Добавление (теперь мы передаем эту функцию в PostAdPage, где будет логика Supabase)
   const handleAddListing = (newAd) => {
     setListings((prev) => [newAd, ...prev]);
   };
 
-  // Удаление из базы
   const handleDeleteListing = async (id) => {
-    if (!user) {
-      alert("Войдите в систему, чтобы удалять объявления");
-      return;
-    }
+    if (!user) return;
 
-    if (window.confirm("Удалить это объявление?")) {
+    const listingToDelete = listings.find(l => l.id === id);
+    const isOwner = listingToDelete?.user_id === user.id;
+    const isAdmin = user.email === ADMIN_EMAIL;
+
+    if (!isOwner && !isAdmin) return;
+
+    if (window.confirm("Вы уверены, что хотите удалить это объявление?")) {
       const { error } = await supabase
         .from('listings')
         .delete()
         .eq('id', id);
 
       if (error) {
-        alert("Ошибка: " + error.message + " (Возможно, это не ваше объявление)");
+        alert("Ошибка при удалении: " + error.message);
       } else {
         setListings((prev) => prev.filter((item) => item.id !== id));
-        alert("Объявление удалено");
       }
     }
   };
@@ -99,13 +88,11 @@ function App() {
 
   return (
     <Router>
-      {/* Передаем user в Header, чтобы показывать кнопку входа/выхода или аватар */}
       <Header user={user} />
       
       <Routes>
         <Route path="/" element={<Home listings={listings} />} />
         
-        {/* Маппинг страниц категорий */}
         {['wohnung', 'job', 'dating'].map(type => (
           <Route 
             key={type}
@@ -117,7 +104,7 @@ function App() {
                 favorites={favorites} 
                 onToggleFav={toggleFavorite} 
                 onDelete={handleDeleteListing}
-                currentUser={user} // Передаем юзера для проверки прав на удаление
+                currentUser={user}
               />
             } 
           />
@@ -134,11 +121,24 @@ function App() {
           } 
         />
 
+        {/* Добавлен маршрут для Моих объявлений */}
+        <Route 
+          path="/my-listings" 
+          element={
+            <MyListings 
+              listings={listings} 
+              currentUser={user} 
+              favorites={favorites} 
+              onToggleFav={toggleFavorite} 
+              onDelete={handleDeleteListing} 
+            />
+          } 
+        />
+
         <Route 
           path="/listing/:type/:id" 
           element={
             <ListingDetail 
-              listings={listings} 
               favorites={favorites} 
               onToggleFav={toggleFavorite} 
             />
