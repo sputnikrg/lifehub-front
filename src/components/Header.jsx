@@ -24,23 +24,24 @@ const Header = ({ user }) => {
         <img src="/assets/img/logo.png" alt="LifeHub" style={{ height: '40px' }} />
       </Link>
 
-      <nav style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-        <span style={{ fontSize: '14px', color: '#666' }}>Deutsch | Русский</span>
+      <nav style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+        <span style={{ fontSize: '14px', color: '#666', marginRight: '5px' }}>Deutsch | Русский</span>
 
-        {/* Кнопка Favorites */}
+        {/* Красивая кнопка Избранное */}
         <Link to="/favorites" style={{ textDecoration: 'none' }}>
           <button style={{ 
-            background: '#f8f9fa', 
+            background: '#fff', 
             border: '1px solid #dee2e6', 
             padding: '8px 15px', 
             borderRadius: '20px', 
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
-            gap: '5px',
-            color: '#e74c3c'
+            gap: '8px',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
           }}>
-            ❤️ <span style={{ color: '#333' }}>Favoriten</span>
+            <span style={{ color: '#e74c3c' }}>❤️</span>
+            <span style={{ color: '#333', fontWeight: '500' }}>Favoriten</span>
           </button>
         </Link>
 
@@ -51,8 +52,8 @@ const Header = ({ user }) => {
               <button style={{ 
                 background: '#e74c3c', 
                 color: 'white', 
-                padding: '8px 16px', 
-                borderRadius: '5px', 
+                padding: '10px 18px', 
+                borderRadius: '8px', 
                 border: 'none', 
                 fontWeight: 'bold', 
                 cursor: 'pointer' 
@@ -61,17 +62,18 @@ const Header = ({ user }) => {
               </button>
             </Link>
 
-            {/* Блок пользователя (отцентрован) */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: '1.2' }}>
-              <span style={{ fontSize: '12px', color: '#666', fontWeight: '500' }}>{user.email}</span>
+            {/* Блок пользователя (вертикальная центровка) */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '100px' }}>
+              <span style={{ fontSize: '11px', color: '#888', marginBottom: '2px' }}>{user.email}</span>
               <button onClick={handleLogout} style={{ 
-                background: 'none', 
+                background: '#f1f3f5', 
                 border: 'none', 
-                color: '#3498db', 
-                textDecoration: 'underline', 
+                color: '#495057', 
+                padding: '4px 10px',
+                borderRadius: '4px',
                 cursor: 'pointer', 
-                fontSize: '12px',
-                padding: '2px 0'
+                fontSize: '11px',
+                fontWeight: '600'
               }}>
                 Abmelden
               </button>
@@ -84,7 +86,16 @@ const Header = ({ user }) => {
         )}
 
         <Link to="/post-ad">
-          <button className="ad" style={{ background: '#3498db', color: 'white', padding: '8px 16px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>
+          <button className="ad" style={{ 
+            background: 'linear-gradient(135deg, #3498db, #2980b9)', 
+            color: 'white', 
+            padding: '10px 18px', 
+            borderRadius: '8px', 
+            border: 'none', 
+            cursor: 'pointer', 
+            fontWeight: 'bold',
+            boxShadow: '0 2px 4px rgba(52,152,219,0.3)'
+          }}>
             Anzeige aufgeben
           </button>
         </Link>

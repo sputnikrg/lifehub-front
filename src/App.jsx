@@ -149,6 +149,12 @@ function App() {
           path="/post-ad" 
           element={<PostAdPage onAddListing={handleAddListing} currentUser={user} />} 
         />
+
+        <Route 
+          path="/edit/:id" 
+          element={<PostAdPage onAddListing={handleAddListing} currentUser={user} />} 
+        />
+
       </Routes>
     </Router>
   );
