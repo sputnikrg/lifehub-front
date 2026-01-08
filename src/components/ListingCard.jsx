@@ -2,18 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ListingCard = ({ item, isFav, onToggleFav, onDelete }) => {
-  // Формируем мета-информацию в зависимости от типа
+  // Исправляем путь к картинке: берем первую из массива images
+  const displayImage = (item.images && item.images.length > 0) 
+    ? item.images[0] 
+    : "/assets/img/placeholder.jpg";
+
   let meta = "";
   if (item.type === "wohnung") meta = `${item.city} • ${item.price} € / Monat`;
-  if (item.type === "job") meta = `${item.city} • ab ${item.salary} € / Std`;
-  if (item.type === "dating") meta = `${item.city} • ${item.age} Jahre`;
+  if (item.type === "job") meta = `${item.city} • ab ${item.price} € / Std`; // Поправил на price
+  if (item.type === "dating") meta = `${item.city} • ${item.price} Jahre`;
 
   return (
     <article className="listing-card" style={{ position: 'relative' }}>
-      {/* Ссылка на детальную страницу */}
       <Link to={`/listing/${item.type}/${item.id}`} className="listing-link">
         <img 
-          src={item.image || "/assets/img/placeholder.jpg"} 
+          src={displayImage} 
           className="listing-img" 
           alt={item.title} 
         />
@@ -24,7 +27,6 @@ const ListingCard = ({ item, isFav, onToggleFav, onDelete }) => {
         </div>
       </Link>
 
-      {/* Кнопка Избранного */}
       <button
         className={`fav-btn ${isFav ? "active" : ""}`}
         onClick={() => onToggleFav(item.id)}
@@ -33,7 +35,6 @@ const ListingCard = ({ item, isFav, onToggleFav, onDelete }) => {
         ❤
       </button>
 
-      {/* КНОПКА УДАЛЕНИЯ */}
       {onDelete && (
         <button
           className="delete-card-btn"

@@ -15,16 +15,12 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
         .from('listings')
         .select('*')
         .eq('id', id)
-        .single(); // Получаем только один объект
+        .single();
 
-      if (error) {
-        console.error("Ошибка загрузки:", error.message);
-      } else {
-        setListing(data);
-      }
+      if (error) console.error("Ошибка загрузки:", error.message);
+      else setListing(data);
       setLoading(false);
     };
-
     fetchListing();
   }, [id]);
 
@@ -36,35 +32,49 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
   return (
     <main className="page-main">
       <div className="container">
-        <button onClick={() => navigate(-1)} className="back-link">← Zurück</button>
+        <button onClick={() => navigate(-1)} className="back-link" style={{marginBottom: '20px', cursor: 'pointer'}}>← Zurück</button>
         
-        <div className="listing-detail-grid">
-          <div className="listing-gallery">
-            {/* Если картинок несколько, выводим их */}
+        <div className="listing-detail-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 1fr', gap: '30px' }}>
+          
+          {/* Галерея с ограничением размера */}
+          <div className="listing-gallery" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
             {listing.images && listing.images.length > 0 ? (
-              listing.images.map((img, i) => <img key={i} src={img} alt={listing.title} />)
+              listing.images.map((img, i) => (
+                <img 
+                  key={i} 
+                  src={img} 
+                  alt={listing.title} 
+                  style={{ width: '100%', borderRadius: '12px', objectFit: 'contain', maxHeight: '70vh', background: '#f5f5f5' }} 
+                />
+              ))
             ) : (
-              <img src="/assets/img/placeholder.jpg" alt="No images" />
+              <img src="/assets/img/placeholder.jpg" alt="No images" style={{ width: '100%', borderRadius: '12px' }} />
             )}
           </div>
 
           <div className="listing-info">
-            <div className="info-header">
+            <div className="info-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h1>{listing.title}</h1>
               <button 
                 className={`fav-btn ${isFav ? 'active' : ''}`} 
                 onClick={() => onToggleFav(listing.id)}
+                style={{ fontSize: '24px', background: 'none', border: 'none', cursor: 'pointer' }}
               >
                 {isFav ? '❤️' : '🤍'}
               </button>
             </div>
-            <p className="price">{listing.price ? `${listing.price} €` : 'Preis auf Anfrage'}</p>
+            <p className="price" style={{ fontSize: '28px', fontWeight: 'bold', color: '#2c3e50', margin: '10px 0' }}>
+              {listing.price ? `${listing.price} €` : 'Preis auf Anfrage'}
+            </p>
             <p className="city">📍 {listing.city}</p>
+            <hr style={{ margin: '20px 0', border: '0', borderTop: '1px solid #eee' }} />
             <div className="description">
               <h3>Beschreibung</h3>
-              <p>{listing.description}</p>
+              <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>{listing.description}</p>
             </div>
-            <button className="contact-button">Anbieter kontaktieren</button>
+            <button className="contact-button" style={{ marginTop: '30px', width: '100%', padding: '15px', background: '#3498db', color: 'white', border: 'none', borderRadius: '8px', fontSize: '18px', cursor: 'pointer' }}>
+              Anbieter kontaktieren
+            </button>
           </div>
         </div>
       </div>
