@@ -9,7 +9,10 @@ import ListingsPage from './pages/ListingsPage';
 import FavoritesPage from './pages/FavoritesPage';
 import ListingDetail from './pages/ListingDetail';
 import PostAdPage from './pages/PostAdPage';
-import MyListings from './pages/MyListings'; // Импорт новой страницы
+import MyListings from './pages/MyListings';
+import Footer from './components/Footer'; // 1. Импортируем Footer
+import Impressum from './pages/Impressum';
+import Datenschutz from './pages/Datenschutz';
 
 function App() {
   const [listings, setListings] = useState([]);
@@ -19,7 +22,7 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const ADMIN_EMAIL = "vpovolotskyi25@gmail.com"; 
+  const ADMIN_EMAIL = "vpovolotskyi25@gmail.com";
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -89,73 +92,78 @@ function App() {
   return (
     <Router>
       <Header user={user} />
-      
+
       <Routes>
         <Route path="/" element={<Home listings={listings} />} />
-        
+
         {['wohnung', 'job', 'dating'].map(type => (
-          <Route 
+          <Route
             key={type}
-            path={`/${type}`} 
+            path={`/${type}`}
             element={
-              <ListingsPage 
+              <ListingsPage
                 type={type}
-                listings={listings} 
-                favorites={favorites} 
-                onToggleFav={toggleFavorite} 
+                listings={listings}
+                favorites={favorites}
+                onToggleFav={toggleFavorite}
                 onDelete={handleDeleteListing}
                 currentUser={user}
               />
-            } 
+            }
           />
         ))}
 
-        <Route 
-          path="/favorites" 
+        <Route
+          path="/favorites"
           element={
-            <FavoritesPage 
-              listings={listings} 
-              favorites={favorites} 
-              onToggleFav={toggleFavorite} 
+            <FavoritesPage
+              listings={listings}
+              favorites={favorites}
+              onToggleFav={toggleFavorite}
             />
-          } 
+          }
         />
 
-        {/* Добавлен маршрут для Моих объявлений */}
-        <Route 
-          path="/my-listings" 
+        <Route
+          path="/my-listings"
           element={
-            <MyListings 
-              listings={listings} 
-              currentUser={user} 
-              favorites={favorites} 
-              onToggleFav={toggleFavorite} 
-              onDelete={handleDeleteListing} 
+            <MyListings
+              listings={listings}
+              currentUser={user}
+              favorites={favorites}
+              onToggleFav={toggleFavorite}
+              onDelete={handleDeleteListing}
             />
-          } 
+          }
         />
 
-        <Route 
-          path="/listing/:type/:id" 
+        <Route
+          path="/listing/:type/:id"
           element={
-            <ListingDetail 
-              favorites={favorites} 
-              onToggleFav={toggleFavorite} 
+            <ListingDetail
+              favorites={favorites}
+              onToggleFav={toggleFavorite}
             />
-          } 
+          }
         />
 
-        <Route 
-          path="/post-ad" 
-          element={<PostAdPage onAddListing={handleAddListing} currentUser={user} />} 
+        <Route
+          path="/post-ad"
+          element={<PostAdPage onAddListing={handleAddListing} currentUser={user} />}
         />
 
-        <Route 
-          path="/edit/:id" 
-          element={<PostAdPage onAddListing={handleAddListing} currentUser={user} />} 
+        <Route
+          path="/edit/:id"
+          element={<PostAdPage onAddListing={handleAddListing} currentUser={user} />}
         />
+
+        <Route path="/impressum" element={<Impressum />} />
+        <Route path="/datenschutz" element={<Datenschutz />} />
 
       </Routes>
+
+      {/* 2. Добавляем Footer в конец, чтобы он был виден на всех страницах */}
+      <Footer />
     </Router>
   );
 }
