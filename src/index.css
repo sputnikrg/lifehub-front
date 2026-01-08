@@ -350,3 +350,28 @@ header .fav-link.active {
   .form-box { margin: 20px; }
   header { padding: 15px 20px; }
 }
+
+/* Адаптивность для сетки карточек */
+.listing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Мобильные правки */
+@media (max-width: 600px) {
+  header {
+    flex-direction: column; /* Логотип сверху, меню снизу */
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .main-nav {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .listing-detail-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

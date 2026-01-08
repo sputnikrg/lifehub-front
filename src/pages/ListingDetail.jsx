@@ -46,9 +46,9 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
   return (
     <main className="page-main">
       <div className="container">
-        <button onClick={() => navigate(-1)} className="back-link" style={{marginBottom: '20px', cursor: 'pointer'}}>← Zurück</button>
-        
-        <div className="listing-detail-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 1fr', gap: '30px' }}>
+        <button onClick={() => navigate(-1)} className="back-link" style={{ marginBottom: '20px', cursor: 'pointer' }}>← Zurück</button>
+
+        <div className="listing-detail-grid" style={{ display: 'grid', gridTemplateColumns: window.innerWidth < 768 ? '1fr' : '1fr 1fr', gap: '20px' }}>
           <div className="listing-gallery" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
             {listing.images && listing.images.length > 0 ? (
               listing.images.map((img, i) => (
@@ -62,10 +62,10 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
           <div className="listing-info">
             <div className="info-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h1>{listing.title}</h1>
-              <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
-                <span style={{color: '#666', fontSize: '14px'}}>👁 {listing.views || 0}</span>
-                <button 
-                  className={`fav-btn ${isFav ? 'active' : ''}`} 
+              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <span style={{ color: '#666', fontSize: '14px' }}>👁 {listing.views || 0}</span>
+                <button
+                  className={`fav-btn ${isFav ? 'active' : ''}`}
                   onClick={() => onToggleFav(listing.id)}
                   style={{ fontSize: '24px', background: 'none', border: 'none', cursor: 'pointer' }}
                 >

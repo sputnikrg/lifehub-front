@@ -29,7 +29,7 @@ const Home = () => {
       <section className="hero">
         <div className="hero-content">
           <h1>Finde Wohnung, Job und neue Leute an einem Ort</h1>
-          <p>Die neuesten Angebote ganzer Welt</p>
+          <p>Die neuesten Angebote ganzer Deutschland</p>
         </div>
       </section>
 
