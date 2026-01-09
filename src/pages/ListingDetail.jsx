@@ -8,11 +8,14 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Состояния для галереи
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     const fetchListingAndIncrementViews = async () => {
       setLoading(true);
       try {
-        // 1. Сначала загружаем данные объявления
         const { data, error } = await supabase
           .from('listings')
           .select('*')
@@ -22,19 +25,15 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
         if (error) throw error;
         setListing(data);
 
-        // 2. Затем пробуем обновить просмотры (фоновый процесс)
-        // Мы НЕ используем await здесь, чтобы загрузка не зависела от счетчика
         supabase.rpc('increment_views', { row_id: id }).then(({ error: rpcError }) => {
           if (rpcError) console.warn("Счетчик не обновился:", rpcError.message);
         });
-
       } catch (err) {
         console.error("Ошибка загрузки:", err.message);
       } finally {
         setLoading(false);
       }
     };
-
     fetchListingAndIncrementViews();
   }, [id]);
 
@@ -42,26 +41,62 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
   if (!listing) return <div className="container"><h3>Anzeige nicht gefunden</h3></div>;
 
   const isFav = favorites.includes(listing.id);
+  const images = (listing.images && listing.images.length > 0) ? listing.images : ["/assets/img/placeholder.jpg"];
+
+  // Навигация в модалке
+  const nextImg = (e) => {
+    e.stopPropagation();
+    setActiveIndex((prev) => (prev + 1 === images.length ? 0 : prev + 1));
+  };
+
+  const prevImg = (e) => {
+    e.stopPropagation();
+    setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
 
   return (
     <main className="page-main">
       <div className="container">
-        <button onClick={() => navigate(-1)} className="back-link" style={{ marginBottom: '20px', cursor: 'pointer' }}>← Zurück</button>
+        {/* Кнопка назад */}
+        <button
+          onClick={() => navigate(-1)}
+          className="back-link"
+          style={{ marginBottom: '20px', cursor: 'pointer', background: 'none', border: 'none', fontSize: '16px' }}
+        >
+          ← Zurück
+        </button>
 
-        <div className="listing-detail-grid" style={{ display: 'grid', gridTemplateColumns: window.innerWidth < 768 ? '1fr' : '1fr 1fr', gap: '20px' }}>
-          <div className="listing-gallery" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-            {listing.images && listing.images.length > 0 ? (
-              listing.images.map((img, i) => (
-                <img key={i} src={img} alt={listing.title} style={{ width: '100%', borderRadius: '12px', objectFit: 'contain', maxHeight: '70vh', background: '#f5f5f5' }} />
-              ))
-            ) : (
-              <img src="/assets/img/placeholder.jpg" alt="No images" style={{ width: '100%', borderRadius: '12px' }} />
-            )}
+        <div className="listing-detail-grid">
+          {/* ЛЕВАЯ КОЛОНКА: ГАЛЕРЕЯ */}
+          <div className="listing-gallery-side">
+            <div className="listing-gallery-container">
+              {/* Главное фото */}
+              <div className="main-image-wrapper" onClick={() => setIsModalOpen(true)}>
+                <img src={images[activeIndex]} alt={listing.title} className="main-image" />
+                {images.length > 1 && <span className="zoom-hint">🔍 Klick для увеличения</span>}
+              </div>
+
+              {/* Миниатюры под главным фото */}
+              {images.length > 1 && (
+                <div className="thumbnails-grid">
+                  {images.map((img, i) => (
+                    <div
+                      key={i}
+                      className={`thumb-item ${i === activeIndex ? 'active' : ''}`}
+                      onClick={() => setActiveIndex(i)}
+                    >
+                      <img src={img} alt={`Thumb ${i}`} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
+          {/* ПРАВАЯ КОЛОНКА: ИНФОРМАЦИЯ */}
           <div className="listing-info">
             <div className="info-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h1>{listing.title}</h1>
+              <h1 style={{ margin: 0 }}>{listing.title}</h1>
               <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                 <span style={{ color: '#666', fontSize: '14px' }}>👁 {listing.views || 0}</span>
                 <button
@@ -73,21 +108,53 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                 </button>
               </div>
             </div>
-            <p className="price" style={{ fontSize: '28px', fontWeight: 'bold', color: '#2c3e50', margin: '10px 0' }}>
+
+            <p className="price" style={{ fontSize: '28px', fontWeight: 'bold', color: '#2c3e50', margin: '15px 0' }}>
               {listing.price ? `${listing.price} €` : 'Preis auf Anfrage'}
             </p>
-            <p className="city">📍 {listing.city}</p>
-            <hr style={{ margin: '20px 0', border: '0', borderTop: '1px solid #eee' }} />
+
+            <p className="city" style={{ color: '#666', fontSize: '16px' }}>📍 {listing.city}</p>
+
+            <hr style={{ margin: '25px 0', border: '0', borderTop: '1px solid #eee' }} />
+
             <div className="description">
-              <h3>Beschreibung</h3>
-              <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>{listing.description}</p>
+              <h3 style={{ marginBottom: '10px' }}>Beschreibung</h3>
+              <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', color: '#444' }}>{listing.description}</p>
             </div>
-            <button className="contact-button" style={{ marginTop: '30px', width: '100%', padding: '15px', background: '#3498db', color: 'white', border: 'none', borderRadius: '8px', fontSize: '18px', cursor: 'pointer' }}>
+
+            <button className="contact-button">
               Anbieter kontaktieren
             </button>
           </div>
         </div>
       </div>
+
+      {/* МОДАЛЬНОЕ ОКНО (LIGHTBOX) */}
+      {/* МОДАЛЬНОЕ ОКНО (LIGHTBOX) */}
+      {isModalOpen && (
+        <div className="lightbox-overlay" onClick={() => setIsModalOpen(false)}>
+          <button className="close-lightbox" onClick={() => setIsModalOpen(false)}>×</button>
+
+          {images.length > 1 && (
+            <>
+              {/* Левая стрелка */}
+              <button className="nav-btn prev" onClick={prevImg}>
+                <span className="arrow-icon"></span>
+              </button>
+
+              {/* Правая стрелка */}
+              <button className="nav-btn next" onClick={nextImg}>
+                <span className="arrow-icon"></span>
+              </button>
+            </>
+          )}
+
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <img src={images[activeIndex]} alt="Full view" />
+            <div className="img-counter">{activeIndex + 1} / {images.length}</div>
+          </div>
+        </div>
+      )}      
     </main>
   );
 };
