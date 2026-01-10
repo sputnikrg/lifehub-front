@@ -19,7 +19,7 @@ const ListingCard = ({ item, isFav, onToggleFav, onDelete }) => {
         <img src={displayImage} className="listing-img" alt={item.title} />
         <div className="listing-content">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <h3>{item.title}</h3>
+            <h3 className="listing-title">{item.title}</h3>
             <span style={{ fontSize: '12px', color: '#999' }}>👁 {item.views || 0}</span>
           </div>
           {isExternalJob && (

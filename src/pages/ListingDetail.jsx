@@ -135,6 +135,12 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                   >
                     🔗 Zur externen Anzeige
                   </a>
+                  {isExternalJob && (
+                    <p className="source-note">
+                      Quelle: Adzuna
+                    </p>
+                  )}
+
                 </>
               ) : (
                 <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', color: '#444' }}>
@@ -143,9 +149,11 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
               )}
             </div>
 
-            <button className="contact-button">
-              Anbieter kontaktieren
-            </button>
+            {!isExternalJob && (
+              <button className="contact-button">
+                Anbieter kontaktieren
+              </button>
+            )}
           </div>
         </div>
       </div>

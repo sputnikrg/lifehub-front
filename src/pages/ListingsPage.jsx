@@ -6,6 +6,8 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
   const [cityFilter, setCityFilter] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sortBy, setSortBy] = useState("newest");
+  const [showExternal, setShowExternal] = useState(true);
+
 
   const ADMIN_EMAIL = "vpovolotskyi25@gmail.com";
 
@@ -15,7 +17,9 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
     const matchesCity = item.city.toLowerCase().includes(cityFilter.toLowerCase());
     const itemPrice = item.price || 0;
     const matchesPrice = maxPrice ? (itemPrice <= Number(maxPrice)) : true;
-    return matchesType && matchesSearch && matchesCity && matchesPrice;
+    const matchesExternal = showExternal || !item.external_url;
+    return matchesType && matchesSearch && matchesCity && matchesPrice && matchesExternal;
+
   });
 
   filtered.sort((a, b) => {
@@ -40,27 +44,27 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
       <section className="page-listings">
         <div className="container">
           <div className="filters-bar" style={{ marginBottom: '30px', display: 'flex', flexWrap: 'wrap', gap: '15px', background: '#fff', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-            <input 
-              placeholder={t.label_title} 
-              value={searchTerm} 
+            <input
+              placeholder={t.label_title}
+              value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', flex: '1', minWidth: '200px' }}
             />
-            <input 
-              placeholder={t.label_city} 
-              value={cityFilter} 
+            <input
+              placeholder={t.label_city}
+              value={cityFilter}
               onChange={(e) => setCityFilter(e.target.value)}
               style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', width: '150px' }}
             />
-            <input 
-              type="number" 
-              placeholder={t.label_price} 
-              value={maxPrice} 
+            <input
+              type="number"
+              placeholder={t.label_price}
+              value={maxPrice}
               onChange={(e) => setMaxPrice(e.target.value)}
               style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', width: '120px' }}
             />
-            <select 
-              value={sortBy} 
+            <select
+              value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }}
             >
@@ -68,6 +72,15 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
               <option value="price-asc">{t.sort_price_asc || 'Günstigste'}</option>
               <option value="price-desc">{t.sort_price_desc || 'Teuerste'}</option>
             </select>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <input
+                type="checkbox"
+                checked={showExternal}
+                onChange={() => setShowExternal(!showExternal)}
+              />
+              Externe Jobs anzeigen
+            </label>
+
           </div>
 
           <div className="listing-grid">
@@ -77,9 +90,9 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
               const showDelete = isOwner || isAdmin;
 
               return (
-                <ListingCard 
-                  key={item.id} 
-                  item={item} 
+                <ListingCard
+                  key={item.id}
+                  item={item}
                   isFav={favorites.includes(item.id)}
                   onToggleFav={onToggleFav}
                   onDelete={showDelete ? onDelete : null}
@@ -88,7 +101,7 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
               );
             })}
           </div>
-          {filtered.length === 0 && <p style={{textAlign: 'center', marginTop: '50px'}}>{t.no_results || 'Nichts gefunden'}</p>}
+          {filtered.length === 0 && <p style={{ textAlign: 'center', marginTop: '50px' }}>{t.no_results || 'Nichts gefunden'}</p>}
         </div>
       </section>
     </main>
