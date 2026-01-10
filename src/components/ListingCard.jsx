@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const ListingCard = ({ item, isFav, onToggleFav, onDelete }) => {
   const navigate = useNavigate();
-  const displayImage = (item.images && item.images.length > 0) 
-    ? item.images[0] 
+  const isExternalJob = item.type === "job" && Boolean(item.external_url);
+  const displayImage = (item.images && item.images.length > 0)
+    ? item.images[0]
     : "/assets/img/placeholder.jpg";
 
   let meta = "";
@@ -17,10 +18,26 @@ const ListingCard = ({ item, isFav, onToggleFav, onDelete }) => {
       <Link to={`/listing/${item.type}/${item.id}`} className="listing-link">
         <img src={displayImage} className="listing-img" alt={item.title} />
         <div className="listing-content">
-          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <h3>{item.title}</h3>
-            <span style={{fontSize: '12px', color: '#999'}}>👁 {item.views || 0}</span>
+            <span style={{ fontSize: '12px', color: '#999' }}>👁 {item.views || 0}</span>
           </div>
+          {isExternalJob && (
+            <span
+              style={{
+                display: 'inline-block',
+                marginBottom: '6px',
+                fontSize: '11px',
+                color: '#555',
+                background: '#eef2ff',
+                padding: '3px 6px',
+                borderRadius: '5px'
+              }}
+            >
+              External
+            </span>
+          )}
+
           <p className="listing-meta">{meta}</p>
           <p className="listing-desc">{item.description}</p>
         </div>
@@ -45,7 +62,7 @@ const ListingCard = ({ item, isFav, onToggleFav, onDelete }) => {
             >
               ✏️
             </button>
-            
+
             {/* Кнопка Удалить */}
             <button
               onClick={(e) => {

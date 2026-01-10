@@ -53,7 +53,8 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
     e.stopPropagation();
     setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
-
+  const isExternalJob =
+    listing?.type === "job" && Boolean(listing?.external_url);
   return (
     <main className="page-main">
       <div className="container">
@@ -119,7 +120,27 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
 
             <div className="description">
               <h3 style={{ marginBottom: '10px' }}>Beschreibung</h3>
-              <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', color: '#444' }}>{listing.description}</p>
+
+              {isExternalJob ? (
+                <>
+                  <p style={{ lineHeight: '1.6', color: '#444' }}>
+                    {listing.description?.slice(0, 500)}…
+                  </p>
+
+                  <a
+                    href={listing.external_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="external-button"
+                  >
+                    🔗 Zur externen Anzeige
+                  </a>
+                </>
+              ) : (
+                <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', color: '#444' }}>
+                  {listing.description}
+                </p>
+              )}
             </div>
 
             <button className="contact-button">
@@ -154,7 +175,7 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
             <div className="img-counter">{activeIndex + 1} / {images.length}</div>
           </div>
         </div>
-      )}      
+      )}
     </main>
   );
 };
