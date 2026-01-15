@@ -42,11 +42,11 @@ const PostAdPage = ({ currentUser, t }) => {
         uploadedUrls.push(data.publicUrl);
       }
 
-      const finalData = { 
-        ...formData, 
-        images: uploadedUrls, 
-        price: Number(formData.price), 
-        user_id: currentUser.id 
+      const finalData = {
+        ...formData,
+        images: uploadedUrls,
+        price: Number(formData.price),
+        user_id: currentUser.id
       };
 
       if (isEditMode) {
@@ -89,8 +89,16 @@ const PostAdPage = ({ currentUser, t }) => {
               <input name="address" value={formData.address} onChange={handleChange} placeholder="z.B. Alexanderplatz, Berlin" />
             </div>
             <div className="filter-field">
-              <label>{t.label_price}</label>
-              <input name="price" type="number" value={formData.price} onChange={handleChange} required />
+              {/* Если выбран дейтинг — пишем "Возраст", иначе — стандартную "Цену" */}
+              <label>{formData.type === 'dating' ? 'Alter (Jahre)' : t.label_price}</label>
+              <input
+                name="price"
+                type="number"
+                value={formData.price}
+                onChange={handleChange}
+                required
+                placeholder={formData.type === 'dating' ? 'z.B. 25' : ''}
+              />
             </div>
             <div className="filter-field">
               <label>{t.label_desc}</label>

@@ -110,8 +110,11 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
               </div>
             </div>
 
+            {/* ТОЧЕЧНАЯ ПРАВКА ВЫВОДА ЦЕНЫ/ВОЗРАСТА */}
             <p className="price" style={{ fontSize: '28px', fontWeight: 'bold', color: '#2c3e50', margin: '15px 0' }}>
-              {listing.price ? `${listing.price} €` : 'Preis auf Anfrage'}
+              {listing.price 
+                ? `${listing.price} ${listing.type === 'dating' ? 'Jahre' : '€'}` 
+                : 'Preis auf Anfrage'}
             </p>
 
             <p className="city" style={{ color: '#666', fontSize: '16px' }}>📍 {listing.city}</p>
@@ -158,7 +161,6 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
         </div>
       </div>
 
-      {/* МОДАЛЬНОЕ ОКНО (LIGHTBOX) */}
       {/* МОДАЛЬНОЕ ОКНО (LIGHTBOX) */}
       {isModalOpen && (
         <div className="lightbox-overlay" onClick={() => setIsModalOpen(false)}>

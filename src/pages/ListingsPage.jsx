@@ -58,7 +58,7 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
             />
             <input
               type="number"
-              placeholder={t.label_price}
+              placeholder={type === 'dating' ? 'Max. Alter' : t.label_price}
               value={maxPrice}
               onChange={(e) => setMaxPrice(e.target.value)}
               style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', width: '120px' }}
