@@ -8,8 +8,9 @@ const PostAdPage = ({ currentUser, t }) => {
   const isEditMode = Boolean(id);
 
   const [formData, setFormData] = useState({
-    type: 'wohnung', title: '', city: '', address: '', price: '', description: '', images: []
+    type: 'wohnung', title: '', city: '', address: '', price: '', description: '', kontaktdaten: '', images: []
   });
+
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -103,6 +104,16 @@ const PostAdPage = ({ currentUser, t }) => {
             <div className="filter-field">
               <label>{t.label_desc}</label>
               <textarea name="description" value={formData.description} onChange={handleChange} rows="5" required />
+            </div>
+            <div className="filter-field">
+              <label>Kontaktdaten</label>
+              <textarea
+                name="kontaktdaten"
+                value={formData.kontaktdaten}
+                onChange={handleChange}
+                rows={3}
+                placeholder="Telefon, E-Mail, WhatsApp…"
+              />
             </div>
             <div className="filter-field">
               <label>{t.photos}</label>
