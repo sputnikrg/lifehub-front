@@ -87,171 +87,126 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
 
   return (
     <>
-    <main className="page-main">
-      <div className="container">
-        <button
-          onClick={() => navigate(-1)}
-          className="back-link"
-          style={{ marginBottom: '20px', cursor: 'pointer', background: 'none', border: 'none', fontSize: '16px' }}
-        >
-          ← Zurück
-        </button>
-
-        <div className="listing-detail-grid">
-          <div className="listing-gallery-side">
-            <div className="listing-gallery-container">
-              <div className="main-image-wrapper" onClick={() => setIsModalOpen(true)}>
-                <img src={images[activeIndex]} alt={listing.title} className="main-image" />
-                {images.length > 1 && <span className="zoom-hint">🔍 Klick для увеличения</span>}
-              </div>
-
-              {images.length > 1 && (
-                <div className="thumbnails-grid">
-                  {images.map((img, i) => (
-                    <div
-                      key={i}
-                      className={`thumb-item ${i === activeIndex ? 'active' : ''}`}
-                      onClick={() => setActiveIndex(i)}
-                    >
-                      <img src={img} alt={`Thumb ${i}`} />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="listing-info">
-            <div className="info-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h1 style={{ margin: 0 }}>{listing.title}</h1>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                <span style={{ color: '#666', fontSize: '14px' }}>👁 {listing.views || 0}</span>
-                <button
-                  className={`fav-btn ${isFav ? 'active' : ''}`}
-                  onClick={() => onToggleFav(listing.id)}
-                  style={{ fontSize: '24px', background: 'none', border: 'none', cursor: 'pointer' }}
-                >
-                  {isFav ? '❤️' : '🤍'}
-                </button>
-              </div>
-            </div>
-
-            <p className="price" style={{ fontSize: '28px', fontWeight: 'bold', color: '#2c3e50', margin: '15px 0' }}>
-              {listing.price
-                ? `${listing.price} ${listing.type === 'dating' ? 'Jahre' : '€'}`
-                : 'Preis auf Anfrage'}
-            </p>
-
-            <p className="city" style={{ color: '#666', fontSize: '16px' }}>📍 {listing.city}</p>
-
-            <hr style={{ margin: '25px 0', border: '0', borderTop: '1px solid #eee' }} />
-
-            <div className="description">
-              <h3 style={{ marginBottom: '10px' }}>Beschreibung</h3>
-
-              {isExternalJob ? (
-                <>
-                  <p style={{ lineHeight: '1.6', color: '#444' }}>
-                    {listing.description?.slice(0, 500)}…
-                  </p>
-                  <a
-                    href={listing.external_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="external-button"
-                  >
-                    🔗 Zur externen Anzeige
-                  </a>
-                  <p className="source-note">Quelle: Adzuna</p>
-                </>
-              ) : (
-                <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', color: '#444' }}>
-                  {listing.description}
-                </p>
-              )}
-            </div>
-
-            {listing.kontaktdaten && listing.type !== 'dating' && (
-              <div className="description" style={{ marginTop: '20px' }}>
-                <h3 style={{ marginBottom: '10px' }}>Kontaktdaten</h3>
-                <p>{listing.kontaktdaten}</p>
-              </div>
-            )}
-
-            {listing.type === 'dating' && !isPaid && (
-              <div className="description" style={{ marginTop: '20px' }}>
-                <button
-                  className="contact-btn"
-                  onClick={() => setShowPayModal(true)}
-                >
-                  Kontaktdaten ansehen
-                </button>
-              </div>
-            )}
-
-            {listing.type === 'dating' && isPaid && listing.kontaktdaten && (
-              <div className="description" style={{ marginTop: '20px' }}>
-                <h3 style={{ marginBottom: '10px' }}>Kontaktdaten</h3>
-                <p>{listing.kontaktdaten}</p>
-              </div>
-            )}
-
-            {!isExternalJob && (
-              <button className="contact-button">
-                Anbieter kontaktieren
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* PAY MODAL */}
-      {showPayModal &&
-        createPortal(
-          <div
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0,0,0,0.5)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 999999,
-            }}
+      <main className="page-main">
+        <div className="container">
+          <button
+            onClick={() => navigate(-1)}
+            className="back-link"
+            style={{ marginBottom: '20px', cursor: 'pointer', background: 'none', border: 'none', fontSize: '16px' }}
           >
-            <div
-              style={{
-                background: '#fff',
-                padding: '24px',
-                borderRadius: '8px',
-                width: '100%',
-                maxWidth: '400px',
-                textAlign: 'center',
-              }}
-            >
-              <h3>Kontaktdaten freischalten</h3>
-              <p style={{ margin: '16px 0' }}>
-                Für <strong>{CONTACT_PRICE} €</strong> erhältst du Zugriff auf die Kontaktdaten.
+            ← Zurück
+          </button>
+
+          <div className="listing-detail-grid">
+            <div className="listing-gallery-side">
+              <div className="listing-gallery-container">
+                <div className="main-image-wrapper" onClick={() => setIsModalOpen(true)}>
+                  <img src={images[activeIndex]} alt={listing.title} className="main-image" />
+                  {images.length > 1 && <span className="zoom-hint">🔍 Klick для увеличения</span>}
+                </div>
+
+                {images.length > 1 && (
+                  <div className="thumbnails-grid">
+                    {images.map((img, i) => (
+                      <div
+                        key={i}
+                        className={`thumb-item ${i === activeIndex ? 'active' : ''}`}
+                        onClick={() => setActiveIndex(i)}
+                      >
+                        <img src={img} alt={`Thumb ${i}`} />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="listing-info">
+              <div className="info-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h1 style={{ margin: 0 }}>{listing.title}</h1>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                  <span style={{ color: '#666', fontSize: '14px' }}>👁 {listing.views || 0}</span>
+                  <button
+                    className={`fav-btn ${isFav ? 'active' : ''}`}
+                    onClick={() => onToggleFav(listing.id)}
+                    style={{ fontSize: '24px', background: 'none', border: 'none', cursor: 'pointer' }}
+                  >
+                    {isFav ? '❤️' : '🤍'}
+                  </button>
+                </div>
+              </div>
+
+              <p className="price" style={{ fontSize: '28px', fontWeight: 'bold', color: '#2c3e50', margin: '15px 0' }}>
+                {listing.price
+                  ? `${listing.price} ${listing.type === 'dating' ? 'Jahre' : '€'}`
+                  : 'Preis auf Anfrage'}
               </p>
 
-              <button
-                onClick={() => setShowPayModal(false)}
-                style={{
-                  marginTop: '16px',
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#666',
-                  cursor: 'pointer',
-                }}
-              >
-                Abbrechen
-              </button>
+              <p className="city" style={{ color: '#666', fontSize: '16px' }}>📍 {listing.city}</p>
+
+              <hr style={{ margin: '25px 0', border: '0', borderTop: '1px solid #eee' }} />
+
+              <div className="description">
+                <h3 style={{ marginBottom: '10px' }}>Beschreibung</h3>
+
+                {isExternalJob ? (
+                  <>
+                    <p style={{ lineHeight: '1.6', color: '#444' }}>
+                      {listing.description?.slice(0, 500)}…
+                    </p>
+                    <a
+                      href={listing.external_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="external-button"
+                    >
+                      🔗 Zur externen Anzeige
+                    </a>
+                    <p className="source-note">Quelle: Adzuna</p>
+                  </>
+                ) : (
+                  <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', color: '#444' }}>
+                    {listing.description}
+                  </p>
+                )}
+              </div>
+
+              {listing.kontaktdaten && listing.type !== 'dating' && (
+                <div className="description" style={{ marginTop: '20px' }}>
+                  <h3 style={{ marginBottom: '10px' }}>Kontaktdaten</h3>
+                  <p>{listing.kontaktdaten}</p>
+                </div>
+              )}
+
+              {listing.type === 'dating' && !isPaid && (
+                <div className="description" style={{ marginTop: '20px' }}>
+                  <button
+                    className="contact-btn"
+                    onClick={() => setShowPayModal(true)}
+                  >
+                    Kontaktdaten ansehen
+                  </button>
+                </div>
+              )}
+
+              {listing.type === 'dating' && isPaid && listing.kontaktdaten && (
+                <div className="description" style={{ marginTop: '20px' }}>
+                  <h3 style={{ marginBottom: '10px' }}>Kontaktdaten</h3>
+                  <p>{listing.kontaktdaten}</p>
+                </div>
+              )}
+
+              {!isExternalJob && (
+                <button className="contact-button">
+                  Anbieter kontaktieren
+                </button>
+              )}
             </div>
-          </div>,
-          document.body
-        )}
+          </div>
+        </div>
+      </main>
 
-
+      {/* Lightbox */}
       {isModalOpen && (
         <div className="lightbox-overlay" onClick={() => setIsModalOpen(false)}>
           <button className="close-lightbox" onClick={() => setIsModalOpen(false)}>×</button>
@@ -267,53 +222,71 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
           </div>
         </div>
       )}
-    </main>
 
-    {showPayModal &&
-      createPortal(
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0,0,0,0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 999999,
-          }}
-        >
+      {/* PAY MODAL — ОДИН */}
+      {showPayModal &&
+        createPortal(
           <div
             style={{
-              background: '#fff',
-              padding: '24px',
-              borderRadius: '8px',
-              width: '100%',
-              maxWidth: '400px',
-              textAlign: 'center',
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 999999,
             }}
+            onClick={() => setShowPayModal(false)}
           >
-            <h3>Kontaktdaten freischalten</h3>
-            <p style={{ margin: '16px 0' }}>
-              Für <strong>{CONTACT_PRICE} €</strong> erhältst du Zugriff auf die Kontaktdaten.
-            </p>
-
-            <button
-              onClick={() => setShowPayModal(false)}
+            <div
               style={{
-                marginTop: '16px',
-                background: 'transparent',
-                border: 'none',
-                color: '#666',
-                cursor: 'pointer',
+                background: '#fff',
+                padding: '24px',
+                borderRadius: '8px',
+                width: '100%',
+                maxWidth: '400px',
+                textAlign: 'center',
               }}
+              onClick={(e) => e.stopPropagation()}
             >
-              Abbrechen
-            </button>
-          </div>
-        </div>,
-        document.body
-      )}
-  </>
+              <h3>Kontaktdaten freischalten</h3>
+              <p style={{ margin: '16px 0' }}>
+                Für <strong>{CONTACT_PRICE} €</strong> erhältst du Zugriff auf die Kontaktdaten.
+              </p>
+
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '24px' }}>
+                <button
+                  onClick={() => setShowPayModal(false)}
+                  style={{
+                    background: '#eee',
+                    border: 'none',
+                    padding: '10px 20px',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Abbrechen
+                </button>
+
+                <button
+                  onClick={() => alert('Оплата в разработке')}
+                  style={{
+                    background: '#2c3e50',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '10px 20px',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Bezahlen
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+    </>
   );
 };
 
