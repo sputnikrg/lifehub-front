@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
@@ -204,49 +205,51 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
       </div>
 
       {/* PAY MODAL */}
-      {showPayModal && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0,0,0,0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 9999,
-            pointerEvents: 'auto',
-          }}
-        >
+      {showPayModal &&
+        createPortal(
           <div
             style={{
-              background: '#fff',
-              padding: '24px',
-              borderRadius: '8px',
-              width: '100%',
-              maxWidth: '400px',
-              textAlign: 'center',
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 999999,
             }}
           >
-            <h3>Kontaktdaten freischalten</h3>
-            <p style={{ margin: '16px 0' }}>
-              Für <strong>{CONTACT_PRICE} €</strong> erhältst du Zugriff auf die Kontaktdaten.
-            </p>
-
-            <button
-              onClick={() => setShowPayModal(false)}
+            <div
               style={{
-                marginTop: '16px',
-                background: 'transparent',
-                border: 'none',
-                color: '#666',
-                cursor: 'pointer',
+                background: '#fff',
+                padding: '24px',
+                borderRadius: '8px',
+                width: '100%',
+                maxWidth: '400px',
+                textAlign: 'center',
               }}
             >
-              Abbrechen
-            </button>
-          </div>
-        </div>
-      )}
+              <h3>Kontaktdaten freischalten</h3>
+              <p style={{ margin: '16px 0' }}>
+                Für <strong>{CONTACT_PRICE} €</strong> erhältst du Zugriff auf die Kontaktdaten.
+              </p>
+
+              <button
+                onClick={() => setShowPayModal(false)}
+                style={{
+                  marginTop: '16px',
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#666',
+                  cursor: 'pointer',
+                }}
+              >
+                Abbrechen
+              </button>
+            </div>
+          </div>,
+          document.body
+        )}
+
 
       {isModalOpen && (
         <div className="lightbox-overlay" onClick={() => setIsModalOpen(false)}>
