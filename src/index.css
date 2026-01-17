@@ -524,3 +524,17 @@ header button.ad {
   font-size: 13px;
   color: #777;
 }
+
+/* FIX: allow React portals (Pay Modal) */
+body {
+  overflow: auto !important;
+}
+
+#root {
+  overflow: visible !important;
+}
+
+.page-main {
+  position: static !important;
+  z-index: auto !important;
+}
