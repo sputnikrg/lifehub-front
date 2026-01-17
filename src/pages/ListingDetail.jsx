@@ -43,7 +43,7 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
               .select('id')
               .eq('user_id', user.id)
               .eq('listing_id', data.id)
-              .single();
+              .maybeSingle();
 
             if (paid) {
               setIsPaid(true);
@@ -67,9 +67,10 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
   if (!listing) return <div className="container"><h3>Anzeige nicht gefunden</h3></div>;
 
   const isFav = favorites.includes(listing.id);
-  const images = (listing.images && listing.images.length > 0) ? listing.images : ["/assets/img/placeholder.jpg"];
+  const images = (listing.images && listing.images.length > 0)
+    ? listing.images
+    : ["/assets/img/placeholder.jpg"];
 
-  // Навигация в модалке
   const nextImg = (e) => {
     e.stopPropagation();
     setActiveIndex((prev) => (prev + 1 === images.length ? 0 : prev + 1));
@@ -79,12 +80,13 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
     e.stopPropagation();
     setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
+
   const isExternalJob =
     listing?.type === "job" && Boolean(listing?.external_url);
+
   return (
     <main className="page-main">
       <div className="container">
-        {/* Кнопка назад */}
         <button
           onClick={() => navigate(-1)}
           className="back-link"
@@ -94,16 +96,13 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
         </button>
 
         <div className="listing-detail-grid">
-          {/* ЛЕВАЯ КОЛОНКА: ГАЛЕРЕЯ */}
           <div className="listing-gallery-side">
             <div className="listing-gallery-container">
-              {/* Главное фото */}
               <div className="main-image-wrapper" onClick={() => setIsModalOpen(true)}>
                 <img src={images[activeIndex]} alt={listing.title} className="main-image" />
                 {images.length > 1 && <span className="zoom-hint">🔍 Klick для увеличения</span>}
               </div>
 
-              {/* Миниатюры под главным фото */}
               {images.length > 1 && (
                 <div className="thumbnails-grid">
                   {images.map((img, i) => (
@@ -120,7 +119,6 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
             </div>
           </div>
 
-          {/* ПРАВАЯ КОЛОНКА: ИНФОРМАЦИЯ */}
           <div className="listing-info">
             <div className="info-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h1 style={{ margin: 0 }}>{listing.title}</h1>
@@ -136,7 +134,6 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
               </div>
             </div>
 
-            {/* ТОЧЕЧНАЯ ПРАВКА ВЫВОДА ЦЕНЫ/ВОЗРАСТА */}
             <p className="price" style={{ fontSize: '28px', fontWeight: 'bold', color: '#2c3e50', margin: '15px 0' }}>
               {listing.price
                 ? `${listing.price} ${listing.type === 'dating' ? 'Jahre' : '€'}`
@@ -155,7 +152,6 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                   <p style={{ lineHeight: '1.6', color: '#444' }}>
                     {listing.description?.slice(0, 500)}…
                   </p>
-
                   <a
                     href={listing.external_url}
                     target="_blank"
@@ -164,12 +160,7 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                   >
                     🔗 Zur externen Anzeige
                   </a>
-                  {isExternalJob && (
-                    <p className="source-note">
-                      Quelle: Adzuna
-                    </p>
-                  )}
-
+                  <p className="source-note">Quelle: Adzuna</p>
                 </>
               ) : (
                 <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', color: '#444' }}>
@@ -177,6 +168,7 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                 </p>
               )}
             </div>
+
             {listing.kontaktdaten && listing.type !== 'dating' && (
               <div className="description" style={{ marginTop: '20px' }}>
                 <h3 style={{ marginBottom: '10px' }}>Kontaktdaten</h3>
@@ -184,7 +176,6 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
               </div>
             )}
 
-            {/* DATING: еще не оплачено */}
             {listing.type === 'dating' && !isPaid && (
               <div className="description" style={{ marginTop: '20px' }}>
                 <button
@@ -196,15 +187,12 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
               </div>
             )}
 
-            {/* DATING: уже оплачено */}
             {listing.type === 'dating' && isPaid && listing.kontaktdaten && (
               <div className="description" style={{ marginTop: '20px' }}>
                 <h3 style={{ marginBottom: '10px' }}>Kontaktdaten</h3>
                 <p>{listing.kontaktdaten}</p>
               </div>
             )}
-
-
 
             {!isExternalJob && (
               <button className="contact-button">
@@ -215,25 +203,59 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
         </div>
       </div>
 
-      {/* МОДАЛЬНОЕ ОКНО (LIGHTBOX) */}
+      {/* PAY MODAL */}
+      {showPayModal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              background: '#fff',
+              padding: '24px',
+              borderRadius: '8px',
+              width: '100%',
+              maxWidth: '400px',
+              textAlign: 'center',
+            }}
+          >
+            <h3>Kontaktdaten freischalten</h3>
+            <p style={{ margin: '16px 0' }}>
+              Für <strong>{CONTACT_PRICE} €</strong> erhältst du Zugriff auf die Kontaktdaten.
+            </p>
+
+            <button
+              onClick={() => setShowPayModal(false)}
+              style={{
+                marginTop: '16px',
+                background: 'transparent',
+                border: 'none',
+                color: '#666',
+                cursor: 'pointer',
+              }}
+            >
+              Abbrechen
+            </button>
+          </div>
+        </div>
+      )}
+
       {isModalOpen && (
         <div className="lightbox-overlay" onClick={() => setIsModalOpen(false)}>
           <button className="close-lightbox" onClick={() => setIsModalOpen(false)}>×</button>
-
           {images.length > 1 && (
             <>
-              {/* Левая стрелка */}
-              <button className="nav-btn prev" onClick={prevImg}>
-                <span className="arrow-icon"></span>
-              </button>
-
-              {/* Правая стрелка */}
-              <button className="nav-btn next" onClick={nextImg}>
-                <span className="arrow-icon"></span>
-              </button>
+              <button className="nav-btn prev" onClick={prevImg}><span className="arrow-icon"></span></button>
+              <button className="nav-btn next" onClick={nextImg}><span className="arrow-icon"></span></button>
             </>
           )}
-
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
             <img src={images[activeIndex]} alt="Full view" />
             <div className="img-counter">{activeIndex + 1} / {images.length}</div>
