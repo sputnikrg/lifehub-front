@@ -12,6 +12,12 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // ---- Paywall для kontaktdaten (dating) ----
+  const CONTACT_PRICE = 5;
+
+  const [showPayModal, setShowPayModal] = useState(false);
+  const [isPaid, setIsPaid] = useState(false);
+
   useEffect(() => {
     const fetchListingAndIncrementViews = async () => {
       setLoading(true);
@@ -24,6 +30,26 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
 
         if (error) throw error;
         setListing(data);
+
+        // ---- Проверка: платил ли пользователь за kontaktdaten ----
+        if (data.type === 'dating') {
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
+
+          if (user) {
+            const { data: paid } = await supabase
+              .from('paid_contacts')
+              .select('id')
+              .eq('user_id', user.id)
+              .eq('listing_id', data.id)
+              .single();
+
+            if (paid) {
+              setIsPaid(true);
+            }
+          }
+        }
 
         supabase.rpc('increment_views', { row_id: id }).then(({ error: rpcError }) => {
           if (rpcError) console.warn("Счетчик не обновился:", rpcError.message);
