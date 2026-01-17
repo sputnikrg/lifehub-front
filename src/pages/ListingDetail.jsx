@@ -184,13 +184,26 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
               </div>
             )}
 
-            {listing.type === 'dating' && (
+            {/* DATING: еще не оплачено */}
+            {listing.type === 'dating' && !isPaid && (
               <div className="description" style={{ marginTop: '20px' }}>
-                <button className="contact-btn">
+                <button
+                  className="contact-btn"
+                  onClick={() => setShowPayModal(true)}
+                >
                   Kontaktdaten ansehen
                 </button>
               </div>
             )}
+
+            {/* DATING: уже оплачено */}
+            {listing.type === 'dating' && isPaid && listing.kontaktdaten && (
+              <div className="description" style={{ marginTop: '20px' }}>
+                <h3 style={{ marginBottom: '10px' }}>Kontaktdaten</h3>
+                <p>{listing.kontaktdaten}</p>
+              </div>
+            )}
+
 
 
             {!isExternalJob && (
