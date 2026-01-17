@@ -213,7 +213,8 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            zIndex: 1000,
+            zIndex: 9999,
+            pointerEvents: 'auto',
           }}
         >
           <div
