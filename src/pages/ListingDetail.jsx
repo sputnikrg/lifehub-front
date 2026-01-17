@@ -86,6 +86,7 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
     listing?.type === "job" && Boolean(listing?.external_url);
 
   return (
+    <>
     <main className="page-main">
       <div className="container">
         <button
@@ -267,6 +268,52 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
         </div>
       )}
     </main>
+
+    {showPayModal &&
+      createPortal(
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 999999,
+          }}
+        >
+          <div
+            style={{
+              background: '#fff',
+              padding: '24px',
+              borderRadius: '8px',
+              width: '100%',
+              maxWidth: '400px',
+              textAlign: 'center',
+            }}
+          >
+            <h3>Kontaktdaten freischalten</h3>
+            <p style={{ margin: '16px 0' }}>
+              Für <strong>{CONTACT_PRICE} €</strong> erhältst du Zugriff auf die Kontaktdaten.
+            </p>
+
+            <button
+              onClick={() => setShowPayModal(false)}
+              style={{
+                marginTop: '16px',
+                background: 'transparent',
+                border: 'none',
+                color: '#666',
+                cursor: 'pointer',
+              }}
+            >
+              Abbrechen
+            </button>
+          </div>
+        </div>,
+        document.body
+      )}
+  </>
   );
 };
 
