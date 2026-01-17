@@ -112,8 +112,8 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
 
             {/* ТОЧЕЧНАЯ ПРАВКА ВЫВОДА ЦЕНЫ/ВОЗРАСТА */}
             <p className="price" style={{ fontSize: '28px', fontWeight: 'bold', color: '#2c3e50', margin: '15px 0' }}>
-              {listing.price 
-                ? `${listing.price} ${listing.type === 'dating' ? 'Jahre' : '€'}` 
+              {listing.price
+                ? `${listing.price} ${listing.type === 'dating' ? 'Jahre' : '€'}`
                 : 'Preis auf Anfrage'}
             </p>
 
@@ -151,6 +151,12 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                 </p>
               )}
             </div>
+            {listing.kontaktdaten && (
+              <div className="description" style={{ marginTop: '20px' }}>
+                <h3 style={{ marginBottom: '10px' }}>Kontaktdaten</h3>
+                <p>{listing.kontaktdaten}</p>
+              </div>
+            )}
 
             {!isExternalJob && (
               <button className="contact-button">
