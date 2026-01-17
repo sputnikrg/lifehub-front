@@ -15,7 +15,6 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
 
   // ---- Paywall для kontaktdaten (dating) ----
   const CONTACT_PRICE = 5;
-
   const [showPayModal, setShowPayModal] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
 
@@ -32,12 +31,8 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
         if (error) throw error;
         setListing(data);
 
-        // ---- Проверка: платил ли пользователь за kontaktdaten ----
         if (data.type === 'dating') {
-          const {
-            data: { user },
-          } = await supabase.auth.getUser();
-
+          const { data: { user } } = await supabase.auth.getUser();
           if (user) {
             const { data: paid } = await supabase
               .from('paid_contacts')
@@ -45,16 +40,11 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
               .eq('user_id', user.id)
               .eq('listing_id', data.id)
               .maybeSingle();
-
-            if (paid) {
-              setIsPaid(true);
-            }
+            if (paid) setIsPaid(true);
           }
         }
 
-        supabase.rpc('increment_views', { row_id: id }).then(({ error: rpcError }) => {
-          if (rpcError) console.warn("Счетчик не обновился:", rpcError.message);
-        });
+        supabase.rpc('increment_views', { row_id: id });
       } catch (err) {
         console.error("Ошибка загрузки:", err.message);
       } finally {
@@ -63,6 +53,34 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
     };
     fetchListingAndIncrementViews();
   }, [id]);
+
+  // ---- PayPal Buttons ----
+  useEffect(() => {
+    if (!showPayModal || !window.paypal || !listing) return;
+
+    window.paypal.Buttons({
+      createOrder: (data, actions) =>
+        actions.order.create({
+          purchase_units: [{
+            amount: { value: CONTACT_PRICE.toString() }
+          }]
+        }),
+      onApprove: async (data, actions) => {
+        await actions.order.capture();
+
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await supabase.from('paid_contacts').insert({
+            user_id: user.id,
+            listing_id: listing.id,
+          });
+        }
+
+        setIsPaid(true);
+        setShowPayModal(false);
+      }
+    }).render('#paypal-buttons-container');
+  }, [showPayModal, listing]);
 
   if (loading) return <div className="container"><h3>Laden...</h3></div>;
   if (!listing) return <div className="container"><h3>Anzeige nicht gefunden</h3></div>;
@@ -148,27 +166,9 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
 
               <div className="description">
                 <h3 style={{ marginBottom: '10px' }}>Beschreibung</h3>
-
-                {isExternalJob ? (
-                  <>
-                    <p style={{ lineHeight: '1.6', color: '#444' }}>
-                      {listing.description?.slice(0, 500)}…
-                    </p>
-                    <a
-                      href={listing.external_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="external-button"
-                    >
-                      🔗 Zur externen Anzeige
-                    </a>
-                    <p className="source-note">Quelle: Adzuna</p>
-                  </>
-                ) : (
-                  <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', color: '#444' }}>
-                    {listing.description}
-                  </p>
-                )}
+                <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', color: '#444' }}>
+                  {listing.description}
+                </p>
               </div>
 
               {listing.kontaktdaten && listing.type !== 'dating' && (
@@ -180,10 +180,7 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
 
               {listing.type === 'dating' && !isPaid && (
                 <div className="description" style={{ marginTop: '20px' }}>
-                  <button
-                    className="contact-btn"
-                    onClick={() => setShowPayModal(true)}
-                  >
+                  <button className="contact-btn" onClick={() => setShowPayModal(true)}>
                     Kontaktdaten ansehen
                   </button>
                 </div>
@@ -195,12 +192,6 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                   <p>{listing.kontaktdaten}</p>
                 </div>
               )}
-
-              {!isExternalJob && (
-                <button className="contact-button">
-                  Anbieter kontaktieren
-                </button>
-              )}
             </div>
           </div>
         </div>
@@ -209,21 +200,14 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
       {/* Lightbox */}
       {isModalOpen && (
         <div className="lightbox-overlay" onClick={() => setIsModalOpen(false)}>
-          <button className="close-lightbox" onClick={() => setIsModalOpen(false)}>×</button>
-          {images.length > 1 && (
-            <>
-              <button className="nav-btn prev" onClick={prevImg}><span className="arrow-icon"></span></button>
-              <button className="nav-btn next" onClick={nextImg}><span className="arrow-icon"></span></button>
-            </>
-          )}
+          <button className="close-lightbox">×</button>
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
             <img src={images[activeIndex]} alt="Full view" />
-            <div className="img-counter">{activeIndex + 1} / {images.length}</div>
           </div>
         </div>
       )}
 
-      {/* PAY MODAL — ОДИН */}
+      {/* PAY MODAL */}
       {showPayModal &&
         createPortal(
           <div
@@ -250,38 +234,13 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
               onClick={(e) => e.stopPropagation()}
             >
               <h3>Kontaktdaten freischalten</h3>
-              <p style={{ margin: '16px 0' }}>
-                Für <strong>{CONTACT_PRICE} €</strong> erhältst du Zugriff auf die Kontaktdaten.
-              </p>
+              <p>Für <strong>{CONTACT_PRICE} €</strong> erhältst du Zugriff auf die Kontaktdaten.</p>
 
-              <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '24px' }}>
-                <button
-                  onClick={() => setShowPayModal(false)}
-                  style={{
-                    background: '#eee',
-                    border: 'none',
-                    padding: '10px 20px',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Abbrechen
-                </button>
+              <div id="paypal-buttons-container" style={{ marginTop: '20px' }} />
 
-                <button
-                  onClick={() => alert('Оплата в разработке')}
-                  style={{
-                    background: '#2c3e50',
-                    color: '#fff',
-                    border: 'none',
-                    padding: '10px 20px',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Bezahlen
-                </button>
-              </div>
+              <button onClick={() => setShowPayModal(false)} style={{ marginTop: '16px' }}>
+                Abbrechen
+              </button>
             </div>
           </div>,
           document.body
