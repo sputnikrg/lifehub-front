@@ -151,12 +151,21 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                 </p>
               )}
             </div>
-            {listing.kontaktdaten && (
+            {listing.kontaktdaten && listing.type !== 'dating' && (
               <div className="description" style={{ marginTop: '20px' }}>
                 <h3 style={{ marginBottom: '10px' }}>Kontaktdaten</h3>
                 <p>{listing.kontaktdaten}</p>
               </div>
             )}
+
+            {listing.type === 'dating' && (
+              <div className="description" style={{ marginTop: '20px' }}>
+                <button className="contact-btn">
+                  Kontaktdaten ansehen
+                </button>
+              </div>
+            )}
+
 
             {!isExternalJob && (
               <button className="contact-button">
