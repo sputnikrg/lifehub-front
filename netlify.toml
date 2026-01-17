@@ -1,4 +1,14 @@
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; \
+      script-src 'self' https://www.paypal.com https://www.paypalobjects.com 'unsafe-eval'; \
+      style-src 'self' 'unsafe-inline'; \
+      img-src 'self' data: https://www.paypalobjects.com; \
+      frame-src https://www.paypal.com; \
+      connect-src 'self' https://www.paypal.com https://api.supabase.co; \
+      font-src 'self';"
