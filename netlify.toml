@@ -7,32 +7,24 @@
   [headers.values]
     Content-Security-Policy = """
       default-src 'self';
-      script-src 'self'
+      script-src 'self' 'unsafe-inline' 'unsafe-eval'
         https://www.paypal.com
-        https://www.paypalobjects.com
-        https://www.sandbox.paypal.com
-        'unsafe-inline'
-        'unsafe-eval'
-        blob:;
-      style-src 'self' 'unsafe-inline';
-      img-src
-        'self'
-        data:
-        blob:
-        https:
-        https://*.supabase.co
         https://www.paypalobjects.com;
-      frame-src
+      style-src 'self' 'unsafe-inline';
+      img-src 'self' data: blob:
+        https://www.paypalobjects.com
         https://www.paypal.com
-        https://www.sandbox.paypal.com
-        blob:;
-      connect-src
-        'self'
+        https://*.supabase.co;
+      connect-src 'self'
         https://api.supabase.co
         https://*.supabase.co
         wss://*.supabase.co
         https://www.paypal.com
         https://api.paypal.com
         https://www.sandbox.paypal.com;
-      font-src 'self' data:;
+      frame-src
+        https://www.paypal.com
+        https://www.sandbox.paypal.com
+        blob:;
+      font-src 'self';
     """
