@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import { PayPalButtons } from "@paypal/react-paypal-js";
+
 
 const ListingDetail = ({ favorites, onToggleFav }) => {
   const { id } = useParams();
@@ -236,7 +238,43 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
               <h3>Kontaktdaten freischalten</h3>
               <p>Für <strong>{CONTACT_PRICE} €</strong> erhältst du Zugriff auf die Kontaktdaten.</p>
 
-              <div id="paypal-buttons-container" style={{ marginTop: '20px' }} />
+              <div style={{ marginTop: '20px' }}>
+                <PayPalButtons
+                  style={{ layout: 'vertical' }}
+                  createOrder={(data, actions) => {
+                    return actions.order.create({
+                      purchase_units: [
+                        {
+                          amount: {
+                            value: CONTACT_PRICE.toString(),
+                          },
+                        },
+                      ],
+                    });
+                  }}
+                  onApprove={async (data, actions) => {
+                    await actions.order.capture();
+
+                    const {
+                      data: { user },
+                    } = await supabase.auth.getUser();
+
+                    if (!user) {
+                      alert('Bitte anmelden');
+                      return;
+                    }
+
+                    await supabase.from('paid_contacts').insert({
+                      user_id: user.id,
+                      listing_id: listing.id,
+                    });
+
+                    setIsPaid(true);
+                    setShowPayModal(false);
+                  }}
+                />
+              </div>
+
 
               <button onClick={() => setShowPayModal(false)} style={{ marginTop: '16px' }}>
                 Abbrechen
