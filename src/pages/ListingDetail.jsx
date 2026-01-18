@@ -56,34 +56,6 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
     fetchListingAndIncrementViews();
   }, [id]);
 
-  // ---- PayPal Buttons ----
-  useEffect(() => {
-    if (!showPayModal || !window.paypal || !listing) return;
-
-    window.paypal.Buttons({
-      createOrder: (data, actions) =>
-        actions.order.create({
-          purchase_units: [{
-            amount: { value: CONTACT_PRICE.toString() }
-          }]
-        }),
-      onApprove: async (data, actions) => {
-        await actions.order.capture();
-
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          await supabase.from('paid_contacts').insert({
-            user_id: user.id,
-            listing_id: listing.id,
-          });
-        }
-
-        setIsPaid(true);
-        setShowPayModal(false);
-      }
-    }).render('#paypal-buttons-container');
-  }, [showPayModal, listing]);
-
   if (loading) return <div className="container"><h3>Laden...</h3></div>;
   if (!listing) return <div className="container"><h3>Anzeige nicht gefunden</h3></div>;
 
