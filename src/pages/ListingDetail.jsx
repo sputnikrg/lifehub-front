@@ -17,6 +17,7 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
 
   // ---- Paywall для kontaktdaten (dating) ----
   const CONTACT_PRICE = 5;
+  const PAYMENTS_ENABLED = false; // ← временно отключаем оплату
   const [showPayModal, setShowPayModal] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
 
@@ -152,7 +153,7 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                 </div>
               )}
 
-              {listing.type === 'dating' && !isPaid && (
+              {listing.type === 'dating' && !isPaid && PAYMENTS_ENABLED && (
                 <div className="description" style={{ marginTop: '20px' }}>
                   <button className="contact-btn" onClick={() => setShowPayModal(true)}>
                     Kontaktdaten ansehen
@@ -160,7 +161,7 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                 </div>
               )}
 
-              {listing.type === 'dating' && isPaid && listing.kontaktdaten && (
+              {listing.type === 'dating' && listing.kontaktdaten && (
                 <div className="description" style={{ marginTop: '20px' }}>
                   <h3 style={{ marginBottom: '10px' }}>Kontaktdaten</h3>
                   <p>{listing.kontaktdaten}</p>
