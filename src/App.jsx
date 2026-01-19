@@ -14,6 +14,7 @@ import MyListings from './pages/MyListings';
 import Footer from './components/Footer'; // 1. Импортируем Footer
 import Impressum from './pages/Impressum';
 import Datenschutz from './pages/Datenschutz';
+import AGB from './pages/AGB';
 
 function App() {
   const [listings, setListings] = useState([]);
@@ -157,6 +158,7 @@ function App() {
 
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/datenschutz" element={<Datenschutz />} />
+        <Route path="/agb" element={<AGB />} />
 
       </Routes>
 

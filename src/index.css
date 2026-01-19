@@ -39,11 +39,11 @@ header {
 
 /* Внутренний контейнер: Лого слева, Навигация справа */
 .header-inner {
-  max-width: 1400px; /* Позволяет элементам разойтись по краям на широких экранах */
-  margin: 0 auto;
-  padding: 10px 40px;
+  width: 100%; /* Занимаем всю ширину экрана */
+  max-width: none; /* Снимаем ограничение в 1400px или 1200px */
+  padding: 10px 20px; /* Отступы от краев экрана, чтобы не прилипало вплотную */
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Лого влево, навигация вправо */
   align-items: center;
 }
 
