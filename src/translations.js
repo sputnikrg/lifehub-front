@@ -1,36 +1,44 @@
 export const translations = {
   de: {
+    // Навигация
     nav_favorites: "Favoriten",
-    nav_my_ads: "Meine Anzeigen",
-    nav_post_ad: "Anzeige aufgeben",
+    nav_my_ads: "Meine Inserate", // Более официально, чем Anzeigen
+    nav_post_ad: "Anzeige erstellen", 
     nav_login: "Anmelden",
     nav_logout: "Abmelden",
-    cat_all: "Alle",
-    cat_wohnung: "Wohnungen",
-    cat_job: "Jobs",
-    cat_dating: "Dating",
-    form_title_new: "Neue Anzeige erstellen",
-    form_title_edit: "Anzeige bearbeiten",
-    label_cat: "Kategorie",
-    label_title: "Titel",
-    label_city: "Stadt",
-    label_address: "Adresse",
+    
+    // Категории
+    cat_all: "Alle Kategorien",
+    cat_wohnung: "Immobilien", // Для портала "Недвижимость" звучит солиднее "Жилья"
+    cat_job: "Jobs & Karriere",
+    cat_dating: "Community", // Смягчаем Dating до Сообщества/Общения
+    
+    // Формы
+    form_title_new: "Neues Inserat erstellen",
+    form_title_edit: "Inserat bearbeiten",
+    label_cat: "Kategorie wählen",
+    label_title: "Titel der Anzeige",
+    label_city: "Stadt / PLZ",
+    label_address: "Straße und Hausnummer",
     label_price: "Preis (€)",
     label_desc: "Beschreibung",
-    photos: "Fotos hinzufügen",
-    btn_publish: "Veröffentlichen",
-    btn_save: "Speichern",
-    sort_newest: "Zuerst neue",
+    photos: "Fotos hochladen",
+    btn_publish: "Jetzt veröffentlichen",
+    btn_save: "Änderungen speichern",
+    
+    // Сортировка и поиск
+    sort_newest: "Neueste zuerst",
     sort_price_asc: "Günstigste zuerst",
-    sort_price_desc: "Teuerste zuerst",
-    no_results: "Nichts gefunden",
-    hero_title: "Finde Wohnung, Job und neue Leute",
-    hero_subtitle: "Die neuesten Angebote in ganz Deutschland",
-    my_ads_subtitle: "Hier finden Sie alle Ihre veröffentlichten Anzeigen",
-    no_my_ads: "Sie haben noch keine Anzeigen erstellt.",
-    no_favs: "Entdecke Anzeigen und füge sie zu deiner Liste hinzu!",
-    back: "Zurück"
-
+    sort_price_desc: "Höchster Preis zuerst",
+    no_results: "Keine Ergebnisse gefunden",
+    
+    // Контент страниц
+    hero_title: "Ihr Hub für das Leben in Deutschland", // Брендированный заголовок
+    hero_subtitle: "Finden Sie Immobilien, Jobs und Anschluss in Ihrer Nähe",
+    my_ads_subtitle: "Hier verwalten Sie Ihre veröffentlichten Inserate",
+    no_my_ads: "Sie haben derzeit keine aktiven Inserate.",
+    no_favs: "Ihre Merkliste ist noch leer.",
+    back: "Zurück zur Übersicht"
   },
   ru: {
     nav_favorites: "Избранное",
@@ -38,30 +46,30 @@ export const translations = {
     nav_post_ad: "Подать объявление",
     nav_login: "Войти",
     nav_logout: "Выйти",
-    cat_all: "Все",
-    cat_wohnung: "Жилье",
+    cat_all: "Все категории",
+    cat_wohnung: "Недвижимость",
     cat_job: "Работа",
-    cat_dating: "Знакомства",
-    form_title_new: "Создать объявление",
-    form_title_edit: "Редактировать",
-    label_cat: "Категория",
+    cat_dating: "Общение",
+    form_title_new: "Создание объявления",
+    form_title_edit: "Редактирование",
+    label_cat: "Выберите категорию",
     label_title: "Заголовок",
-    label_city: "Город",
-    label_address: "Адрес",
+    label_city: "Город / Индекс",
+    label_address: "Улица и номер дома",
     label_price: "Цена (€)",
     label_desc: "Описание",
-    photos: "Добавить фото",
+    photos: "Загрузить фотографии",
     btn_publish: "Опубликовать",
-    btn_save: "Сохранить",
+    btn_save: "Сохранить изменения",
     sort_newest: "Сначала новые",
     sort_price_asc: "Сначала дешевые",
     sort_price_desc: "Сначала дорогие",
-    no_results: "Ничего не найдено",
-    hero_title: "Найди жилье, работу и общение",
-    hero_subtitle: "Актуальные объявления по всей Германии",
-    my_ads_subtitle: "Здесь находятся все ваши опубликованные объявления",
-    no_my_ads: "Вы еще не создали ни одного объявления.",
-    no_favs: "У вас пока нет сохраненных объявлений.",
+    no_results: "По вашему запросу ничего не найдено",
+    hero_title: "Ваш центр жизни в Германии",
+    hero_subtitle: "Актуальные предложения жилья, работы и досуга",
+    my_ads_subtitle: "Управление вашими объявлениями",
+    no_my_ads: "У вас пока нет опубликованных объявлений.",
+    no_favs: "Список избранного пуст.",
     back: "Назад"
   }
 };
