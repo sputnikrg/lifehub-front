@@ -30,7 +30,7 @@ const Header = ({ user, lang, onLangChange, t }) => {
       {/* 1. БЕГУЩАЯ СТРОКА */}
       <div className="test-banner">
         <div className="test-banner__text">
-          Die Website befindet sich im Testmodus. The site is operating in test mode. Сайт функционирует в тестовом режиме.
+          Die Website befindet sich im Testmodus. The site is operating in test mode. Сайт функционирует в тестовом режиме
         </div>
       </div>
 

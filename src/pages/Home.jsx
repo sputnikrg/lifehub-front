@@ -28,9 +28,27 @@ const Home = ({ t }) => {
     <>
       <section className="hero">
         <div className="hero-content">
-          <h1>{t.hero_title || 'LifeHub'}</h1>
-          <p>{t.hero_subtitle || 'Deutschland'}</p>
+          <h1>{t.hero_main_title}</h1>
+          <p style={{ marginTop: '10px', fontSize: '16px', opacity: 0.85 }}>
+            {t.hero_main_subtitle}
+          </p>
+
+
         </div>
+      </section>
+
+      <section style={{ padding: '10px 20px 5px', textAlign: 'center' }}>
+        <p
+          style={{
+            maxWidth: '800px',
+            margin: '0 auto',
+            fontSize: '14px',
+            opacity: 0.85
+          }}
+        >
+          🔹 {t.trust_block}
+        </p>
+
       </section>
 
       <main className="cards">
