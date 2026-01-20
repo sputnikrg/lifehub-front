@@ -1,14 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 
-const Home = ({ t }) => {
+// ✅ ДОБАВЛЕНО: принимаем lang
+const Home = ({ t, lang }) => {
+
+  // ✅ ДОБАВЛЕНО: мгновенное обновление title при смене языка
+  useEffect(() => {
+    document.title =
+      lang === "de"
+        ? "LifeHub — Anzeigen, Jobs und Community in Deutschland"
+        : "LifeHub — объявления, работа и сообщество в Германии";
+  }, [lang]);
+
   // Данные для карточек категорий теперь используют объект t
   const categories = [
     {
       type: 'wohnung',
       title: t.cat_wohnung,
       img: '/assets/img/wohnung.jpg',
-      desc: t.cat_wohnung_desc || 'Modernes Wohnen' // Можно добавить описание в translations.js позже
+      desc: t.cat_wohnung_desc || 'Modernes Wohnen'
     },
     {
       type: 'job',
@@ -26,14 +38,20 @@ const Home = ({ t }) => {
 
   return (
     <>
+      <Helmet>
+        <title>
+          {lang === "de"
+            ? "LifeHub — Anzeigen, Jobs und Community in Deutschland"
+            : "LifeHub — объявления, работа и сообщество в Германии"}
+        </title>
+      </Helmet>
+
       <section className="hero">
         <div className="hero-content">
           <h1>{t.hero_main_title}</h1>
           <p style={{ marginTop: '10px', fontSize: '16px', opacity: 0.85 }}>
             {t.hero_main_subtitle}
           </p>
-
-
         </div>
       </section>
 
@@ -48,7 +66,6 @@ const Home = ({ t }) => {
         >
           🔹 {t.trust_block}
         </p>
-
       </section>
 
       <main className="cards">

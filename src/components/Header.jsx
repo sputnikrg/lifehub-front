@@ -64,6 +64,26 @@ const Header = ({ user, lang, onLangChange, t }) => {
 
           {/* Кнопки действий */}
           <div className="nav-actions">
+            {/* TELEGRAM */}
+            <a
+              href="https://t.me/lifehub_de"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-telegram"
+              title="LifeHub в Telegram"
+              aria-label="LifeHub в Telegram"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M22.05 2.37L1.93 10.23c-1.38.54-1.36 1.31-.25 1.65l5.15 1.61 1.97 6.01c.24.66.12.92.86.92.57 0 .82.26 1.13.56l2.47-2.4 5.14 3.79c.94.52 1.61.25 1.85-.87l3.35-15.8c.35-1.38-.52-1.97-1.45-1.57z" />
+              </svg>
+            </a>
+
             <Link to="/favorites" className="btn-fav">
               <span className="icon">❤️</span> {!isMobile && t.nav_favorites}
             </Link>

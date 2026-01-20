@@ -89,7 +89,7 @@ function App() {
       <Header user={user} lang={lang} onLangChange={toggleLang} t={t} />
 
       <Routes>
-        <Route path="/" element={<Home t={t} />} />
+        <Route path="/" element={<Home t={t} lang={lang} />} />
 
         {['wohnung', 'job', 'dating'].map((type) => (
           <Route
