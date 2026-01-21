@@ -172,12 +172,56 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
         </div>
       </main>
 
-      {/* Lightbox */}
+      {/* МОДАЛЬНОЕ ОКНО (LIGHTBOX) */}
       {isModalOpen && (
-        <div className="lightbox-overlay" onClick={() => setIsModalOpen(false)}>
-          <button className="close-lightbox">×</button>
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <img src={images[activeIndex]} alt="Full view" />
+        <div
+          className="lightbox-overlay"
+          onClick={() => setIsModalOpen(false)}
+          style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.95)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          {/* Кнопка закрытия */}
+          <button
+            onClick={() => setIsModalOpen(false)}
+            style={{ position: 'absolute', top: '20px', right: '25px', background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', borderRadius: '50%', width: '50px', height: '50px', fontSize: '30px', cursor: 'pointer', zIndex: 10001, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            ×
+          </button>
+
+          {images.length > 1 && (
+            <>
+              {/* Левая стрелка */}
+              <button
+                className="nav-btn prev"
+                onClick={(e) => { e.stopPropagation(); prevImg(e); }}
+                style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.2)', border: '2px solid white', borderRadius: '50%', width: '60px', height: '60px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10001, transition: 'background 0.3s' }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+
+              {/* Правая стрелка */}
+              <button
+                className="nav-btn next"
+                onClick={(e) => { e.stopPropagation(); nextImg(e); }}
+                style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.2)', border: '2px solid white', borderRadius: '50%', width: '60px', height: '60px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10001, transition: 'background 0.3s' }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </>
+          )}
+
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()} style={{ textAlign: 'center' }}>
+            <img
+              src={images[activeIndex]}
+              alt="Full view"
+              style={{ maxWidth: '90vw', maxHeight: '85vh', objectFit: 'contain', borderRadius: '8px', boxShadow: '0 0 30px rgba(0,0,0,0.5)' }}
+            />
+            <div style={{ color: 'white', marginTop: '20px', fontSize: '18px', background: 'rgba(0,0,0,0.6)', padding: '8px 20px', borderRadius: '30px', display: 'inline-block' }}>
+              {activeIndex + 1} / {images.length}
+            </div>
           </div>
         </div>
       )}
