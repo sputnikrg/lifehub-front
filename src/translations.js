@@ -56,6 +56,10 @@ export const translations = {
       "LifeHub ist eine Plattform für das Leben in Deutschland. Hier finden Sie Anzeigen zu Immobilien, Jobs und Community-Themen an einem Ort.",
     home_desc_2:
       "Unser Ziel ist es, Menschen in Deutschland zu helfen, schneller passende Angebote zu finden und Kontakte aufzubauen.",
+    hint_job: 'Möchten Sie eine Stellenanzeige aufgeben? Klicken Sie oben auf „Anzeige erstellen“.',
+    hint_wohnung: 'Möchten Sie eine Wohnungsanzeige aufgeben? Klicken Sie oben auf „Anzeige erstellen“.',
+    hint_dating: 'Möchten Sie eine Anzeige aufgeben? Klicken Sie oben auf „Anzeige erstellen“.',
+
 
 
   },
@@ -107,6 +111,10 @@ export const translations = {
       "LifeHub — это платформа для жизни в Германии. Здесь собраны объявления о недвижимости, работе и общении в одном месте.",
     home_desc_2:
       "Наша цель — помочь людям быстрее находить подходящие предложения и налаживать контакты в Германии.",
+    hint_job: 'Хотите разместить объявление о работе? Нажмите сверху «Добавить объявление».',
+    hint_wohnung: 'Хотите разместить объявление о жилье? Нажмите сверху «Добавить объявление».',
+    hint_dating: 'Хотите разместить объявление? Нажмите сверху «Добавить объявление».',
+
 
   }
 };

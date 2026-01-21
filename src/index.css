@@ -715,3 +715,11 @@ body {
   font-size: 13px;
   font-weight: 600;
 }
+
+.listings-hint {
+  text-align: center;
+  font-size: 19px;
+  font-style: oblique;
+  color: #666;
+  margin: 6px 0 12px;
+}

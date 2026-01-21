@@ -82,6 +82,23 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
             </label>
 
           </div>
+          <div className="listings-hint">
+            {type === 'job' && (
+              <span>
+                {t.hint_job}
+              </span>
+            )}
+            {type === 'wohnung' && (
+              <span>
+                {t.hint_wohnung}
+              </span>
+            )}
+            {type === 'dating' && (
+              <span>
+                {t.hint_dating}
+              </span>
+            )}
+          </div>
 
           <div className="listing-grid">
             {filtered.map(item => {

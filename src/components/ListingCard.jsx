@@ -19,7 +19,9 @@ const ListingCard = ({ item, isFav, onToggleFav, onDelete }) => {
         <img src={displayImage} className="listing-img" alt={item.title} />
         <div className="listing-content">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <h3 className="listing-title">{item.title}</h3>
+            <h3 className="listing-title">
+              {item.title.replace(/^Пример:\s*/i, '')}
+            </h3>
             <span style={{ fontSize: '12px', color: '#999' }}>👁 {item.views || 0}</span>
           </div>
           {isExternalJob && (
@@ -39,7 +41,14 @@ const ListingCard = ({ item, isFav, onToggleFav, onDelete }) => {
           )}
 
           <p className="listing-meta">{meta}</p>
-          <p className="listing-desc">{item.description}</p>
+          <p className="listing-description">
+            {item.description
+              .replace(/Это пример объявления\.?/i, '')
+              .replace(/Тестовое объявление\.?/i, '')
+              .replace(/Пример объявления\.?/i, '')
+              .replace(/Пример вакансии\.?/i, '')
+              .trim()}
+          </p>
         </div>
       </Link>
 
