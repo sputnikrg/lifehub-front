@@ -44,7 +44,19 @@ const Home = ({ t, lang }) => {
             ? "LifeHub — Anzeigen, Jobs und Community in Deutschland"
             : "LifeHub — объявления, работа и сообщество в Германии"}
         </title>
+
+        <meta
+          name="description"
+          content={
+            lang === "de"
+              ? "LifeHub ist eine Plattform für russischsprachige Menschen in Deutschland. Anzeigen, Jobs, Immobilien und Community an einem Ort."
+              : "LifeHub — платформа для русскоязычных в Германии: объявления, работа, недвижимость и общение в одном месте."
+          }
+        />
+
+        <link rel="canonical" href="https://mylifehub.de/" />
       </Helmet>
+
 
       <section className="hero">
         <div className="hero-content">
@@ -53,19 +65,6 @@ const Home = ({ t, lang }) => {
             {t.hero_main_subtitle}
           </p>
         </div>
-      </section>
-
-      <section style={{ padding: '10px 20px 5px', textAlign: 'center' }}>
-        <p
-          style={{
-            maxWidth: '800px',
-            margin: '0 auto',
-            fontSize: '14px',
-            opacity: 0.85
-          }}
-        >
-          🔹 {t.trust_block}
-        </p>
       </section>
 
       <main className="cards">
@@ -82,6 +81,23 @@ const Home = ({ t, lang }) => {
           </div>
         ))}
       </main>
+      {/*
+      <section className="handwritten-note">
+        <p className="handwritten-note__text">
+          LifeHub — проект в развитии! Мы развиваем портал шаг за шагом и делимся обновлениями,
+          полезной информацией <br /> и опытом жизни в Германии в нашем Telegram-канале.
+        </p>
+
+        <a
+          href="https://t.me/lifehub_de"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="handwritten-note__button"
+        >
+          Перейти в Telegram
+        </a>
+      </section>
+      */}
     </>
   );
 };

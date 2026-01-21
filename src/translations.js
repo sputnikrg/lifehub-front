@@ -39,9 +39,24 @@ export const translations = {
     no_my_ads: "Sie haben derzeit keine aktiven Inserate.",
     no_favs: "Ihre Merkliste ist noch leer.",
     back: "Zurück zur Übersicht",
-    trust_block: "LifeHub ist ein neuer Portal im Aufbau. Wir erweitern Schritt für Schritt Funktionen und Anzeigen. Feedback ist willkommen.",
+    trust_block: "LifeHub ist ein neues Portal im Aufbau. Wir teilen Updates, hilfreiche Infos und Neuigkeiten auch in unserem Telegram-Kanal.",
+    trust_telegram_title: "LifeHub ist ein Projekt im Aufbau",
+    trust_telegram_text:
+      "Wir entwickeln das Portal Schritt für Schritt und teilen Updates, hilfreiche Infos und Erfahrungen rund um das Leben in Deutschland auch in unserem Telegram-Kanal.",
+    trust_telegram_cta: "Zum Telegram-Kanal",
     hero_main_title: "Anzeigen, Jobs und Kontakte für Russischsprachige in Deutschland",
     hero_main_subtitle: "LifeHub — Anzeigen, Arbeit und Community für Russischsprachige in Deutschland",
+    cat_wohnung_text:
+      "Hier finden Sie Wohnungsangebote in verschiedenen Städten Deutschlands. Miete, WG, Zwischenmiete und Immobilien von Privatpersonen und Agenturen.",
+    cat_job_text:
+      "Jobangebote und Karrieremöglichkeiten in Deutschland. Vollzeit, Teilzeit, IT, Handwerk und andere Bereiche – direkt und übersichtlich.",
+    cat_dating_text:
+      "Community-Bereich für Kontakte und Austausch. Neue Bekanntschaften, Hilfe im Alltag und Vernetzung mit Menschen in Ihrer Nähe.",
+    home_desc_1:
+      "LifeHub ist eine Plattform für das Leben in Deutschland. Hier finden Sie Anzeigen zu Immobilien, Jobs und Community-Themen an einem Ort.",
+    home_desc_2:
+      "Unser Ziel ist es, Menschen in Deutschland zu helfen, schneller passende Angebote zu finden und Kontakte aufzubauen.",
+
 
   },
   ru: {
@@ -75,9 +90,23 @@ export const translations = {
     no_my_ads: "У вас пока нет опубликованных объявлений.",
     no_favs: "Список избранного пуст.",
     back: "Назад",
-    trust_block: "LifeHub — новый портал, находящийся в стадии развития. Мы постепенно добавляем функции и объявления. Если у вас есть идеи — будем рады обратной связи.",
+    trust_block: "LifeHub — новый портал в развитии. Мы делимся обновлениями и полезной информацией также в нашем Telegram-канале.",
+    trust_telegram_title: "LifeHub — проект в развитии",
+    trust_telegram_text:
+      "Мы развиваем портал шаг за шагом и делимся обновлениями, полезной информацией и опытом жизни в Германии в нашем Telegram-канале.",
+    trust_telegram_cta: "Перейти в Telegram",
     hero_main_title: "Объявления, работа и контакты для русскоязычных в Германии",
     hero_main_subtitle: "LifeHub — объявления, работа и общение для русскоязычных в Германии",
+    cat_wohnung_text:
+      "Здесь вы найдёте предложения по аренде и недвижимости в разных городах Германии: квартиры, комнаты, WG и временное жильё.",
+    cat_job_text:
+      "Актуальные предложения работы и вакансии в Германии: IT, сервис, рабочие специальности, полная и частичная занятость.",
+    cat_dating_text:
+      "Раздел для общения и знакомств: новые контакты, взаимопомощь и общение с людьми, живущими рядом с вами.",
+    home_desc_1:
+      "LifeHub — это платформа для жизни в Германии. Здесь собраны объявления о недвижимости, работе и общении в одном месте.",
+    home_desc_2:
+      "Наша цель — помочь людям быстрее находить подходящие предложения и налаживать контакты в Германии.",
 
   }
 };
