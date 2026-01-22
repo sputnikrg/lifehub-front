@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from "react";
 
-const ListingCard = ({ item, isFav, onToggleFav, onDelete }) => {
+const ListingCard = ({ item, isFav, onToggleFav, onDelete, viewMode }) => {
   const [imgIndex, setImgIndex] = useState(0);
 
   const images = item.images?.length
@@ -30,7 +30,7 @@ const ListingCard = ({ item, isFav, onToggleFav, onDelete }) => {
   if (item.type === "dating") meta = `${item.city} • ${item.price} Jahre`;
 
   return (
-    <article className="listing-card" style={{ position: 'relative' }}>
+    <article className={`listing-card ${viewMode === 'list' ? 'list-layout' : ''}`} style={{ position: 'relative' }}>
       <Link to={`/listing/${item.type}/${item.id}`} className="listing-link">
         <div className="card-image">
           <img
@@ -61,40 +61,30 @@ const ListingCard = ({ item, isFav, onToggleFav, onDelete }) => {
         </div>
 
         <div className="listing-content">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <h3 className="listing-title">
+          <div className="content-main-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+
+            {/* 1. Заголовок теперь первый и будет расширяться */}
+            <h3 className="listing-title" style={{ flex: '1', marginRight: '20px' }}>
               {item.title.replace(/^Пример:\s*/i, '')}
             </h3>
-            <span style={{ fontSize: '12px', color: '#999' }}>
-              👁 {item.views || 0}
-            </span>
+
+            {/* 2. Блок инфо (Мета + Глазок) уходит вправо */}
+            <div className="content-right-side" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+              {isExternalJob && (
+                <span className="external-badge-mini">External</span>
+              )}
+
+              <p className="listing-meta" style={{ margin: 0 }}>{meta}</p>
+
+              <span className="views-count" style={{ fontSize: '12px', color: '#999', minWidth: '40px', textAlign: 'right' }}>
+                👁 {item.views || 0}
+              </span>
+            </div>
           </div>
 
-          {isExternalJob && (
-            <span
-              style={{
-                display: 'inline-block',
-                marginBottom: '6px',
-                fontSize: '11px',
-                color: '#555',
-                background: '#eef2ff',
-                padding: '3px 6px',
-                borderRadius: '5px'
-              }}
-            >
-              External
-            </span>
-          )}
-
-          <p className="listing-meta">{meta}</p>
-
+          {/* Описание скрыто в CSS для list-layout, но нужно для grid */}
           <p className="listing-description">
-            {item.description
-              .replace(/Это пример объявления\.?/i, '')
-              .replace(/Тестовое объявление\.?/i, '')
-              .replace(/Пример объявления\.?/i, '')
-              .replace(/Пример вакансии\.?/i, '')
-              .trim()}
+            {item.description.trim()}
           </p>
         </div>
       </Link>

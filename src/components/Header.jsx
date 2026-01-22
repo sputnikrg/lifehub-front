@@ -48,7 +48,6 @@ const Header = ({ user, lang, onLangChange, t }) => {
             <span
               onClick={() => onLangChange('de')}
               className={lang === 'de' ? 'active' : ''}
-              style={{ fontWeight: lang === 'de' ? '700' : '400', cursor: 'pointer' }}
             >
               DE
             </span>
@@ -56,9 +55,15 @@ const Header = ({ user, lang, onLangChange, t }) => {
             <span
               onClick={() => onLangChange('ru')}
               className={lang === 'ru' ? 'active' : ''}
-              style={{ fontWeight: lang === 'ru' ? '700' : '400', cursor: 'pointer' }}
             >
               RU
+            </span>
+            <span className="separator"> | </span>
+            <span
+              onClick={() => onLangChange('ua')}
+              className={lang === 'ua' ? 'active' : ''}
+            >
+              UA
             </span>
           </div>
 

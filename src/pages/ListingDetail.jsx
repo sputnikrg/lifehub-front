@@ -104,10 +104,10 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                         className={`thumb-item ${i === activeIndex ? 'active' : ''}`}
                         style={{ position: 'relative' }}
                       >
-                        <img 
-                          src={img} 
-                          alt={`Thumb ${i}`} 
-                          onClick={() => setActiveIndex(i)} 
+                        <img
+                          src={img}
+                          alt={`Thumb ${i}`}
+                          onClick={() => setActiveIndex(i)}
                         />
 
                         {/* Кнопка удаления для автора */}
@@ -168,7 +168,7 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                   : 'Preis auf Anfrage'}
               </p>
               <p className="city" style={{ color: '#666', fontSize: '16px' }}>📍 {listing.city}</p>
-              
+
               <hr style={{ margin: '25px 0', border: '0', borderTop: '1px solid #eee' }} />
 
               <div className="description">
@@ -222,7 +222,7 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
           <div style={{ background: '#fff', padding: '24px', borderRadius: '8px', width: '90%', maxWidth: '400px', textAlign: 'center' }} onClick={(e) => e.stopPropagation()}>
             <h3>Kontaktdaten freischalten</h3>
             <p>Preis: <strong>{CONTACT_PRICE} €</strong></p>
-            <PayPalButtons 
+            <PayPalButtons
               createOrder={(data, actions) => actions.order.create({ purchase_units: [{ amount: { value: CONTACT_PRICE.toString() } }] })}
               onApprove={async (data, actions) => {
                 await actions.order.capture();

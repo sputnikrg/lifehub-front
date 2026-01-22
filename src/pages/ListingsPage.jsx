@@ -7,7 +7,7 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
   const [maxPrice, setMaxPrice] = useState("");
   const [sortBy, setSortBy] = useState("newest");
   const [showExternal, setShowExternal] = useState(true);
-
+  const [viewMode, setViewMode] = useState("grid"); // Новое состояние для вида
 
   const ADMIN_EMAIL = "vpovolotskyi25@gmail.com";
 
@@ -19,7 +19,6 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
     const matchesPrice = maxPrice ? (itemPrice <= Number(maxPrice)) : true;
     const matchesExternal = showExternal || !item.external_url;
     return matchesType && matchesSearch && matchesCity && matchesPrice && matchesExternal;
-
   });
 
   filtered.sort((a, b) => {
@@ -30,7 +29,6 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
     return new Date(b.created_at) - new Date(a.created_at);
   });
 
-  // Определяем заголовок категории
   const pageTitle = type === 'wohnung' ? t.cat_wohnung : type === 'job' ? t.cat_job : t.cat_dating;
 
   return (
@@ -43,7 +41,7 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
 
       <section className="page-listings">
         <div className="container">
-          <div className="filters-bar" style={{ marginBottom: '30px', display: 'flex', flexWrap: 'wrap', gap: '15px', background: '#fff', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
+          <div className="filters-bar" style={{ marginBottom: '30px', display: 'flex', flexWrap: 'wrap', gap: '15px', background: '#fff', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', alignItems: 'center' }}>
             <input
               placeholder={t.label_title}
               value={searchTerm}
@@ -78,29 +76,35 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
                 checked={showExternal}
                 onChange={() => setShowExternal(!showExternal)}
               />
-              Externe Jobs anzeigen
+              Externe Jobs
             </label>
 
-          </div>
-          <div className="listings-hint">
-            {type === 'job' && (
-              <span>
-                {t.hint_job}
-              </span>
-            )}
-            {type === 'wohnung' && (
-              <span>
-                {t.hint_wohnung}
-              </span>
-            )}
-            {type === 'dating' && (
-              <span>
-                {t.hint_dating}
-              </span>
-            )}
+            {/* ПЕРЕКЛЮЧАТЕЛЬ ВИДА */}
+            <div className="view-toggle" style={{ display: 'flex', gap: '5px', marginLeft: 'auto' }}>
+              <button
+                onClick={() => setViewMode("grid")}
+                style={{ background: viewMode === "grid" ? "#4a90e2" : "#f5f5f5", color: viewMode === "grid" ? "white" : "#666", border: 'none', borderRadius: '6px', padding: '8px 12px', cursor: 'pointer', fontSize: '18px' }}
+                title="Grid"
+              >
+                田
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                style={{ background: viewMode === "list" ? "#4a90e2" : "#f5f5f5", color: viewMode === "list" ? "white" : "#666", border: 'none', borderRadius: '6px', padding: '8px 12px', cursor: 'pointer', fontSize: '18px' }}
+                title="List"
+              >
+                ☰
+              </button>
+            </div>
           </div>
 
-          <div className="listing-grid">
+          <div className="listings-hint">
+            {type === 'job' && <span>{t.hint_job}</span>}
+            {type === 'wohnung' && <span>{t.hint_wohnung}</span>}
+            {type === 'dating' && <span>{t.hint_dating}</span>}
+          </div>
+
+          <div className={`listing-grid ${viewMode}`}>
             {filtered.map(item => {
               const isOwner = currentUser && item.user_id === currentUser.id;
               const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
@@ -114,6 +118,7 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
                   onToggleFav={onToggleFav}
                   onDelete={showDelete ? onDelete : null}
                   t={t}
+                  viewMode={viewMode}
                 />
               );
             })}
