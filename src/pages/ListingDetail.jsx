@@ -4,7 +4,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { PayPalButtons } from "@paypal/react-paypal-js";
 
-
 const ListingDetail = ({ favorites, onToggleFav }) => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -15,16 +14,20 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // ---- Paywall для kontaktdaten (dating) ----
+  // ---- Paywall для kontaktdaten ----
   const CONTACT_PRICE = 5;
-  const PAYMENTS_ENABLED = false; // ← временно отключаем оплату
+  const PAYMENTS_ENABLED = false;
   const [showPayModal, setShowPayModal] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     const fetchListingAndIncrementViews = async () => {
       setLoading(true);
       try {
+        const { data: { user } } = await supabase.auth.getUser();
+        setCurrentUser(user);
+
         const { data, error } = await supabase
           .from('listings')
           .select('*')
@@ -34,17 +37,14 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
         if (error) throw error;
         setListing(data);
 
-        if (data.type === 'dating') {
-          const { data: { user } } = await supabase.auth.getUser();
-          if (user) {
-            const { data: paid } = await supabase
-              .from('paid_contacts')
-              .select('id')
-              .eq('user_id', user.id)
-              .eq('listing_id', data.id)
-              .maybeSingle();
-            if (paid) setIsPaid(true);
-          }
+        if (data.type === 'dating' && user) {
+          const { data: paid } = await supabase
+            .from('paid_contacts')
+            .select('id')
+            .eq('user_id', user.id)
+            .eq('listing_id', data.id)
+            .maybeSingle();
+          if (paid) setIsPaid(true);
         }
 
         supabase.rpc('increment_views', { row_id: id });
@@ -75,9 +75,6 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
     setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
-  const isExternalJob =
-    listing?.type === "job" && Boolean(listing?.external_url);
-
   return (
     <>
       <main className="page-main">
@@ -98,15 +95,51 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                   {images.length > 1 && <span className="zoom-hint">🔍 Klick для увеличения</span>}
                 </div>
 
+                {/* СЕКЦИЯ МИНИАТЮР */}
                 {images.length > 1 && (
                   <div className="thumbnails-grid">
                     {images.map((img, i) => (
                       <div
                         key={i}
                         className={`thumb-item ${i === activeIndex ? 'active' : ''}`}
-                        onClick={() => setActiveIndex(i)}
+                        style={{ position: 'relative' }}
                       >
-                        <img src={img} alt={`Thumb ${i}`} />
+                        <img 
+                          src={img} 
+                          alt={`Thumb ${i}`} 
+                          onClick={() => setActiveIndex(i)} 
+                        />
+
+                        {/* Кнопка удаления для автора */}
+                        {currentUser && currentUser.id === listing.user_id && listing.images?.length > 0 && (
+                          <button
+                            onClick={async (e) => {
+                              e.stopPropagation();
+                              if (window.confirm("Удалить это фото?")) {
+                                const updatedImages = listing.images.filter((_, index) => index !== i);
+                                const { error } = await supabase
+                                  .from('listings')
+                                  .update({ images: updatedImages })
+                                  .eq('id', listing.id);
+
+                                if (!error) {
+                                  setListing({ ...listing, images: updatedImages });
+                                  if (activeIndex >= updatedImages.length) setActiveIndex(0);
+                                }
+                              }
+                            }}
+                            style={{
+                              position: 'absolute', top: '-5px', right: '-5px',
+                              background: '#e74c3c', color: 'white', border: 'none',
+                              borderRadius: '50%', width: '22px', height: '22px',
+                              cursor: 'pointer', fontSize: '14px', fontWeight: 'bold',
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              zIndex: 10, boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                            }}
+                          >
+                            ×
+                          </button>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -134,36 +167,18 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                   ? `${listing.price} ${listing.type === 'dating' ? 'Jahre' : '€'}`
                   : 'Preis auf Anfrage'}
               </p>
-
               <p className="city" style={{ color: '#666', fontSize: '16px' }}>📍 {listing.city}</p>
-
+              
               <hr style={{ margin: '25px 0', border: '0', borderTop: '1px solid #eee' }} />
 
               <div className="description">
-                <h3 style={{ marginBottom: '10px' }}>Beschreibung</h3>
-                <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', color: '#444' }}>
-                  {listing.description}
-                </p>
+                <h3>Beschreibung</h3>
+                <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', color: '#444' }}>{listing.description}</p>
               </div>
 
-              {listing.kontaktdaten && listing.type !== 'dating' && (
+              {listing.kontaktdaten && (
                 <div className="description" style={{ marginTop: '20px' }}>
-                  <h3 style={{ marginBottom: '10px' }}>Kontaktdaten</h3>
-                  <p>{listing.kontaktdaten}</p>
-                </div>
-              )}
-
-              {listing.type === 'dating' && !isPaid && PAYMENTS_ENABLED && (
-                <div className="description" style={{ marginTop: '20px' }}>
-                  <button className="contact-btn" onClick={() => setShowPayModal(true)}>
-                    Kontaktdaten ansehen
-                  </button>
-                </div>
-              )}
-
-              {listing.type === 'dating' && listing.kontaktdaten && (
-                <div className="description" style={{ marginTop: '20px' }}>
-                  <h3 style={{ marginBottom: '10px' }}>Kontaktdaten</h3>
+                  <h3>Kontaktdaten</h3>
                   <p>{listing.kontaktdaten}</p>
                 </div>
               )}
@@ -172,134 +187,55 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
         </div>
       </main>
 
-      {/* МОДАЛЬНОЕ ОКНО (LIGHTBOX) */}
+      {/* LIGHTBOX */}
       {isModalOpen && (
         <div
           className="lightbox-overlay"
           onClick={() => setIsModalOpen(false)}
           style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.95)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-          {/* Кнопка закрытия */}
           <button
             onClick={() => setIsModalOpen(false)}
-            style={{ position: 'absolute', top: '20px', right: '25px', background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', borderRadius: '50%', width: '50px', height: '50px', fontSize: '30px', cursor: 'pointer', zIndex: 10001, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-          >
-            ×
-          </button>
+            style={{ position: 'absolute', top: '20px', right: '25px', background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', borderRadius: '50%', width: '50px', height: '50px', fontSize: '30px', cursor: 'pointer', zIndex: 10001 }}
+          > × </button>
 
           {images.length > 1 && (
             <>
-              {/* Левая стрелка */}
-              <button
-                className="nav-btn prev"
-                onClick={(e) => { e.stopPropagation(); prevImg(e); }}
-                style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.2)', border: '2px solid white', borderRadius: '50%', width: '60px', height: '60px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10001, transition: 'background 0.3s' }}
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
+              <button className="nav-btn prev" onClick={(e) => { e.stopPropagation(); prevImg(e); }} style={{ position: 'absolute', left: '20px', top: '50%', background: 'rgba(255,255,255,0.2)', color: 'white', borderRadius: '50%', width: '60px', height: '60px', border: '2px solid white', cursor: 'pointer' }}>
+                ❮
               </button>
-
-              {/* Правая стрелка */}
-              <button
-                className="nav-btn next"
-                onClick={(e) => { e.stopPropagation(); nextImg(e); }}
-                style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.2)', border: '2px solid white', borderRadius: '50%', width: '60px', height: '60px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10001, transition: 'background 0.3s' }}
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
+              <button className="nav-btn next" onClick={(e) => { e.stopPropagation(); nextImg(e); }} style={{ position: 'absolute', right: '20px', top: '50%', background: 'rgba(255,255,255,0.2)', color: 'white', borderRadius: '50%', width: '60px', height: '60px', border: '2px solid white', cursor: 'pointer' }}>
+                ❯
               </button>
             </>
           )}
 
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()} style={{ textAlign: 'center' }}>
-            <img
-              src={images[activeIndex]}
-              alt="Full view"
-              style={{ maxWidth: '90vw', maxHeight: '85vh', objectFit: 'contain', borderRadius: '8px', boxShadow: '0 0 30px rgba(0,0,0,0.5)' }}
-            />
-            <div style={{ color: 'white', marginTop: '20px', fontSize: '18px', background: 'rgba(0,0,0,0.6)', padding: '8px 20px', borderRadius: '30px', display: 'inline-block' }}>
-              {activeIndex + 1} / {images.length}
-            </div>
+          <div className="lightbox-content">
+            <img src={images[activeIndex]} alt="Full" style={{ maxWidth: '90vw', maxHeight: '85vh', objectFit: 'contain' }} />
           </div>
         </div>
       )}
 
       {/* PAY MODAL */}
-      {showPayModal &&
-        createPortal(
-          <div
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0,0,0,0.5)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 999999,
-            }}
-            onClick={() => setShowPayModal(false)}
-          >
-            <div
-              style={{
-                background: '#fff',
-                padding: '24px',
-                borderRadius: '8px',
-                width: '100%',
-                maxWidth: '400px',
-                textAlign: 'center',
+      {showPayModal && createPortal(
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 999999 }} onClick={() => setShowPayModal(false)}>
+          <div style={{ background: '#fff', padding: '24px', borderRadius: '8px', width: '90%', maxWidth: '400px', textAlign: 'center' }} onClick={(e) => e.stopPropagation()}>
+            <h3>Kontaktdaten freischalten</h3>
+            <p>Preis: <strong>{CONTACT_PRICE} €</strong></p>
+            <PayPalButtons 
+              createOrder={(data, actions) => actions.order.create({ purchase_units: [{ amount: { value: CONTACT_PRICE.toString() } }] })}
+              onApprove={async (data, actions) => {
+                await actions.order.capture();
+                await supabase.from('paid_contacts').insert({ user_id: currentUser.id, listing_id: listing.id });
+                setIsPaid(true);
+                setShowPayModal(false);
               }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h3>Kontaktdaten freischalten</h3>
-              <p>Für <strong>{CONTACT_PRICE} €</strong> erhältst du Zugriff auf die Kontaktdaten.</p>
-
-              <div style={{ marginTop: '20px' }}>
-                <PayPalButtons
-                  style={{ layout: 'vertical' }}
-                  createOrder={(data, actions) => {
-                    return actions.order.create({
-                      purchase_units: [
-                        {
-                          amount: {
-                            value: CONTACT_PRICE.toString(),
-                          },
-                        },
-                      ],
-                    });
-                  }}
-                  onApprove={async (data, actions) => {
-                    await actions.order.capture();
-
-                    const {
-                      data: { user },
-                    } = await supabase.auth.getUser();
-
-                    if (!user) {
-                      alert('Bitte anmelden');
-                      return;
-                    }
-
-                    await supabase.from('paid_contacts').insert({
-                      user_id: user.id,
-                      listing_id: listing.id,
-                    });
-
-                    setIsPaid(true);
-                    setShowPayModal(false);
-                  }}
-                />
-              </div>
-
-
-              <button onClick={() => setShowPayModal(false)} style={{ marginTop: '16px' }}>
-                Abbrechen
-              </button>
-            </div>
-          </div>,
-          document.body
-        )}
+            />
+            <button onClick={() => setShowPayModal(false)} style={{ marginTop: '10px' }}>Abbrechen</button>
+          </div>
+        </div>,
+        document.body
+      )}
     </>
   );
 };
