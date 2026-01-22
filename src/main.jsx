@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import './home_widgets.css';
 
 // 👉 ДОБАВЛЕНО (1 строка)
 import { HelmetProvider } from "react-helmet-async";

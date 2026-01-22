@@ -1,0 +1,129 @@
+/* === ГЛАВНЫЙ КОНТЕЙНЕР (Симметрия и Центрирование) === */
+.home-layout-wrapper {
+  display: flex !important;
+  flex-direction: row !important;
+  /* Распределяет свободное место вокруг блоков, создавая те самые равные X */
+  justify-content: space-around !important; 
+  align-items: center !important; /* Центрирует основные карты по высоте виджетов */
+  
+  max-width: 1600px !important; /* Даем больше простора для симметрии */
+  margin: 40px auto !important;
+  padding: 0 40px !important;
+  width: 100% !important;
+}
+
+/* БОКОВЫЕ ПАНЕЛИ (Виджеты) */
+.home-side-widget {
+  flex: 0 0 240px !important; /* Жесткая ширина для симметрии */
+  background: #fff !important;
+  border-radius: 12px !important;
+  padding: 15px !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06) !important;
+  border: 1px solid #eee !important;
+}
+
+.widget-title {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  margin-bottom: 12px !important;
+  text-align: center !important;
+}
+
+/* ЦЕНТРАЛЬНАЯ ЧАСТЬ */
+.home-center-main {
+  flex: 0 1 auto !important; 
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* ОСНОВНЫЕ КАРТЫ В РЯД */
+.home-center-main .cards {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 20px !important; /* Зазор между тремя картами */
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.home-center-main .card {
+  width: 320px !important; 
+  height: 320px !important;
+  flex: 0 0 320px !important;
+  margin: 0 !important;
+}
+
+/* МИНИ-КАРТОЧКИ 2x2 */
+.mini-card-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+}
+
+.mini-item {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.mini-img-box {
+  width: 100% !important;
+  aspect-ratio: 1/1 !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  margin-bottom: 4px !important;
+}
+
+.mini-img-box img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.mini-label {
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  line-height: 1.1 !important;
+  display: block !important;
+  height: 2.2em !important;
+  overflow: hidden !important;
+}
+
+.mini-price {
+  font-size: 11px !important;
+  color: #007bff !important;
+  font-weight: bold !important;
+}
+
+/* === АДАПТИВНОСТЬ: МОБИЛЬНЫЙ (ПРОСТОЙ И КРУПНЫЙ) === */
+@media (max-width: 1350px) {
+  .home-layout-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 40px !important;
+    padding: 0 20px !important;
+  }
+
+  .home-center-main {
+    order: 1 !important; /* Карты сверху */
+    width: 100% !important;
+  }
+
+  .home-center-main .cards {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .home-center-main .card {
+    width: 90vw !important; 
+    max-width: 480px !important; /* Крупный размер для мобилки */
+    height: auto !important;
+    aspect-ratio: 1/1 !important;
+  }
+
+  .home-side-widget {
+    order: 2 !important; /* Виджеты снизу */
+    width: 95vw !important;
+    max-width: 500px !important;
+  }
+}
