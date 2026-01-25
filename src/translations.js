@@ -59,8 +59,8 @@ export const translations = {
       "Ich habe die Datenschutzerklärung gelesen und bin mit der Verarbeitung meiner personenbezogenen Daten einverstanden.",
     link_privacy: "Datenschutzerklärung",
     link_impressum: "Impressum",
-    link_terms: "Nutzungsbedingungen"
-
+    link_terms: "Nutzungsbedingungen",
+    ad_published_success: "Ihre Anzeige wurde erfolgreich veröffentlicht."
   },
 
   ru: {
@@ -123,7 +123,8 @@ export const translations = {
       "Я ознакомился(лась) с Политикой конфиденциальности и согласен(на) на обработку персональных данных.",
     link_privacy: "Политика конфиденциальности",
     link_impressum: "Импрессум",
-    link_terms: "Пользовательское соглашение"
+    link_terms: "Пользовательское соглашение",
+    ad_published_success: "Объявление успешно опубликовано."
 
   },
 
@@ -187,7 +188,8 @@ export const translations = {
       "Я ознайомився(лася) з Політикою конфіденційності та погоджуюся на обробку персональних даних.",
     link_privacy: "Політика конфіденційності",
     link_impressum: "Імпресум",
-    link_terms: "Умови користування"  
+    link_terms: "Умови користування",
+    ad_published_success: "Оголошення успішно опубліковано."
 
   }
 };

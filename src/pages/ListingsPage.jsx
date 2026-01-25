@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import ListingCard from '../components/ListingCard';
 import { bundeslaender } from '../data/bundeslaender';
+import { useLocation } from 'react-router-dom';
+
 
 const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, currentUser, t }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,6 +12,9 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
   const [sortBy, setSortBy] = useState("newest");
   const [showExternal, setShowExternal] = useState(true);
   const [viewMode, setViewMode] = useState("grid");
+  const location = useLocation();
+  const showSuccess = new URLSearchParams(location.search).get('published') === '1';
+
 
   const ADMIN_EMAIL = "vpovolotskyi25@gmail.com";
 
@@ -44,14 +49,28 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
 
   const pageTitle =
     type === 'wohnung' ? t.cat_wohnung :
-    type === 'job' ? t.cat_job :
-    t.cat_dating;
+      type === 'job' ? t.cat_job :
+        t.cat_dating;
 
   return (
     <main className="page-main">
       <section className="page-hero">
         <div className="container">
           <h1>{pageTitle}</h1>
+          {showSuccess && (
+            <div
+              style={{
+                margin: '15px 0',
+                padding: '12px 16px',
+                background: '#e8f5e9',
+                color: '#2e7d32',
+                borderRadius: '8px',
+                fontSize: '15px'
+              }}
+            >
+              {t.ad_published_success || 'Ihre Anzeige wurde erfolgreich veröffentlicht.'}
+            </div>
+          )}
         </div>
       </section>
 

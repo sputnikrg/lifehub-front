@@ -137,7 +137,7 @@ const PostAdPage = ({ currentUser, t }) => {
         await supabase.from('listings').insert([finalData]);
       }
 
-      navigate('/my-listings');
+      navigate('/my-listings?published=1');
     } catch (err) {
       alert(err.message);
     } finally {
