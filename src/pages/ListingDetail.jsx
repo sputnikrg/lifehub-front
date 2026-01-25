@@ -167,7 +167,9 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                   ? `${listing.price} ${listing.type === 'dating' ? 'Jahre' : '€'}`
                   : 'Preis auf Anfrage'}
               </p>
-              <p className="city" style={{ color: '#666', fontSize: '16px' }}>📍 {listing.city}</p>
+              <p className="city" style={{ color: '#666', fontSize: '16px' }}>
+                📍 {listing.bundesland ? `${listing.bundesland} • ` : ''}{listing.city}
+              </p>
 
               <hr style={{ margin: '25px 0', border: '0', borderTop: '1px solid #eee' }} />
 

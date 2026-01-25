@@ -54,7 +54,13 @@ export const translations = {
 
     hint_job: "Möchten Sie eine Stellenanzeige aufgeben? Klicken Sie oben auf „Anzeige erstellen“.",
     hint_wohnung: "Möchten Sie eine Wohnungsanzeige aufgeben? Klicken Sie oben auf „Anzeige erstellen“.",
-    hint_dating: "Möchten Sie eine Anzeige aufgeben? Klicken Sie oben auf „Anzeige erstellen“."
+    hint_dating: "Möchten Sie eine Anzeige aufgeben? Klicken Sie oben auf „Anzeige erstellen“.",
+    consent_privacy:
+      "Ich habe die Datenschutzerklärung gelesen und bin mit der Verarbeitung meiner personenbezogenen Daten einverstanden.",
+    link_privacy: "Datenschutzerklärung",
+    link_impressum: "Impressum",
+    link_terms: "Nutzungsbedingungen"
+
   },
 
   ru: {
@@ -112,7 +118,13 @@ export const translations = {
 
     hint_job: "Хотите разместить объявление о работе? Нажмите сверху «Добавить объявление».",
     hint_wohnung: "Хотите разместить объявление о жилье? Нажмите сверху «Добавить объявление».",
-    hint_dating: "Хотите разместить объявление? Нажмите сверху «Добавить объявление»."
+    hint_dating: "Хотите разместить объявление? Нажмите сверху «Добавить объявление».",
+    consent_privacy:
+      "Я ознакомился(лась) с Политикой конфиденциальности и согласен(на) на обработку персональных данных.",
+    link_privacy: "Политика конфиденциальности",
+    link_impressum: "Импрессум",
+    link_terms: "Пользовательское соглашение"
+
   },
 
   ua: {
@@ -170,6 +182,12 @@ export const translations = {
 
     hint_job: "Хочете подати оголошення про роботу? Натисніть зверху «Подати оголошення».",
     hint_wohnung: "Хочете подати оголошення про житло? Натисніть зверху «Подати оголошення».",
-    hint_dating: "Хочете подати оголошення? Натисніть зверху «Подати оголошення»."
+    hint_dating: "Хочете подати оголошення? Натисніть зверху «Подати оголошення».",
+    consent_privacy:
+      "Я ознайомився(лася) з Політикою конфіденційності та погоджуюся на обробку персональних даних.",
+    link_privacy: "Політика конфіденційності",
+    link_impressum: "Імпресум",
+    link_terms: "Умови користування"  
+
   }
 };

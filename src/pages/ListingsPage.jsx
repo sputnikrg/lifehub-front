@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import ListingCard from '../components/ListingCard';
+import { bundeslaender } from '../data/bundeslaender';
 
 const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, currentUser, t }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [cityFilter, setCityFilter] = useState("");
+  const [bundeslandFilter, setBundeslandFilter] = useState(""); // ✅ НОВОЕ
   const [maxPrice, setMaxPrice] = useState("");
   const [sortBy, setSortBy] = useState("newest");
   const [showExternal, setShowExternal] = useState(true);
-  const [viewMode, setViewMode] = useState("grid"); // Новое состояние для вида
+  const [viewMode, setViewMode] = useState("grid");
 
   const ADMIN_EMAIL = "vpovolotskyi25@gmail.com";
 
@@ -15,10 +17,21 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
     const matchesType = item.type === type;
     const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCity = item.city.toLowerCase().includes(cityFilter.toLowerCase());
+    const matchesBundesland = bundeslandFilter
+      ? item.bundesland === bundeslandFilter
+      : true;
     const itemPrice = item.price || 0;
     const matchesPrice = maxPrice ? (itemPrice <= Number(maxPrice)) : true;
     const matchesExternal = showExternal || !item.external_url;
-    return matchesType && matchesSearch && matchesCity && matchesPrice && matchesExternal;
+
+    return (
+      matchesType &&
+      matchesSearch &&
+      matchesCity &&
+      matchesBundesland &&
+      matchesPrice &&
+      matchesExternal
+    );
   });
 
   filtered.sort((a, b) => {
@@ -29,7 +42,10 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
     return new Date(b.created_at) - new Date(a.created_at);
   });
 
-  const pageTitle = type === 'wohnung' ? t.cat_wohnung : type === 'job' ? t.cat_job : t.cat_dating;
+  const pageTitle =
+    type === 'wohnung' ? t.cat_wohnung :
+    type === 'job' ? t.cat_job :
+    t.cat_dating;
 
   return (
     <main className="page-main">
@@ -41,19 +57,48 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
 
       <section className="page-listings">
         <div className="container">
-          <div className="filters-bar" style={{ marginBottom: '30px', display: 'flex', flexWrap: 'wrap', gap: '15px', background: '#fff', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', alignItems: 'center' }}>
+          <div
+            className="filters-bar"
+            style={{
+              marginBottom: '30px',
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '15px',
+              background: '#fff',
+              padding: '20px',
+              borderRadius: '12px',
+              boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+              alignItems: 'center'
+            }}
+          >
             <input
               placeholder={t.label_title}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', flex: '1', minWidth: '200px' }}
             />
+
             <input
               placeholder={t.label_city}
               value={cityFilter}
               onChange={(e) => setCityFilter(e.target.value)}
               style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', width: '150px' }}
             />
+
+            {/* ✅ НОВЫЙ ФИЛЬТР ПО BUNDESLAND */}
+            <select
+              value={bundeslandFilter}
+              onChange={(e) => setBundeslandFilter(e.target.value)}
+              style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', width: '220px' }}
+            >
+              <option value="">Alle Bundesländer</option>
+              {bundeslaender.map(bl => (
+                <option key={bl.value} value={bl.value}>
+                  {bl.label}
+                </option>
+              ))}
+            </select>
+
             <input
               type="number"
               placeholder={type === 'dating' ? 'Max. Alter' : t.label_price}
@@ -61,6 +106,7 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
               onChange={(e) => setMaxPrice(e.target.value)}
               style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', width: '120px' }}
             />
+
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
@@ -70,6 +116,7 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
               <option value="price-asc">{t.sort_price_asc || 'Günstigste'}</option>
               <option value="price-desc">{t.sort_price_desc || 'Teuerste'}</option>
             </select>
+
             <label style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <input
                 type="checkbox"
@@ -79,18 +126,33 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
               Externe Jobs
             </label>
 
-            {/* ПЕРЕКЛЮЧАТЕЛЬ ВИДА */}
             <div className="view-toggle" style={{ display: 'flex', gap: '5px', marginLeft: 'auto' }}>
               <button
                 onClick={() => setViewMode("grid")}
-                style={{ background: viewMode === "grid" ? "#4a90e2" : "#f5f5f5", color: viewMode === "grid" ? "white" : "#666", border: 'none', borderRadius: '6px', padding: '8px 12px', cursor: 'pointer', fontSize: '18px' }}
+                style={{
+                  background: viewMode === "grid" ? "#4a90e2" : "#f5f5f5",
+                  color: viewMode === "grid" ? "white" : "#666",
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '8px 12px',
+                  cursor: 'pointer',
+                  fontSize: '18px'
+                }}
                 title="Grid"
               >
                 田
               </button>
               <button
                 onClick={() => setViewMode("list")}
-                style={{ background: viewMode === "list" ? "#4a90e2" : "#f5f5f5", color: viewMode === "list" ? "white" : "#666", border: 'none', borderRadius: '6px', padding: '8px 12px', cursor: 'pointer', fontSize: '18px' }}
+                style={{
+                  background: viewMode === "list" ? "#4a90e2" : "#f5f5f5",
+                  color: viewMode === "list" ? "white" : "#666",
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '8px 12px',
+                  cursor: 'pointer',
+                  fontSize: '18px'
+                }}
                 title="List"
               >
                 ☰
@@ -123,7 +185,12 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
               );
             })}
           </div>
-          {filtered.length === 0 && <p style={{ textAlign: 'center', marginTop: '50px' }}>{t.no_results || 'Nichts gefunden'}</p>}
+
+          {filtered.length === 0 && (
+            <p style={{ textAlign: 'center', marginTop: '50px' }}>
+              {t.no_results || 'Nichts gefunden'}
+            </p>
+          )}
         </div>
       </section>
     </main>

@@ -23,7 +23,10 @@ const PostAdPage = ({ currentUser, t }) => {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // ⬇️ ДОБАВЛЕНО
+  // 🔹 Datenschutz
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+
+  // ⬇️ Сжатие изображений
   const [compressing, setCompressing] = useState(false);
   const [compressProgress, setCompressProgress] = useState(0);
 
@@ -46,9 +49,6 @@ const PostAdPage = ({ currentUser, t }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  /* ======================================================
-     🟢 СЖАТИЕ ИЗОБРАЖЕНИЙ (КЛЮЧЕВАЯ ЧАСТЬ)
-     ====================================================== */
   const compressImage = async (file, index, total) => {
     const options = {
       maxSizeMB: 0.4,
@@ -97,10 +97,13 @@ const PostAdPage = ({ currentUser, t }) => {
     setCompressing(false);
     setCompressProgress(100);
   };
-  /* ====================================================== */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 🔒 Юридический стоп
+    if (!privacyAccepted) return;
+
     setLoading(true);
 
     try {
@@ -149,6 +152,7 @@ const PostAdPage = ({ currentUser, t }) => {
           <h2>{isEditMode ? t.form_title_edit : t.form_title_new}</h2>
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+
             <div className="filter-field">
               <label>{t.label_cat}</label>
               <select name="type" value={formData.type} onChange={handleChange}>
@@ -172,7 +176,6 @@ const PostAdPage = ({ currentUser, t }) => {
               <label style={{ color: '#3498db', fontWeight: 'bold' }}>
                 {t.label_bundesland}
               </label>
-
               <select
                 name="bundesland"
                 value={formData.bundesland}
@@ -223,6 +226,47 @@ const PostAdPage = ({ currentUser, t }) => {
                   Сжимаем фото… {compressProgress}%
                 </div>
               )}
+            </div>
+
+            {/* ✅ DATENSCHUTZ */}
+            <div style={{ marginTop: '10px', fontSize: '14px' }}>
+              <label style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                <input
+                  type="checkbox"
+                  checked={privacyAccepted}
+                  onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                  required
+                />
+                <span>
+                  {t.consent_privacy}{' '}
+                  <a href="/datenschutz" target="_blank" rel="noopener noreferrer">
+                    {t.link_privacy}
+                  </a>
+                  .
+                </span>
+              </label>
+
+              <div style={{ marginTop: '6px' }}>
+                <a
+                  href="/impressum"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ fontSize: '13px' }}
+                >
+                  {t.link_impressum}
+                </a>
+              </div>
+              <div style={{ marginTop: '4px' }}>
+                <a
+                  href="/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ fontSize: '13px' }}
+                >
+                  {t.link_terms}
+                </a>
+              </div>
+
             </div>
 
             <button type="submit" className="card-button" disabled={loading || compressing}>

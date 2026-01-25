@@ -23,8 +23,10 @@ const ListingCard = ({ item, isFav, onToggleFav, onDelete, viewMode }) => {
 
   const navigate = useNavigate();
   const isExternalJob = item.type === "job" && Boolean(item.external_url);
-  const location = item.bundesland  ? `${item.bundesland} • ${item.city}` : item.city;
 
+  const location = item.bundesland
+    ? `${item.bundesland} • ${item.city}`
+    : item.city;
 
   let meta = "";
   if (item.type === "wohnung") meta = `${location} • ${item.price} € / Monat`;
@@ -32,62 +34,35 @@ const ListingCard = ({ item, isFav, onToggleFav, onDelete, viewMode }) => {
   if (item.type === "dating") meta = `${location} • ${item.price} Jahre`;
 
   return (
-    <article className={`listing-card ${viewMode === 'list' ? 'list-layout' : ''}`} style={{ position: 'relative' }}>
+    <article className={`listing-card ${viewMode === 'list' ? 'list-layout' : ''}`}>
       <Link to={`/listing/${item.type}/${item.id}`} className="listing-link">
+
         <div className="card-image">
-          <img
-            src={images[imgIndex]}
-            className="listing-img"
-            alt={item.title}
-          />
+          <img src={images[imgIndex]} className="listing-img" alt={item.title} />
 
           {images.length > 1 && (
             <>
-              <button
-                type="button"
-                className="gallery-arrow left"
-                onClick={prevImg}
-              >
-                ‹
-              </button>
-
-              <button
-                type="button"
-                className="gallery-arrow right"
-                onClick={nextImg}
-              >
-                ›
-              </button>
+              <button type="button" className="gallery-arrow left" onClick={prevImg}>‹</button>
+              <button type="button" className="gallery-arrow right" onClick={nextImg}>›</button>
             </>
           )}
         </div>
 
         <div className="listing-content">
-          <div className="content-main-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
 
-            {/* 1. Заголовок теперь первый и будет расширяться */}
-            <h3 className="listing-title" style={{ flex: '1', marginRight: '20px' }}>
-              {item.title.replace(/^Пример:\s*/i, '')}
-            </h3>
+          {/* 🔹 ЗАГОЛОВОК — ВСЕГДА ПЕРВЫЙ */}
+          <h3 className="listing-title">
+            {item.title.replace(/^Пример:\s*/i, '')}
+          </h3>
 
-            {/* 2. Блок инфо (Мета + Глазок) уходит вправо */}
-            <div className="content-right-side" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-              {isExternalJob && (
-                <span className="external-badge-mini">External</span>
-              )}
+          {/* 🔹 ЛОКАЦИЯ + ЦЕНА */}
+          <p className="listing-meta">{meta}</p>
 
-              <p className="listing-meta" style={{ margin: 0 }}>{meta}</p>
-
-              <span className="views-count" style={{ fontSize: '12px', color: '#999', minWidth: '40px', textAlign: 'right' }}>
-                👁 {item.views || 0}
-              </span>
-            </div>
-          </div>
-
-          {/* Описание скрыто в CSS для list-layout, но нужно для grid */}
+          {/* 🔹 ОПИСАНИЕ (в grid видно, в list скрыто CSS-ом) */}
           <p className="listing-description">
             {item.description.trim()}
           </p>
+
         </div>
       </Link>
 
