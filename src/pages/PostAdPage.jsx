@@ -137,7 +137,10 @@ const PostAdPage = ({ currentUser, t }) => {
         await supabase.from('listings').insert([finalData]);
       }
 
-      navigate('/my-listings?published=1');
+      navigate('/my-listings', {
+        state: { published: true }
+      });
+
     } catch (err) {
       alert(err.message);
     } finally {
@@ -269,7 +272,8 @@ const PostAdPage = ({ currentUser, t }) => {
 
             </div>
 
-            <button type="submit" className="card-button" disabled={loading || compressing}>
+            <button
+              type="submit" className="card-button" disabled={!privacyAccepted || loading || compressing}>
               {loading ? '...' : (isEditMode ? t.btn_save : t.btn_publish)}
             </button>
           </form>

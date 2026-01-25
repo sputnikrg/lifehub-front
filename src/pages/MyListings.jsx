@@ -1,7 +1,10 @@
 import React from 'react';
 import ListingCard from '../components/ListingCard';
+import { useLocation } from 'react-router-dom';
 
 const MyListings = ({ listings, currentUser, favorites, onToggleFav, onDelete, t }) => {
+  const location = useLocation();
+  const showSuccess = location.state?.published;
   const myItems = listings.filter(item => item.user_id === currentUser?.id);
 
   return (
