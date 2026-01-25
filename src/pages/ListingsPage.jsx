@@ -16,7 +16,10 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
   const showSuccess = new URLSearchParams(location.search).get('published') === '1';
 
 
-  const ADMIN_EMAIL = "vpovolotskyi25@gmail.com";
+  const ADMIN_EMAILS = [
+    "vpovolotskyi25@gmail.com",
+    "druckauftragag@gmail.com"
+  ];
 
   let filtered = listings.filter(item => {
     const matchesType = item.type === type;
@@ -188,7 +191,10 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
           <div className={`listing-grid ${viewMode}`}>
             {filtered.map(item => {
               const isOwner = currentUser && item.user_id === currentUser.id;
-              const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
+              const isAdmin =
+                currentUser &&
+                ADMIN_EMAILS.includes(currentUser.email);
+
               const showDelete = isOwner || isAdmin;
 
               return (
