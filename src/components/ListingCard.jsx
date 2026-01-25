@@ -23,11 +23,13 @@ const ListingCard = ({ item, isFav, onToggleFav, onDelete, viewMode }) => {
 
   const navigate = useNavigate();
   const isExternalJob = item.type === "job" && Boolean(item.external_url);
+  const location = item.bundesland  ? `${item.bundesland} • ${item.city}` : item.city;
+
 
   let meta = "";
-  if (item.type === "wohnung") meta = `${item.city} • ${item.price} € / Monat`;
-  if (item.type === "job") meta = `${item.city} • ab ${item.price} € / Std`;
-  if (item.type === "dating") meta = `${item.city} • ${item.price} Jahre`;
+  if (item.type === "wohnung") meta = `${location} • ${item.price} € / Monat`;
+  if (item.type === "job") meta = `${location} • ab ${item.price} € / Std`;
+  if (item.type === "dating") meta = `${location} • ${item.price} Jahre`;
 
   return (
     <article className={`listing-card ${viewMode === 'list' ? 'list-layout' : ''}`} style={{ position: 'relative' }}>
