@@ -18,11 +18,6 @@ export default function CookieBanner({ lang }) {
 
   if (!visible) return null;
 
-  const resetConsent = () => {
-    localStorage.removeItem('lh_consent');
-    setVisible(true);
-  };
-
   return (
     <div className="cookie-banner">
       <strong>{t.cookie_title}</strong>
@@ -51,13 +46,6 @@ export default function CookieBanner({ lang }) {
           }}
         >
           {t.cookie_decline}
-        </button>
-      </div>
-
-      {/* ✅ Consent-Einstellungen */}
-      <div className="cookie-settings">
-        <button onClick={resetConsent} className="cookie-settings-btn">
-          {t.cookie_settings}
         </button>
       </div>
     </div>
