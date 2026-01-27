@@ -66,7 +66,7 @@ export const translations = {
       "Wir verwenden Cookies zur Analyse und Verbesserung der Nutzererfahrung.",
     cookie_accept: "Akzeptieren",
     cookie_decline: "Ablehnen",
-
+    cookie_settings: "Cookie-Einstellungen",
   },
 
   ru: {
@@ -136,7 +136,7 @@ export const translations = {
       "Мы используем cookies для аналитики и улучшения сервиса.",
     cookie_accept: "Принять",
     cookie_decline: "Отклонить",
-
+    cookie_settings: "Настройки cookies",
 
   },
 
@@ -207,8 +207,6 @@ export const translations = {
       "Ми використовуємо cookies для аналітики та покращення сервісу.",
     cookie_accept: "Прийняти",
     cookie_decline: "Відхилити",
-
-
-
+    cookie_settings: "Налаштування cookies",
   }
 };

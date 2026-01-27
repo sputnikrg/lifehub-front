@@ -377,3 +377,17 @@
   color: #aad4ff;
   text-decoration: underline;
 }
+
+.cookie-settings {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.cookie-settings-btn {
+  background: none;
+  border: none;
+  color: #aad4ff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-decoration: underline;
+}
