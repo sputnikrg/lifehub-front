@@ -6,7 +6,7 @@ export const translations = {
     nav_login: "Anmelden",
     nav_logout: "Abmelden",
 
-    cat_all: "Alle Kategorien",
+    cat_all: "Alle Anzeigen",
     cat_wohnung: "Immobilien",
     cat_job: "Jobs & Karriere",
     cat_dating: "Community",
@@ -76,7 +76,7 @@ export const translations = {
     nav_login: "Войти",
     nav_logout: "Выйти",
 
-    cat_all: "Все категории",
+    cat_all: "Все объявления",
     cat_wohnung: "Недвижимость",
     cat_job: "Работа",
     cat_dating: "Общение",
@@ -147,7 +147,7 @@ export const translations = {
     nav_login: "Увійти",
     nav_logout: "Вийти",
 
-    cat_all: "Усі категорії",
+    cat_all: "Усі оголошення",
     cat_wohnung: "Нерухомість",
     cat_job: "Робота",
     cat_dating: "Спільнота",
