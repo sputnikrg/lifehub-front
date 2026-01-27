@@ -372,3 +372,8 @@
   border-radius: 8px;
   cursor: pointer;
 }
+
+.cookie-link {
+  color: #aad4ff;
+  text-decoration: underline;
+}
