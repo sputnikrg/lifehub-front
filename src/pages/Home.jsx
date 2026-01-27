@@ -12,7 +12,7 @@ const Home = ({ t, lang }) => {
       lang === "de"
         ? "LifeHub — Anzeigen, Jobs und Community in Deutschland"
         : "LifeHub — объявления, работа и сообщество в Германии";
-    
+
     // Загружаем данные для боковых колонок
     fetchSideData();
   }, [lang]);
@@ -50,7 +50,7 @@ const Home = ({ t, lang }) => {
 
       {/* НОВАЯ СТРУКТУРА С БОКОВЫМИ ПАНЕЛЯМИ */}
       <div className="home-layout-wrapper">
-        
+
         {/* ЛЕВАЯ КОЛОНКА: HOT-IMMOBILE */}
         <aside className="home-side-widget">
           <h3 className="widget-title">Hot-Immobile</h3>
@@ -70,15 +70,22 @@ const Home = ({ t, lang }) => {
         <main className="home-center-main">
           <div className="cards">
             {categories.map((cat) => (
-              <div key={cat.type} className={`card ${cat.type}`}>
+              <Link
+                key={cat.type}
+                to={`/${cat.type}`}
+                className={`card ${cat.type} card-link`}
+              >
                 <img src={cat.img} alt={cat.title} />
                 <div className="overlay">
                   <h2>{cat.title}</h2>
                   <p>{cat.desc}</p>
-                  <Link to={`/${cat.type}`} className="card-button">{t.cat_all}</Link>
+                  <span className="card-button">
+                    {t.cat_all}
+                  </span>
                 </div>
-              </div>
+              </Link>
             ))}
+
           </div>
         </main>
 
@@ -98,7 +105,7 @@ const Home = ({ t, lang }) => {
         </aside>
 
       </div>
-      
+
       {/* Твой футер и заметки остаются ниже... */}
     </>
   );

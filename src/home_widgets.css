@@ -1,200 +1,212 @@
 /* === ГЛАВНЫЙ КОНТЕЙНЕР (Симметрия и Центрирование) === */
 .home-layout-wrapper {
-    display: flex !important;
-    flex-direction: row !important;
-    /* Распределяет свободное место вокруг блоков, создавая те самые равные X */
-    justify-content: space-around !important;
-    align-items: center !important;
-    /* Центрирует основные карты по высоте виджетов */
+  display: flex !important;
+  flex-direction: row !important;
+  /* Распределяет свободное место вокруг блоков, создавая те самые равные X */
+  justify-content: space-around !important;
+  align-items: center !important;
+  /* Центрирует основные карты по высоте виджетов */
 
-    max-width: 1600px !important;
-    /* Даем больше простора для симметрии */
-    margin: 40px auto !important;
-    padding: 0 40px !important;
-    width: 100% !important;
+  max-width: 1600px !important;
+  /* Даем больше простора для симметрии */
+  margin: 40px auto !important;
+  padding: 0 40px !important;
+  width: 100% !important;
 }
 
 /* БОКОВЫЕ ПАНЕЛИ (Виджеты) */
 .home-side-widget {
-    flex: 0 0 240px !important;
-    /* Жесткая ширина для симметрии */
-    background: #fff !important;
-    border-radius: 12px !important;
-    padding: 15px !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important;
-    border: 1px solid #eee !important;
+  flex: 0 0 240px !important;
+  /* Жесткая ширина для симметрии */
+  background: #fff !important;
+  border-radius: 12px !important;
+  padding: 15px !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid #eee !important;
 }
 
 .widget-title {
-    font-size: 16px !important;
-    font-weight: 700 !important;
-    margin-bottom: 12px !important;
-    text-align: center !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  margin-bottom: 12px !important;
+  text-align: center !important;
 }
 
 /* ЦЕНТРАЛЬНАЯ ЧАСТЬ */
 .home-center-main {
-    flex: 0 1 auto !important;
-    display: flex !important;
-    justify-content: center !important;
+  flex: 0 1 auto !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 /* ОСНОВНЫЕ КАРТЫ В РЯД */
 .home-center-main .cards {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    gap: 20px !important;
-    /* Зазор между тремя картами */
-    padding: 0 !important;
-    margin: 0 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 20px !important;
+  /* Зазор между тремя картами */
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .home-center-main .card {
-    width: 320px !important;
-    height: 320px !important;
-    flex: 0 0 320px !important;
-    margin: 0 !important;
+  width: 320px !important;
+  height: 320px !important;
+  flex: 0 0 320px !important;
+  margin: 0 !important;
 }
 
 /* МИНИ-КАРТОЧКИ 2x2 */
 .mini-card-grid {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 10px !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
 }
 
 .mini-item {
-    text-decoration: none !important;
-    color: inherit !important;
+  text-decoration: none !important;
+  color: inherit !important;
 }
 
 .mini-img-box {
-    width: 100% !important;
-    aspect-ratio: 1/1 !important;
-    border-radius: 6px !important;
-    overflow: hidden !important;
-    margin-bottom: 4px !important;
+  width: 100% !important;
+  aspect-ratio: 1/1 !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  margin-bottom: 4px !important;
 }
 
 .mini-img-box img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
 }
 
 .mini-label {
-    font-size: 10px !important;
-    font-weight: 600 !important;
-    line-height: 1.1 !important;
-    display: block !important;
-    height: 2.2em !important;
-    overflow: hidden !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  line-height: 1.1 !important;
+  display: block !important;
+  height: 2.2em !important;
+  overflow: hidden !important;
 }
 
 .mini-price {
-    font-size: 11px !important;
-    color: #007bff !important;
-    font-weight: bold !important;
+  font-size: 11px !important;
+  color: #007bff !important;
+  font-weight: bold !important;
 }
 
 /* === АДАПТИВНОСТЬ: МОБИЛЬНЫЙ (ПРОСТОЙ И КРУПНЫЙ) === */
 @media (max-width: 1350px) {
-    .home-layout-wrapper {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 40px !important;
-        padding: 0 20px !important;
-    }
+  .home-layout-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 40px !important;
+    padding: 0 20px !important;
+  }
 
-    .home-center-main {
-        order: 1 !important;
-        /* Карты сверху */
-        width: 100% !important;
-    }
+  .home-center-main {
+    order: 1 !important;
+    /* Карты сверху */
+    width: 100% !important;
+  }
 
-    .home-center-main .cards {
-        flex-direction: column !important;
-        align-items: center !important;
-    }
+  .home-center-main .cards {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
 
-    .home-center-main .card {
-        width: 90vw !important;
-        max-width: 480px !important;
-        /* Крупный размер для мобилки */
-        height: auto !important;
-        aspect-ratio: 1/1 !important;
-    }
+  .home-center-main .card {
+    width: 90vw !important;
+    max-width: 480px !important;
+    /* Крупный размер для мобилки */
+    height: auto !important;
+    aspect-ratio: 1/1 !important;
+  }
 
-    .home-side-widget {
-        order: 2 !important;
-        /* Виджеты снизу */
-        width: 95vw !important;
-        max-width: 500px !important;
-    }
+  .home-side-widget {
+    order: 2 !important;
+    /* Виджеты снизу */
+    width: 95vw !important;
+    max-width: 500px !important;
+  }
 }
 
 /* Контейнер для списка */
 .listing-grid.list {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 15px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 15px !important;
 }
+
+/* FIX: GRID — ограничиваем описание до 2 строк,
+   чтобы карточка не росла вниз и не прятала сердечко */
+.listing-grid:not(.list) .listing-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+  max-height: calc(1.4em * 2);
+}
+
 
 /* Карточка в режиме списка */
 .listing-card.list-layout {
-    display: flex !important;
-    flex-direction: row !important;
-    height: 120px !important;
-    overflow: hidden;
-    align-items: center;
-    padding: 0 !important;
-    border: 1px solid #eee;
-    background: #fff;
+  display: flex !important;
+  flex-direction: row !important;
+  height: 120px !important;
+  overflow: hidden;
+  align-items: center;
+  padding: 0 !important;
+  border: 1px solid #eee;
+  background: #fff;
 }
 
 /* Картинка в списке */
 .listing-card.list-layout .card-image {
-    width: 180px !important;
-    height: 120px !important;
-    min-width: 180px;
+  width: 180px !important;
+  height: 120px !important;
+  min-width: 180px;
 }
 
 /* Прячем описание и стрелки для компактности */
 .listing-card.list-layout .listing-description,
 .listing-card.list-layout .gallery-arrow,
 .listing-card.list-layout .zoom-hint {
-    display: none !important;
+  display: none !important;
 }
 
 /* Контент в один ряд */
 .listing-card.list-layout .listing-content {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    width: 100% !important;
-    padding: 0 20px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100% !important;
+  padding: 0 20px !important;
 }
 
 /* Название в списке */
 .listing-card.list-layout .listing-title {
-    font-size: 16px !important;
-    margin: 0 !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 250px;
+  font-size: 16px !important;
+  margin: 0 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
 }
 
 /* Цена и город */
 .listing-card.list-layout .listing-meta {
-    margin: 0 !important;
-    font-weight: bold;
-    color: #2c3e50;
-    min-width: 150px;
-    text-align: right;
+  margin: 0 !important;
+  font-weight: bold;
+  color: #2c3e50;
+  min-width: 150px;
+  text-align: right;
 }
 
 /* Убедимся, что сетка перестроилась в колонку */
@@ -208,7 +220,8 @@
 .listing-card.list-layout {
   display: flex !important;
   flex-direction: row !important;
-  height: 100px !important; /* Уменьшим высоту для компактности */
+  height: 100px !important;
+  /* Уменьшим высоту для компактности */
   min-height: 100px !important;
   padding: 0 !important;
   align-items: center !important;
@@ -227,7 +240,8 @@
 /* Основной блок с текстом */
 .listing-card.list-layout .listing-content {
   display: flex !important;
-  flex-direction: row !important; /* Выстраиваем заголовок и цену в один ряд */
+  flex-direction: row !important;
+  /* Выстраиваем заголовок и цену в один ряд */
   justify-content: space-between !important;
   align-items: center !important;
   flex: 1 !important;
@@ -266,7 +280,7 @@
 
 /* 1. Сбрасываем жесткую высоту 420px из index.css */
 .listing-card.list-layout {
-  height: 120px !important; 
+  height: 120px !important;
   min-height: 120px !important;
   max-height: 120px !important;
   display: flex !important;
@@ -287,11 +301,13 @@
 .listing-card.list-layout .listing-content {
   flex: 1 !important;
   display: flex !important;
-  flex-direction: row !important; /* Заголовок и цена в ряд */
+  flex-direction: row !important;
+  /* Заголовок и цена в ряд */
   justify-content: space-between !important;
   align-items: center !important;
   padding: 0 30px !important;
-  height: auto !important; /* Убираем растяжение */
+  height: auto !important;
+  /* Убираем растяжение */
   margin: 0 !important;
 }
 
@@ -312,7 +328,8 @@
 
 /* Режим списка: растягиваем заголовок */
 .listing-card.list-layout .listing-title {
-  max-width: none !important; /* Убираем старое ограничение */
+  max-width: none !important;
+  /* Убираем старое ограничение */
   flex: 1 !important;
   white-space: nowrap;
   overflow: hidden;
@@ -325,12 +342,14 @@
   display: flex !important;
   align-items: center !important;
   gap: 25px !important;
-  flex-shrink: 0; /* Чтобы цена и глазок не сжимались */
+  flex-shrink: 0;
+  /* Чтобы цена и глазок не сжимались */
 }
 
 /* Специальный стиль для глазка в списке */
 .listing-card.list-layout .views-count {
-  order: 3; /* Гарантируем, что он самый последний */
+  order: 3;
+  /* Гарантируем, что он самый последний */
 }
 
 .listing-card.list-layout .listing-meta {
@@ -346,13 +365,40 @@
   font-size: 11px;
 }
 
+/* ===============================
+   FIX: MOBILE ONLY + LIST VIEW
+   =============================== */
+@media (max-width: 768px) {
+
+  .listing-card.list-layout .listing-content {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 4px;
+  }
+
+  .listing-card.list-layout .listing-title {
+      font-size: 14px !important;
+      line-height: 1.3 !important;
+      white-space: normal !important;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+  }
+
+  .listing-card.list-layout .listing-meta {
+      font-size: 12px !important;
+      text-align: left !important;
+  }
+}
+
 .cookie-banner {
   position: fixed;
   bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
   max-width: 420px;
-  background: rgba(20,20,20,0.9);
+  background: rgba(20, 20, 20, 0.9);
   color: #fff;
   padding: 16px;
   border-radius: 12px;

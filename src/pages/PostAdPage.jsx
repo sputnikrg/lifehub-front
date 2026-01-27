@@ -167,8 +167,18 @@ const PostAdPage = ({ currentUser, t }) => {
 
             <div className="filter-field">
               <label>{t.label_title}</label>
-              <input name="title" value={formData.title} onChange={handleChange} required />
+              <input
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                maxLength={52}
+                required
+              />
+              <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>
+                {formData.title.length}/52
+              </div>
             </div>
+
 
             <div className="filter-field">
               <label>{t.label_city}</label>
