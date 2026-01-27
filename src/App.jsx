@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { supabase } from './supabaseClient';
 import { translations } from './translations';
 
+// ⬇️ ДОБАВЛЕНО
+import CookieBanner from './components/CookieBanner';
+
 // Импорт компонентов и страниц
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -36,7 +39,6 @@ function App() {
      🟢 АВТОДЕТЕКТ ЯЗЫКА (ДОБАВЛЕНО)
      ====================================================== */
   useEffect(() => {
-    // если язык уже сохранён — НЕ трогаем
     const savedLang = localStorage.getItem('lifehub_lang');
     if (savedLang) return;
 
@@ -61,7 +63,6 @@ function App() {
 
     return () => subscription.unsubscribe();
   }, []);
-
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -94,13 +95,16 @@ function App() {
   const toggleFavorite = (id) => {
     setFavorites((prev) => {
       const isFav = prev.includes(id);
-      const updated = isFav ? prev.filter((favId) => favId !== id) : [...prev, id];
+      const updated = isFav
+        ? prev.filter((favId) => favId !== id)
+        : [...prev, id];
+
       localStorage.setItem("lifehub_favs_v1", JSON.stringify(updated));
       return updated;
     });
   };
 
-  // ⬇️ ТВОЯ функция — НЕ МЕНЯЕМ, она уже правильная
+  // ⬇️ ТВОЯ функция — НЕ МЕНЯЕМ
   const toggleLang = (newLang) => {
     setLang(newLang);
     localStorage.setItem('lifehub_lang', newLang);
@@ -108,6 +112,9 @@ function App() {
 
   return (
     <Router>
+      {/* ✅ CookieBanner использует ТОТ ЖЕ lang */}
+      <CookieBanner lang={lang} />
+
       <Header user={user} lang={lang} onLangChange={toggleLang} t={t} />
 
       <Routes>
@@ -170,12 +177,24 @@ function App() {
 
         <Route
           path="/post-ad"
-          element={<PostAdPage onAddListing={handleAddListing} currentUser={user} t={t} />}
+          element={
+            <PostAdPage
+              onAddListing={handleAddListing}
+              currentUser={user}
+              t={t}
+            />
+          }
         />
 
         <Route
           path="/edit/:id"
-          element={<PostAdPage onAddListing={handleAddListing} currentUser={user} t={t} />}
+          element={
+            <PostAdPage
+              onAddListing={handleAddListing}
+              currentUser={user}
+              t={t}
+            />
+          }
         />
 
         <Route path="/impressum" element={<Impressum />} />

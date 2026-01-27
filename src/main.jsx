@@ -4,13 +4,10 @@ import './index.css'
 import App from './App.jsx'
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import './home_widgets.css';
-
-// 👉 ДОБАВЛЕНО (1 строка)
 import { HelmetProvider } from "react-helmet-async";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* 👉 ДОБАВЛЕНО (обёртка, ничего не удаляли) */}
     <HelmetProvider>
       <PayPalScriptProvider
         options={{
@@ -23,4 +20,4 @@ createRoot(document.getElementById('root')).render(
       </PayPalScriptProvider>
     </HelmetProvider>
   </StrictMode>
-)
+);

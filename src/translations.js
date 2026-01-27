@@ -60,7 +60,13 @@ export const translations = {
     link_privacy: "Datenschutzerklärung",
     link_impressum: "Impressum",
     link_terms: "Nutzungsbedingungen",
-    ad_published_success: "Ihre Anzeige wurde erfolgreich veröffentlicht."
+    ad_published_success: "Ihre Anzeige wurde erfolgreich veröffentlicht.",
+    cookie_title: "Cookies & Datenschutz",
+    cookie_text:
+      "Wir verwenden Cookies zur Analyse und Verbesserung der Nutzererfahrung.",
+    cookie_accept: "Akzeptieren",
+    cookie_decline: "Ablehnen",
+
   },
 
   ru: {
@@ -124,7 +130,13 @@ export const translations = {
     link_privacy: "Политика конфиденциальности",
     link_impressum: "Импрессум",
     link_terms: "Пользовательское соглашение",
-    ad_published_success: "Объявление успешно опубликовано."
+    ad_published_success: "Объявление успешно опубликовано.",
+    cookie_title: "Cookies и конфиденциальность",
+    cookie_text:
+      "Мы используем cookies для аналитики и улучшения сервиса.",
+    cookie_accept: "Принять",
+    cookie_decline: "Отклонить",
+
 
   },
 
@@ -189,7 +201,14 @@ export const translations = {
     link_privacy: "Політика конфіденційності",
     link_impressum: "Імпресум",
     link_terms: "Умови користування",
-    ad_published_success: "Оголошення успішно опубліковано."
+    ad_published_success: "Оголошення успішно опубліковано.",
+    cookie_title: "Cookies та конфіденційність",
+    cookie_text:
+      "Ми використовуємо cookies для аналітики та покращення сервісу.",
+    cookie_accept: "Прийняти",
+    cookie_decline: "Відхилити",
+
+
 
   }
 };
