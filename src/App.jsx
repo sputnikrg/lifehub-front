@@ -54,6 +54,16 @@ function App() {
   }, []);
   /* ====================================================== */
 
+  /* ======================================================
+   🌙 DARK MODE — restore saved theme
+   ====================================================== */
+useEffect(() => {
+  const savedTheme = localStorage.getItem('lifehub_theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('theme-dark');
+  }
+}, []);
+
   useEffect(() => {
     const {
       data: { subscription },

@@ -162,7 +162,15 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
                 </div>
               </div>
 
-              <p className="price" style={{ fontSize: '28px', fontWeight: 'bold', color: '#2c3e50', margin: '15px 0' }}>
+              <p
+                className="price listing-detail-price"
+                style={{
+                  fontSize: '28px',
+                  fontWeight: 'bold',
+                  margin: '15px 0'
+                }}
+              >
+
                 {listing.price
                   ? `${listing.price} ${listing.type === 'dating' ? 'Jahre' : '€'}`
                   : 'Preis auf Anfrage'}
@@ -175,7 +183,16 @@ const ListingDetail = ({ favorites, onToggleFav }) => {
 
               <div className="description">
                 <h3>Beschreibung</h3>
-                <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', color: '#444' }}>{listing.description}</p>
+                <p
+                  className="listing-detail-description-text"
+                  style={{
+                    whiteSpace: 'pre-wrap',
+                    lineHeight: '1.6'
+                  }}
+                >
+                  {listing.description}
+                </p>
+
               </div>
 
               {listing.kontaktdaten && (

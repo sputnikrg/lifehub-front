@@ -889,3 +889,107 @@ body {
   border: none !important;
   z-index: 10000 !important;
 }
+
+/* =========================
+   DARK MODE — MVP
+========================= */
+
+body.theme-dark {
+  background: #181a1f;
+  color: #e6e6e6;
+}
+
+body.theme-dark header {
+  background: #151821;
+  box-shadow: none;
+}
+
+body.theme-dark .listing-card,
+body.theme-dark .home-side-widget,
+body.theme-dark .card,
+body.theme-dark .form-box {
+  background: #1b1f2a;
+  color: #e6e6e6;
+}
+
+body.theme-dark .listing-meta,
+body.theme-dark .mini-label,
+body.theme-dark .mini-city {
+  color: #b5b5b5;
+}
+
+body.theme-dark .card-button {
+  background: #2a5bd7;
+  color: #fff;
+  border-color: transparent;
+}
+
+body.theme-dark a {
+  color: #8ab4ff;
+}
+
+/* =========================
+   DARK MODE — HERO TEXT FIX
+========================= */
+
+body.theme-dark .hero h1,
+body.theme-dark .hero h2,
+body.theme-dark .hero p {
+  color: rgba(0,0,0,0.85)!important;
+}
+
+body.theme-dark .hero .hero-title,
+body.theme-dark .hero .hero-subtitle {
+  color: rgba(0,0,0,0.85)!important;
+}
+
+/* DARK MODE — price highlight */
+body.theme-dark .listing-price,
+body.theme-dark .listing-meta,
+body.theme-dark .price {
+  color: #9ecbff;
+  font-weight: 600;
+}
+
+/* DARK MODE — description readability */
+body.theme-dark .listing-description,
+body.theme-dark .listing-content p,
+body.theme-dark .listing-detail-description {
+  color: #d0d3d8;
+  line-height: 1.6;
+}
+
+/* DARK MODE — detail price */
+body.theme-dark .listing-detail strong,
+body.theme-dark .listing-detail .price,
+body.theme-dark .listing-detail span {
+  color: #9ecbff;
+}
+
+/* DARK MODE — detail description */
+body.theme-dark .listing-detail p {
+  color: #d6d9de;
+  line-height: 1.6;
+}
+
+/* =========================
+   LISTING DETAIL — COLOR FIX
+========================= */
+
+/* Light mode */
+.listing-detail-price {
+  color: #2c3e50;
+}
+
+.listing-detail-description-text {
+  color: #444;
+}
+
+/* Dark mode */
+body.theme-dark .listing-detail-price {
+  color: #9ecbff;
+}
+
+body.theme-dark .listing-detail-description-text {
+  color: #d6d9de;
+}

@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import { translations } from '../translations';
 
 const Footer = ({ t }) => {
+  const toggleTheme = () => {
+    document.body.classList.toggle('theme-dark');
+    const isDark = document.body.classList.contains('theme-dark');
+    localStorage.setItem('lifehub_theme', isDark ? 'dark' : 'light');
+  };
+
   return (
     <footer
       style={{
@@ -22,9 +28,11 @@ const Footer = ({ t }) => {
             marginTop: '10px',
             display: 'flex',
             justifyContent: 'center',
+            alignItems: 'center',
             gap: '20px'
           }}
         >
+
           <Link to="/agb" style={{ color: '#666' }}>AGB</Link>
           <Link to="/impressum" style={{ color: '#666' }}>Impressum</Link>
           <Link to="/datenschutz" style={{ color: '#666' }}>Datenschutz</Link>
@@ -46,6 +54,24 @@ const Footer = ({ t }) => {
           >
             {t.cookie_settings}
           </button>
+          <button
+            onClick={toggleTheme}
+            title="Dark mode"
+            style={{
+              background: 'none',
+              border: '1px solid #ccc',
+              borderRadius: '20px',
+              padding: '6px 12px',
+              cursor: 'pointer',
+              fontSize: '13px',
+              color: '#666',
+              lineHeight: '1'
+            }}
+          >
+            🌙 / ☀️
+          </button>
+
+
         </div>
       </div>
     </footer>
