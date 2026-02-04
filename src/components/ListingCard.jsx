@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from "react";
 
-const ListingCard = ({ item, isFav, onToggleFav, onDelete, viewMode }) => {
+const ListingCard = ({ item, badge, isFav, onToggleFav, onDelete, viewMode }) => {
   const [imgIndex, setImgIndex] = useState(0);
 
   const images = item.images?.length
@@ -49,6 +49,12 @@ const ListingCard = ({ item, isFav, onToggleFav, onDelete, viewMode }) => {
         </div>
 
         <div className="listing-content">
+
+          {badge && (
+            <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>
+              {badge.label}
+            </div>
+          )}
 
           {/* 🔹 ЗАГОЛОВОК — ВСЕГДА ПЕРВЫЙ */}
           <h3 className="listing-title">

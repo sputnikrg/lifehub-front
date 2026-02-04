@@ -13,6 +13,12 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
   const [showExternal, setShowExternal] = useState(true);
   const [viewMode, setViewMode] = useState("grid");
   const location = useLocation();
+  const immoBadge =
+    location.pathname.startsWith('/immo/offer')
+      ? { label: 'Angebot', className: 'badge-offer' }
+      : location.pathname.startsWith('/immo/search')
+        ? { label: 'Gesuch', className: 'badge-search' }
+        : null;
   const showSuccess = new URLSearchParams(location.search).get('published') === '1';
 
 
@@ -201,12 +207,14 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
                 <ListingCard
                   key={item.id}
                   item={item}
+                  badge={immoBadge}   // ← ВОТ ОНО
                   isFav={favorites.includes(item.id)}
                   onToggleFav={onToggleFav}
                   onDelete={showDelete ? onDelete : null}
                   t={t}
                   viewMode={viewMode}
                 />
+
               );
             })}
           </div>
