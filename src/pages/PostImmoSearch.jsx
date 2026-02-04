@@ -133,22 +133,38 @@ const PostImmoSearch = ({ currentUser, t }) => {
         ...formData,
         type: 'wohnung',
         mode: 'search',
-        images: [], // для поиска фото не нужны
+        price: Number(formData.budget), // 🔴 КРИТИЧНО
+        images: [],
         user_id: currentUser.id
       };
+
 
       console.log('isEditMode:', isEditMode, 'id:', id);
 
       if (isEditMode && id) {
-        await supabase
+        const { error } = await supabase
           .from('listings')
           .update(finalData)
           .eq('id', id);
+
+        if (error) {
+          console.error('SUPABASE UPDATE ERROR:', error);
+          alert(error.message);
+          return;
+        }
+
       } else {
-        await supabase
+        const { error } = await supabase
           .from('listings')
           .insert([finalData]);
+
+        if (error) {
+          console.error('SUPABASE INSERT ERROR:', error);
+          alert(error.message);
+          return;
+        }
       }
+
 
 
       navigate('/my-listings', {
