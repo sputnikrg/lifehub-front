@@ -8,77 +8,63 @@ const ListingsPage = ({ type, listings, favorites, onToggleFav, onDelete, curren
   const [cityFilter, setCityFilter] = useState("");
   const [bundeslandFilter, setBundeslandFilter] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
-  const [sortBy, setSortBy] = useState("newest");
-  const [showExternal, setShowExternal] = useState(true);
   const [viewMode, setViewMode] = useState("grid");
 
   const location = useLocation();
 
-  // ✅ БЕЙДЖ ПО МАРШРУТУ (ТОЛЬКО UI)
-  const immoBadge = location.pathname.includes('/immo/offer')
-    ? { label: 'Angebot' }
-    : location.pathname.includes('/immo/search')
-      ? { label: 'Gesuch' }
+  const immoBadge = location.pathname.startsWith('/immo/search')
+    ? { label: 'Gesuch' }
+    : location.pathname.startsWith('/immo/offer')
+      ? { label: 'Angebot' }
       : null;
 
-  const ADMIN_EMAILS = [
-    "vpovolotskyi25@gmail.com",
-    "druckauftragag@gmail.com"
-  ];
+  const filtered = listings.filter(item => {
+    const isImmoSearch = location.pathname.startsWith('/immo/search');
+    const isImmoOffer = location.pathname.startsWith('/immo/offer');
 
-  let filtered = listings.filter(item => {
-    const matchesType = item.type === type;
+    const matchesType = isImmoSearch
+      ? item.type === 'wohnung' && item.mode === 'search'
+      : isImmoOffer
+        ? item.type === 'wohnung' && item.mode === 'offer'
+        : item.type === type;
+
     const matchesSearch = item.title?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCity = item.city?.toLowerCase().includes(cityFilter.toLowerCase());
-    const matchesBundesland = bundeslandFilter
-      ? item.bundesland === bundeslandFilter
-      : true;
-    const itemPrice = item.price || 0;
-    const matchesPrice = maxPrice ? itemPrice <= Number(maxPrice) : true;
-    const matchesExternal = showExternal || !item.external_url;
+    const matchesBundesland = bundeslandFilter ? item.bundesland === bundeslandFilter : true;
+    const matchesPrice = maxPrice ? item.price <= Number(maxPrice) : true;
 
     return (
       matchesType &&
       matchesSearch &&
       matchesCity &&
       matchesBundesland &&
-      matchesPrice &&
-      matchesExternal
+      matchesPrice
     );
   });
 
-  filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
   return (
     <main className="page-main">
-      <section className="page-listings">
-        <div className="container">
-
-          {/* СПИСОК ОБЪЯВЛЕНИЙ */}
-          <div className={`listing-grid ${viewMode}`}>
-
-            {/* НОРМАЛЬНЫЙ РЕНДЕР */}
-            {filtered.map(item => {
-              const isOwner = currentUser && item.user_id === currentUser.id;
-              const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
-              const showDelete = isOwner || isAdmin;
-
-              return (
-                <ListingCard
-                  key={item.id}
-                  item={item}
-                  badge={immoBadge}
-                  isFav={favorites.includes(item.id)}
-                  onToggleFav={onToggleFav}
-                  onDelete={showDelete ? onDelete : null}
-                  viewMode={viewMode}
-                />
-              );
-            })}
-          </div>
-
+      <div className="container">
+        <div className={`listing-grid ${viewMode}`}>
+          {filtered.map(item => (
+            <ListingCard
+              key={item.id}
+              item={item}
+              badge={immoBadge}
+              isFav={favorites.includes(item.id)}
+              onToggleFav={onToggleFav}
+              onDelete={onDelete}
+              viewMode={viewMode}
+            />
+          ))}
         </div>
-      </section>
+
+        {filtered.length === 0 && (
+          <p style={{ textAlign: 'center', marginTop: '40px' }}>
+            {t.no_results || 'Keine Ergebnisse gefunden'}
+          </p>
+        )}
+      </div>
     </main>
   );
 };

@@ -101,6 +101,12 @@ const PostImmoOffer = ({ currentUser, t }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // 🔒 Гость не может публиковать
+    if (!currentUser) {
+      alert('Bitte einloggen oder registrieren');
+      return;
+    }
+
     // 🔒 Юридический стоп
     if (!privacyAccepted) return;
 
@@ -126,12 +132,12 @@ const PostImmoOffer = ({ currentUser, t }) => {
 
       const finalData = {
         ...formData,
-        type: 'immo_offer',
+        type: 'wohnung',     // ✅ единый тип IMMO
+        mode: 'offer',       // ✅ КЛЮЧЕВОЕ
         images: uploadedUrls,
         price: Number(formData.price),
         user_id: currentUser.id
       };
-
 
       if (isEditMode) {
         await supabase.from('listings').update(finalData).eq('id', id);
@@ -156,7 +162,7 @@ const PostImmoOffer = ({ currentUser, t }) => {
         <div className="form-box">
           <h2>{isEditMode ? t.form_title_edit : t.form_title_new}</h2>
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>          
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
 
             <div className="filter-field">
               <label>{t.label_title}</label>
@@ -171,7 +177,6 @@ const PostImmoOffer = ({ currentUser, t }) => {
                 {formData.title.length}/52
               </div>
             </div>
-
 
             <div className="filter-field">
               <label>{t.label_city}</label>
@@ -198,7 +203,7 @@ const PostImmoOffer = ({ currentUser, t }) => {
             </div>
 
             <div className="filter-field">
-              <label>{formData.type === 'dating' ? 'Alter (Jahre)' : t.label_price}</label>
+              <label>{t.label_price}</label>
               <input
                 name="price"
                 type="number"
@@ -210,7 +215,13 @@ const PostImmoOffer = ({ currentUser, t }) => {
 
             <div className="filter-field">
               <label>{t.label_desc}</label>
-              <textarea name="description" value={formData.description} onChange={handleChange} rows="5" required />
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows="5"
+                required
+              />
             </div>
 
             <div className="filter-field">
@@ -234,7 +245,7 @@ const PostImmoOffer = ({ currentUser, t }) => {
               )}
             </div>
 
-            {/* ✅ DATENSCHUTZ */}
+            {/* Datenschutz */}
             <div style={{ marginTop: '10px', fontSize: '14px' }}>
               <label style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                 <input
@@ -247,36 +258,27 @@ const PostImmoOffer = ({ currentUser, t }) => {
                   {t.consent_privacy}{' '}
                   <a href="/datenschutz" target="_blank" rel="noopener noreferrer">
                     {t.link_privacy}
-                  </a>
-                  .
+                  </a>.
                 </span>
               </label>
 
               <div style={{ marginTop: '6px' }}>
-                <a
-                  href="/impressum"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: '13px' }}
-                >
+                <a href="/impressum" target="_blank" rel="noopener noreferrer" style={{ fontSize: '13px' }}>
                   {t.link_impressum}
                 </a>
               </div>
               <div style={{ marginTop: '4px' }}>
-                <a
-                  href="/terms"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: '13px' }}
-                >
+                <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ fontSize: '13px' }}>
                   {t.link_terms}
                 </a>
               </div>
-
             </div>
 
             <button
-              type="submit" className="card-button" disabled={!privacyAccepted || loading || compressing}>
+              type="submit"
+              className="card-button"
+              disabled={!privacyAccepted || loading || compressing}
+            >
               {loading ? '...' : (isEditMode ? t.btn_save : t.btn_publish)}
             </button>
           </form>
