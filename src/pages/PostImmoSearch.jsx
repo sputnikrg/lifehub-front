@@ -137,12 +137,19 @@ const PostImmoSearch = ({ currentUser, t }) => {
         user_id: currentUser.id
       };
 
+      console.log('isEditMode:', isEditMode, 'id:', id);
 
-      if (isEditMode) {
-        await supabase.from('listings').update(finalData).eq('id', id);
+      if (isEditMode && id) {
+        await supabase
+          .from('listings')
+          .update(finalData)
+          .eq('id', id);
       } else {
-        await supabase.from('listings').insert([finalData]);
+        await supabase
+          .from('listings')
+          .insert([finalData]);
       }
+
 
       navigate('/my-listings', {
         state: { published: true }
