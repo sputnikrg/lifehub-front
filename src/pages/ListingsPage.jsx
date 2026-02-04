@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import ListingCard from '../components/ListingCard';
 import { bundeslaender } from '../data/bundeslaender';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+
 
 const ListingsPage = ({
   type,
@@ -13,6 +15,7 @@ const ListingsPage = ({
   t
 }) => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   /* =====================
      STATE
@@ -27,8 +30,8 @@ const ListingsPage = ({
      ROUTE CONTEXT (IMMO)
   ===================== */
   const isImmoSearch = location.pathname.startsWith('/immo/search');
-  const isImmoOffer  = location.pathname.startsWith('/immo/offer');
-  const isImmo       = isImmoSearch || isImmoOffer;
+  const isImmoOffer = location.pathname.startsWith('/immo/offer');
+  const isImmo = isImmoSearch || isImmoOffer;
 
   const immoBadge = isImmoSearch
     ? { label: 'Gesuch' }
@@ -107,6 +110,40 @@ const ListingsPage = ({
               alignItems: 'center'
             }}
           >
+            {isImmo && (
+              <div style={{ display: 'flex', gap: '8px', marginRight: '10px' }}>
+                <button
+                  onClick={() => navigate('/immo/offer')}
+                  style={{
+                    padding: '8px 14px',
+                    borderRadius: '20px',
+                    border: '1px solid #ddd',
+                    cursor: 'pointer',
+                    background: isImmoOffer ? '#4a90e2' : '#f5f5f5',
+                    color: isImmoOffer ? '#fff' : '#333',
+                    fontWeight: 500
+                  }}
+                >
+                  Angebot
+                </button>
+
+                <button
+                  onClick={() => navigate('/immo/search')}
+                  style={{
+                    padding: '8px 14px',
+                    borderRadius: '20px',
+                    border: '1px solid #ddd',
+                    cursor: 'pointer',
+                    background: isImmoSearch ? '#4a90e2' : '#f5f5f5',
+                    color: isImmoSearch ? '#fff' : '#333',
+                    fontWeight: 500
+                  }}
+                >
+                  Gesuch
+                </button>
+              </div>
+            )}
+
             <input
               placeholder={t.label_title}
               value={searchTerm}
@@ -136,7 +173,11 @@ const ListingsPage = ({
 
             <input
               type="number"
-              placeholder={t.label_price}
+              placeholder={
+                isImmoSearch
+                  ? (t.label_budget || 'Max. Budget (€)')
+                  : t.label_price
+              }
               value={maxPrice}
               onChange={(e) => setMaxPrice(e.target.value)}
               style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', width: '120px' }}
