@@ -456,3 +456,33 @@
   background: #eef3ff;
   color: #2f4ed8;
 }
+
+/* image wrapper */
+.listing-image {
+  position: relative;
+}
+
+/* badge */
+.listing-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+
+  color: #fff;
+  border-radius: 999px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* colors */
+.listing-badge.offer {
+  background: #1e7f4f;
+}
+
+.listing-badge.search {
+  background: #c77700;
+}

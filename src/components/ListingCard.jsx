@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from "react";
 
 const ListingCard = ({ item, badge, isFav, onToggleFav, onDelete, viewMode }) => {
   const [imgIndex, setImgIndex] = useState(0);
+  const navigate = useNavigate();
 
   const images = item.images?.length
     ? item.images
@@ -21,9 +21,6 @@ const ListingCard = ({ item, badge, isFav, onToggleFav, onDelete, viewMode }) =>
     setImgIndex(i => (i === images.length - 1 ? 0 : i + 1));
   };
 
-  const navigate = useNavigate();
-  const isExternalJob = item.type === "job" && Boolean(item.external_url);
-
   const location = item.bundesland
     ? `${item.bundesland} • ${item.city}`
     : item.city;
@@ -37,8 +34,19 @@ const ListingCard = ({ item, badge, isFav, onToggleFav, onDelete, viewMode }) =>
     <article className={`listing-card ${viewMode === 'list' ? 'list-layout' : ''}`}>
       <Link to={`/listing/${item.type}/${item.id}`} className="listing-link">
 
-        <div className="card-image">
-          <img src={images[imgIndex]} className="listing-img" alt={item.title} />
+        {/* IMAGE + BADGE */}
+        <div className="listing-image">
+          <img
+            src={images[imgIndex]}
+            className="listing-img"
+            alt={item.title}
+          />
+
+          {item.type === "wohnung" && item.mode && (
+            <span className={`listing-badge ${item.mode}`}>
+              {item.mode === "offer" ? "Angebot" : "Gesuch"}
+            </span>
+          )}
 
           {images.length > 1 && (
             <>
@@ -49,26 +57,15 @@ const ListingCard = ({ item, badge, isFav, onToggleFav, onDelete, viewMode }) =>
         </div>
 
         <div className="listing-content">
-
-          {badge && (
-            <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>
-              {badge.label}
-            </div>
-          )}
-
-          {/* 🔹 ЗАГОЛОВОК — ВСЕГДА ПЕРВЫЙ */}
           <h3 className="listing-title">
             {item.title.replace(/^Пример:\s*/i, '')}
           </h3>
 
-          {/* 🔹 ЛОКАЦИЯ + ЦЕНА */}
           <p className="listing-meta">{meta}</p>
 
-          {/* 🔹 ОПИСАНИЕ (в grid видно, в list скрыто CSS-ом) */}
           <p className="listing-description">
             {item.description.trim()}
           </p>
-
         </div>
       </Link>
 
@@ -80,10 +77,10 @@ const ListingCard = ({ item, badge, isFav, onToggleFav, onDelete, viewMode }) =>
       </button>
 
       {onDelete && (
-        <div style={{ position: 'absolute', bottom: '10px', right: '10px', display: 'flex', gap: '5px' }}>
+        <div className="listing-actions">
           <button
             onClick={() => navigate(`/edit/${item.id}`)}
-            style={{ background: '#f1c40f', color: 'white', border: 'none', padding: '5px 8px', borderRadius: '4px', cursor: 'pointer' }}
+            className="edit-btn"
             title="Bearbeiten"
           >
             ✏️
@@ -95,7 +92,7 @@ const ListingCard = ({ item, badge, isFav, onToggleFav, onDelete, viewMode }) =>
               e.stopPropagation();
               onDelete(item.id);
             }}
-            style={{ background: '#e74c3c', color: 'white', border: 'none', padding: '5px 8px', borderRadius: '4px', cursor: 'pointer' }}
+            className="delete-btn"
             title="Löschen"
           >
             🗑
