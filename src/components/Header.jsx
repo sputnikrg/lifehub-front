@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import AddAdModal from './AddAdModal';
 
-const Header = ({ user, lang, onLangChange, t }) => {
+const Header = ({ user, lang, onLangChange, t, onOpenAddModal }) => {
+  const [showAddModal, setShowAddModal] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const Header = ({ user, lang, onLangChange, t }) => {
       {/* 1. БЕГУЩАЯ СТРОКА */}
       <div className="test-banner">
         <div className="test-banner__text">
-          Die Website befindet sich im Testmodus. The site is operating in test mode. Сайт функционирует в тестовом режиме
+          Die Website befindet sich im Testmodus. Сайт функционирует в тестовом режиме. Сайт функціонує у тестовому режимі.
         </div>
       </div>
 
@@ -45,26 +47,11 @@ const Header = ({ user, lang, onLangChange, t }) => {
         <nav className="header-right">
           {/* Языки */}
           <div className="lang-switcher">
-            <span
-              onClick={() => onLangChange('de')}
-              className={lang === 'de' ? 'active' : ''}
-            >
-              DE
-            </span>
+            <span onClick={() => onLangChange('de')} className={lang === 'de' ? 'active' : ''}>DE</span>
             <span className="separator"> | </span>
-            <span
-              onClick={() => onLangChange('ru')}
-              className={lang === 'ru' ? 'active' : ''}
-            >
-              RU
-            </span>
+            <span onClick={() => onLangChange('ru')} className={lang === 'ru' ? 'active' : ''}>RU</span>
             <span className="separator"> | </span>
-            <span
-              onClick={() => onLangChange('ua')}
-              className={lang === 'ua' ? 'active' : ''}
-            >
-              UA
-            </span>
+            <span onClick={() => onLangChange('ua')} className={lang === 'ua' ? 'active' : ''}>UA</span>
           </div>
 
           {/* Кнопки действий */}
@@ -78,13 +65,7 @@ const Header = ({ user, lang, onLangChange, t }) => {
               title="LifeHub в Telegram"
               aria-label="LifeHub в Telegram"
             >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-              >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22.05 2.37L1.93 10.23c-1.38.54-1.36 1.31-.25 1.65l5.15 1.61 1.97 6.01c.24.66.12.92.86.92.57 0 .82.26 1.13.56l2.47-2.4 5.14 3.79c.94.52 1.61.25 1.85-.87l3.35-15.8c.35-1.38-.52-1.97-1.45-1.57z" />
               </svg>
             </a>
@@ -108,12 +89,18 @@ const Header = ({ user, lang, onLangChange, t }) => {
               </button>
             )}
 
-            <Link to="/post-ad" className="btn-post">
+            {/* КНОПКА + (теперь открывает модал) */}
+            <button
+              className="btn-post"
+              onClick={() => onOpenAddModal && onOpenAddModal()}
+            >
               {isMobile ? '➕' : t.nav_post_ad}
-            </Link>
+            </button>
+
           </div>
         </nav>
       </div>
+
     </header>
   );
 };

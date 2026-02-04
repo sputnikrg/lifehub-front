@@ -67,6 +67,12 @@ export const translations = {
     cookie_accept: "Akzeptieren",
     cookie_decline: "Ablehnen",
     cookie_settings: "Cookie-Einstellungen",
+    label_budget: 'Maximales Budget (€)',
+    add_ad_title: 'Anzeige aufgeben',
+    add_ad_general: 'Job / Dating',
+    add_ad_immo_offer: 'Immobilie anbieten',
+    add_ad_immo_search: 'Wohnung suchen',
+
   },
 
   ru: {
@@ -137,6 +143,12 @@ export const translations = {
     cookie_accept: "Принять",
     cookie_decline: "Отклонить",
     cookie_settings: "Настройки cookies",
+    label_budget: 'Максимальный бюджет (€)',
+    add_ad_title: 'Подать объявление',
+    add_ad_general: 'Работа / Знакомства',
+    add_ad_immo_offer: 'Предложить жильё',
+    add_ad_immo_search: 'Ищу жильё',
+
 
   },
 
@@ -208,5 +220,12 @@ export const translations = {
     cookie_accept: "Прийняти",
     cookie_decline: "Відхилити",
     cookie_settings: "Налаштування cookies",
+    label_budget: 'Максимальний бюджет (€)',
+    add_ad_title: 'Подати оголошення',
+    add_ad_general: 'Робота / Знайомства',
+    add_ad_immo_offer: 'Запропонувати житло',
+    add_ad_immo_search: 'Шукаю житло',
+
+
   }
 };

@@ -13,15 +13,21 @@ import ListingsPage from './pages/ListingsPage';
 import FavoritesPage from './pages/FavoritesPage';
 import ListingDetail from './pages/ListingDetail';
 import PostAdPage from './pages/PostAdPage';
+import PostImmoOffer from './pages/PostImmoOffer';
+import PostImmoSearch from './pages/PostImmoSearch';
 import MyListings from './pages/MyListings';
 import Footer from './components/Footer';
 import Impressum from './pages/Impressum';
 import Datenschutz from './pages/Datenschutz';
 import AGB from './pages/AGB';
+import AddAdModal from './components/AddAdModal';
+
 
 function App() {
   const [listings, setListings] = useState([]);
   const [user, setUser] = useState(null);
+
+  const [showAddModal, setShowAddModal] = useState(false);
 
   // ⬇️ ТВОЯ строка — НЕ ТРОГАЕМ
   const [lang, setLang] = useState(localStorage.getItem('lifehub_lang') || 'de');
@@ -57,12 +63,12 @@ function App() {
   /* ======================================================
    🌙 DARK MODE — restore saved theme
    ====================================================== */
-useEffect(() => {
-  const savedTheme = localStorage.getItem('lifehub_theme');
-  if (savedTheme === 'dark') {
-    document.body.classList.add('theme-dark');
-  }
-}, []);
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('lifehub_theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('theme-dark');
+    }
+  }, []);
 
   useEffect(() => {
     const {
@@ -125,7 +131,20 @@ useEffect(() => {
       {/* ✅ CookieBanner использует ТОТ ЖЕ lang */}
       <CookieBanner lang={lang} />
 
-      <Header user={user} lang={lang} onLangChange={toggleLang} t={t} />
+      <Header
+        user={user}
+        lang={lang}
+        onLangChange={toggleLang}
+        t={t}
+        onOpenAddModal={() => setShowAddModal(true)}
+      />
+
+      <AddAdModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        t={t}
+      />
+
 
       <Routes>
         <Route path="/" element={<Home t={t} lang={lang} />} />
@@ -147,6 +166,37 @@ useEffect(() => {
             }
           />
         ))}
+
+        <Route
+          path="/immo/offer"
+          element={
+            <ListingsPage
+              type="immo_offer"
+              listings={listings}
+              favorites={favorites}
+              onToggleFav={toggleFavorite}
+              onDelete={handleDeleteListing}
+              currentUser={user}
+              t={t}
+            />
+          }
+        />
+
+        <Route
+          path="/immo/search"
+          element={
+            <ListingsPage
+              type="immo_search"
+              listings={listings}
+              favorites={favorites}
+              onToggleFav={toggleFavorite}
+              onDelete={handleDeleteListing}
+              currentUser={user}
+              t={t}
+            />
+          }
+        />
+
 
         <Route
           path="/favorites"
@@ -180,6 +230,28 @@ useEffect(() => {
             <ListingDetail
               favorites={favorites}
               onToggleFav={toggleFavorite}
+              t={t}
+            />
+          }
+        />
+
+        <Route
+          path="/immo/offer/post"
+          element={
+            <PostImmoOffer
+              onAddListing={handleAddListing}
+              currentUser={user}
+              t={t}
+            />
+          }
+        />
+
+        <Route
+          path="/immo/search/post"
+          element={
+            <PostImmoSearch
+              onAddListing={handleAddListing}
+              currentUser={user}
               t={t}
             />
           }
