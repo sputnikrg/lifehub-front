@@ -130,13 +130,18 @@ const PostImmoSearch = ({ currentUser, t }) => {
       }
 
       const finalData = {
-        ...formData,
         type: 'wohnung',
         mode: 'search',
-        price: Number(formData.budget), // 🔴 КРИТИЧНО
+        title: formData.title,
+        city: formData.city,
+        bundesland: formData.bundesland,
+        description: formData.description,
+        kontaktdaten: formData.kontaktdaten,
+        price: Number(formData.budget),
         images: [],
         user_id: currentUser.id
       };
+
 
 
       console.log('isEditMode:', isEditMode, 'id:', id);
