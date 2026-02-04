@@ -38,7 +38,12 @@ const PostImmoSearch = ({ currentUser, t }) => {
           .select('*')
           .eq('id', id)
           .single();
-        if (data) setFormData({ ...data });
+        if (data) {
+          setFormData({
+            ...data,
+            budget: data.price ?? ''
+          });
+        }
       };
       fetchListing();
     }
@@ -102,41 +107,23 @@ const PostImmoSearch = ({ currentUser, t }) => {
     e.preventDefault();
 
     if (!currentUser) {
-      alert('Bitte registrieren oder einloggen');
+      alert('Bitte einloggen oder registrieren, um eine Anzeige zu erstellen');
       return;
     }
 
-    // 🔒 Юридический стоп
     if (!privacyAccepted) return;
 
     setLoading(true);
 
     try {
-      let uploadedUrls = [...formData.images];
-
-      for (const file of files) {
-        const ext = file.name.split('.').pop();
-        const filePath = `${Date.now()}-${Math.random()}.${ext}`;
-
-        await supabase.storage
-          .from('listing-images')
-          .upload(filePath, file);
-
-        const { data } = supabase.storage
-          .from('listing-images')
-          .getPublicUrl(filePath);
-
-        uploadedUrls.push(data.publicUrl);
-      }
-
       const finalData = {
-        type: 'wohnung',          // достаточно
+        type: 'wohnung',
         title: formData.title,
         city: formData.city,
         bundesland: formData.bundesland,
         description: formData.description,
         kontaktdaten: formData.kontaktdaten,
-        price: Number(formData.budget), // search → price = budget
+        price: Number(formData.budget),
         images: [],
         user_id: currentUser.id
       };
@@ -154,7 +141,6 @@ const PostImmoSearch = ({ currentUser, t }) => {
           alert(error.message);
           return;
         }
-
       } else {
         const { error } = await supabase
           .from('listings')
@@ -166,8 +152,6 @@ const PostImmoSearch = ({ currentUser, t }) => {
           return;
         }
       }
-
-
 
       navigate('/my-listings', {
         state: { published: true }
@@ -201,7 +185,6 @@ const PostImmoSearch = ({ currentUser, t }) => {
                 {formData.title.length}/52
               </div>
             </div>
-
 
             <div className="filter-field">
               <label>{t.label_city}</label>
@@ -238,10 +221,15 @@ const PostImmoSearch = ({ currentUser, t }) => {
               />
             </div>
 
-
             <div className="filter-field">
               <label>{t.label_desc}</label>
-              <textarea name="description" value={formData.description} onChange={handleChange} rows="5" required />
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows="5"
+                required
+              />
             </div>
 
             <div className="filter-field">
@@ -254,7 +242,7 @@ const PostImmoSearch = ({ currentUser, t }) => {
               />
             </div>
 
-            {/* ✅ DATENSCHUTZ */}
+            {/* Datenschutz */}
             <div style={{ marginTop: '10px', fontSize: '14px' }}>
               <label style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                 <input
@@ -267,36 +255,27 @@ const PostImmoSearch = ({ currentUser, t }) => {
                   {t.consent_privacy}{' '}
                   <a href="/datenschutz" target="_blank" rel="noopener noreferrer">
                     {t.link_privacy}
-                  </a>
-                  .
+                  </a>.
                 </span>
               </label>
 
               <div style={{ marginTop: '6px' }}>
-                <a
-                  href="/impressum"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: '13px' }}
-                >
+                <a href="/impressum" target="_blank" rel="noopener noreferrer" style={{ fontSize: '13px' }}>
                   {t.link_impressum}
                 </a>
               </div>
               <div style={{ marginTop: '4px' }}>
-                <a
-                  href="/terms"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: '13px' }}
-                >
+                <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ fontSize: '13px' }}>
                   {t.link_terms}
                 </a>
               </div>
-
             </div>
 
             <button
-              type="submit" className="card-button" disabled={!privacyAccepted || loading || compressing}>
+              type="submit"
+              className="card-button"
+              disabled={!privacyAccepted || loading || compressing}
+            >
               {loading ? '...' : (isEditMode ? t.btn_save : t.btn_publish)}
             </button>
           </form>
