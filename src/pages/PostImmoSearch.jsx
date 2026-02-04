@@ -101,6 +101,11 @@ const PostImmoSearch = ({ currentUser, t }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!currentUser) {
+      alert('Bitte registrieren oder einloggen');
+      return;
+    }
+
     // 🔒 Юридический стоп
     if (!privacyAccepted) return;
 
@@ -155,7 +160,7 @@ const PostImmoSearch = ({ currentUser, t }) => {
         <div className="form-box">
           <h2>{isEditMode ? t.form_title_edit : t.form_title_new}</h2>
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>            
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
 
             <div className="filter-field">
               <label>{t.label_title}</label>
