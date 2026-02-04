@@ -131,7 +131,8 @@ const PostImmoSearch = ({ currentUser, t }) => {
 
       const finalData = {
         ...formData,
-        type: 'immo_search',
+        type: 'wohnung',
+        mode: 'search',
         images: [], // для поиска фото не нужны
         user_id: currentUser.id
       };
