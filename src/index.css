@@ -1151,3 +1151,18 @@ body.theme-dark .listing-detail-description-text {
   background: #e6e7ea !important;
 }
 
+/* GRID view: описание в одну строку */
+.listing-grid.grid .listing-description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* GRID view: заголовок и описание в одну строку */
+.listing-grid.grid .listing-title,
+.listing-grid.grid .listing-description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

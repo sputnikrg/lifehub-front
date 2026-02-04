@@ -72,6 +72,7 @@ const ListingCard = ({ item, badge, isFav, onToggleFav, onDelete, viewMode }) =>
       <button
         className={`fav-btn ${isFav ? "active" : ""}`}
         onClick={() => onToggleFav(item.id)}
+        style={{ zIndex: 5 }}
       >
         ❤
       </button>

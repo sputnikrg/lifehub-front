@@ -234,10 +234,34 @@ const ListingsPage = ({
           </div>
 
           {filtered.length === 0 && (
-            <p style={{ textAlign: 'center', marginTop: '40px' }}>
-              {t.no_results || 'Keine Ergebnisse gefunden'}
-            </p>
+            <div style={{ textAlign: 'center', marginTop: '50px' }}>
+              <p style={{ fontSize: '18px', marginBottom: '12px' }}>
+                {isImmoSearch && (t.empty_immo_search || 'Noch keine Wohnungsgesuche gefunden')}
+                {isImmoOffer && (t.empty_immo_offer || 'Noch keine Wohnungsangebote gefunden')}
+                {!isImmo && (t.no_results || 'Keine Ergebnisse gefunden')}
+              </p>
+
+              {isImmo && (
+                <button
+                  onClick={() => navigate('/post-immo')}
+                  style={{
+                    padding: '12px 20px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    background: '#4a90e2',
+                    color: '#fff',
+                    fontSize: '16px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {isImmoSearch
+                    ? (t.btn_post_search || 'Wohnung suchen')
+                    : (t.btn_post_offer || 'Wohnung anbieten')}
+                </button>
+              )}
+            </div>
           )}
+
         </div>
       </section>
     </main>
