@@ -1,46 +1,49 @@
 import React from 'react';
 import ListingCard from '../components/ListingCard';
-import { useLocation } from 'react-router-dom';
 
 const MyListings = ({ listings, currentUser, favorites, onToggleFav, onDelete, t }) => {
-  const location = useLocation();
-  const showSuccess = location.state?.published;
-  const myItems = listings.filter(item => item.user_id === currentUser?.id);
+  // Фильтруем объявления так, чтобы показывать только те, что принадлежат текущему пользователю
+  const userListings = listings.filter(item => item.user_id === currentUser?.id);
 
   return (
     <main className="page-main">
+      {/* ===== HERO SECTION ===== */}
       <section className="page-hero">
         <div className="container">
           <h1>{t.nav_my_ads}</h1>
-          <p>{t.my_ads_subtitle || 'Verwalten Sie Ihre Anzeigen'}</p>
+          <p>{t.my_ads_subtitle}</p>
         </div>
       </section>
 
+      {/* ===== LISTINGS SECTION ===== */}
       <section className="page-listings">
         <div className="container">
-          {myItems.length > 0 ? (
-            <div className="listing-grid">
-              {myItems.map(item => (
-                <ListingCard 
-                  key={item.id} 
-                  item={item} 
-                  isFav={favorites.includes(item.id)}
-                  onToggleFav={onToggleFav}
-                  onDelete={onDelete}
-                  t={t}
-                />
-              ))}
+          {userListings.length > 0 ? (
+            <div className="listing-grid grid">
+              {userListings.map(item => {
+                // Динамически определяем текст бейджа для каждой карточки пользователя
+                // Если mode === 'search', берем перевод для поиска, если 'offer' — для предложения
+                const itemBadge = item.mode === 'search' 
+                  ? { label: t.job_search || 'Gesuch' } 
+                  : item.mode === 'offer' 
+                    ? { label: t.job_offer || 'Angebot' } 
+                    : null;
+
+                return (
+                  <ListingCard
+                    key={item.id}
+                    item={item}
+                    badge={itemBadge} // Передаем вычисленный бейдж в карточку
+                    isFav={favorites.includes(item.id)}
+                    onToggleFav={onToggleFav}
+                    onDelete={onDelete}
+                  />
+                );
+              })}
             </div>
           ) : (
-            <div style={{ textAlign: 'center', padding: '50px 0' }}>
-              <h3>{t.no_my_ads || 'Sie haben noch keine Anzeigen.'}</h3>
-              <button 
-                onClick={() => window.location.href='/post-ad'}
-                className="card-button"
-                style={{ marginTop: '20px', width: 'auto' }}
-              >
-                {t.nav_post_ad}
-              </button>
+            <div className="empty-state" style={{ textAlign: 'center', marginTop: '50px' }}>
+              <p style={{ fontSize: '18px', color: '#666' }}>{t.no_my_ads}</p>
             </div>
           )}
         </div>
