@@ -78,6 +78,17 @@ export const translations = {
     empty_job_search: 'Noch keine Stellengesuche gefunden',
     btn_post_job_offer: 'Stelle anbieten',
     btn_post_job_search: 'Job suchen',
+    job_offer: "Stellenangebot erstellen",
+    job_search: "Arbeitsgesuch (Lebenslauf)",
+    placeholder_job_title: "z.B. Küchenhilfe oder Koch",
+    placeholder_job_desc: "Beschreiben Sie die Aufgaben, Arbeitszeiten und Bedingungen...",
+    placeholder_search_title: "z.B. Suche Arbeit als Fahrer",
+    placeholder_search_desc: "Erzählen Sie über Ihre Erfahrung, Qualifikationen und Verfügbarkeit...",
+    placeholder_price_offer: "Gehalt (Brutto)",
+    placeholder_price_search: "Erwartetes Gehalt",
+    placeholder_city: "Stadt (z.B. Berlin)",
+    post_success_text_search: "Ihr Arbeitsgesuch wurde erfolgreich veröffentlicht.",
+    error_accept_terms: "Bitte akzeptieren Sie die Nutzungsbedingungen, um fortzufahren.",
 
   },
 
@@ -160,6 +171,17 @@ export const translations = {
     empty_job_search: 'Резюме пока нет',
     btn_post_job_offer: 'Разместить вакансию',
     btn_post_job_search: 'Найти работу',
+    job_offer: "Создать вакансию",
+    job_search: "Поиск работы (Резюме)",
+    placeholder_job_title: "Напр: Помощник на кухню или повар",
+    placeholder_job_desc: "Опишите обязанности, график работы и условия...",
+    placeholder_search_title: "Напр: Ищу работу водителем",
+    placeholder_search_desc: "Расскажите о своем опыте, квалификации и когда готовы приступить...",
+    placeholder_price_offer: "Зарплата (Брутто)",
+    placeholder_price_search: "Ожидаемая зарплата",
+    placeholder_city: "Город (напр. Берлин)",
+    post_success_text_search: "Ваше резюме успешно опубликовано.",
+    error_accept_terms: "Пожалуйста, подтвердите согласие с правилами, чтобы продолжить.",
 
 
   },
@@ -243,6 +265,17 @@ export const translations = {
     empty_job_search: 'Резюме поки немає',
     btn_post_job_offer: 'Розмістити вакансію',
     btn_post_job_search: 'Знайти роботу',
+    job_offer: "Створити вакансію",
+    job_search: "Пошук роботи (Резюме)",
+    placeholder_job_title: "Напр: Помічник на кухню або кухар",
+    placeholder_job_desc: "Опишіть обов'язки, графік роботи та умови...",
+    placeholder_search_title: "Напр: Шукаю роботу водієм",
+    placeholder_search_desc: "Розкажіть про свій досвід, кваліфікацію та коли готові приступити...",
+    placeholder_price_offer: "Зарплата (Брутто)",
+    placeholder_price_search: "Очікувана зарплата",
+    placeholder_city: "Місто (напр. Берлін)",
+    post_success_text_search: "Ваше резюме успішно опубліковано.",
+    error_accept_terms: "Будь ласка, підтвердіть згоду з правилами, щоб продовжити.",
 
 
   }

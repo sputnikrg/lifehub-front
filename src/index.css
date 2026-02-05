@@ -1166,3 +1166,60 @@ body.theme-dark .listing-detail-description-text {
   text-overflow: ellipsis;
 }
 
+/* --- Стили для идентичности с PostAdPage --- */
+.form-box {
+  background: #ffffff !important;
+  padding: 30px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  max-width: 600px !important;
+  margin: 40px auto !important;
+  border: 1px solid #e1e4e8 !important;
+  text-align: left !important;
+}
+
+.filter-field {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  margin-bottom: 20px !important;
+}
+
+.filter-field label {
+  font-weight: 600 !important;
+  color: #333 !important;
+  font-size: 14px !important;
+}
+
+.filter-field input,
+.filter-field select,
+.filter-field textarea {
+  padding: 12px !important;
+  border: 1px solid #ddd !important;
+  border-radius: 8px !important;
+  font-size: 16px !important;
+  width: 100% !important;
+  background: #fff !important;
+}
+
+.card-button {
+  background: #3498db !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 14px !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  transition: background 0.2s ease !important;
+}
+
+.card-button:hover {
+  background: #2980b9 !important;
+}
+
+.card-button:disabled {
+  background: #ccc !important;
+  cursor: not-allowed !important;
+}
