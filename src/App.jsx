@@ -15,6 +15,8 @@ import ListingDetail from './pages/ListingDetail';
 import PostAdPage from './pages/PostAdPage';
 import PostImmoOffer from './pages/PostImmoOffer';
 import PostImmoSearch from './pages/PostImmoSearch';
+import PostJobOffer from './pages/PostJobOffer';
+import PostJobSearch from './pages/PostJobSearch';
 import MyListings from './pages/MyListings';
 import Footer from './components/Footer';
 import Impressum from './pages/Impressum';
@@ -196,7 +198,7 @@ function App() {
             />
           }
         />
-        
+
         {/* --- JOB OFFER (ВАКАНСИИ) --- */}
         <Route
           path="/job/offer"
@@ -283,6 +285,28 @@ function App() {
           path="/immo/search/post"
           element={
             <PostImmoSearch
+              onAddListing={handleAddListing}
+              currentUser={user}
+              t={t}
+            />
+          }
+        />
+
+        <Route
+          path="/job/offer/post"
+          element={
+            <PostJobOffer
+              onAddListing={handleAddListing}
+              currentUser={user}
+              t={t}
+            />
+          }
+        />
+
+        <Route
+          path="/job/search/post"
+          element={
+            <PostJobSearch
               onAddListing={handleAddListing}
               currentUser={user}
               t={t}

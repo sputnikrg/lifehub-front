@@ -536,3 +536,91 @@
   overflow: hidden;
 }
 
+/* --- Стили для модального окна выбора категорий --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Темный полупрозрачный фон вокруг окна */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(4px); /* Легкое размытие заднего плана */
+}
+
+.modal-content {
+  background: #ffffff; /* Чистый белый фон окна */
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  color: #333;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #888;
+  line-height: 1;
+}
+
+.modal-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.modal-category-group {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-category-group:last-child {
+  border-bottom: none;
+}
+
+.modal-category-group h3 {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-modal-action {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #4a90e2; /* Яркая контрастная рамка */
+  background: #fff;
+  color: #4a90e2;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-modal-action:hover {
+  background: #4a90e2;
+  color: #fff;
+}
+
