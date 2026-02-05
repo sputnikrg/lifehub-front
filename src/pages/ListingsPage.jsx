@@ -27,15 +27,20 @@ const ListingsPage = ({
   const [viewMode, setViewMode] = useState("grid");
 
   /* =====================
-     ROUTE CONTEXT (IMMO)
+     ROUTE CONTEXT
   ===================== */
   const isImmoSearch = location.pathname.startsWith('/immo/search');
   const isImmoOffer = location.pathname.startsWith('/immo/offer');
   const isImmo = isImmoSearch || isImmoOffer;
 
-  const immoBadge = isImmoSearch
+  const isJobSearch = location.pathname.startsWith('/job/search');
+  const isJobOffer = location.pathname.startsWith('/job/offer');
+  const isJob = isJobSearch || isJobOffer;
+
+  // Бейджик (надпись на карточке)
+  const modeBadge = (isImmoSearch || isJobSearch)
     ? { label: 'Gesuch' }
-    : isImmoOffer
+    : (isImmoOffer || isJobOffer)
       ? { label: 'Angebot' }
       : null;
 
@@ -43,8 +48,9 @@ const ListingsPage = ({
      FILTERING
   ===================== */
   const filtered = listings.filter(item => {
-    const matchesType = isImmo
-      ? item.type === 'wohnung' && item.mode === (isImmoSearch ? 'search' : 'offer')
+    const matchesType = (isImmo || isJob)
+      ? item.type === (isImmo ? 'wohnung' : 'job') &&
+      (item.mode === (isImmoSearch || isJobSearch ? 'search' : 'offer') || (!item.mode && !isImmoSearch && !isJobSearch))
       : item.type === type;
 
     const matchesSearch = item.title?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -69,14 +75,10 @@ const ListingsPage = ({
      TITLE
   ===================== */
   const pageTitle = isImmo
-    ? isImmoSearch
-      ? t.immo_search || 'Wohnung gesucht'
-      : t.immo_offer || 'Wohnung anbieten'
-    : type === 'wohnung'
-      ? t.cat_wohnung
-      : type === 'job'
-        ? t.cat_job
-        : t.cat_dating;
+    ? (isImmoSearch ? (t.immo_search || 'Wohnung gesucht') : (t.immo_offer || 'Wohnung anbieten'))
+    : isJob
+      ? (isJobSearch ? (t.job_search || 'Arbeit gesucht') : (t.job_offer || 'Stellenangebote'))
+      : type === 'wohnung' ? t.cat_wohnung : type === 'job' ? t.cat_job : t.cat_dating;
 
   /* =====================
      RENDER
@@ -110,10 +112,10 @@ const ListingsPage = ({
               alignItems: 'center'
             }}
           >
-            {isImmo && (
+            {(isImmo || isJob) && (
               <div style={{ display: 'flex', gap: '8px', marginRight: '10px' }}>
                 <button
-                  onClick={() => navigate('/immo/offer')}
+                  onClick={() => navigate(isImmo ? '/immo/offer' : '/job/offer')}
                   style={{
                     padding: '8px 14px',
                     borderRadius: '20px',
@@ -128,7 +130,7 @@ const ListingsPage = ({
                 </button>
 
                 <button
-                  onClick={() => navigate('/immo/search')}
+                  onClick={() => navigate(isImmo ? '/immo/search' : '/job/search')}
                   style={{
                     padding: '8px 14px',
                     borderRadius: '20px',

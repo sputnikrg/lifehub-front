@@ -196,7 +196,40 @@ function App() {
             />
           }
         />
+        
+        {/* --- JOB OFFER (ВАКАНСИИ) --- */}
+        <Route
+          path="/job/offer"
+          element={
+            <ListingsPage
+              type="job"
+              mode="offer"
+              listings={listings}
+              favorites={favorites}
+              onToggleFav={toggleFavorite}
+              onDelete={handleDeleteListing}
+              currentUser={user}
+              t={t}
+            />
+          }
+        />
 
+        {/* --- JOB SEARCH (РЕЗЮМЕ) --- */}
+        <Route
+          path="/job/search"
+          element={
+            <ListingsPage
+              type="job"
+              mode="search"
+              listings={listings}
+              favorites={favorites}
+              onToggleFav={toggleFavorite}
+              onDelete={handleDeleteListing}
+              currentUser={user}
+              t={t}
+            />
+          }
+        />
 
         <Route
           path="/favorites"
