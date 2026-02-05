@@ -42,7 +42,8 @@ const ListingCard = ({ item, badge, isFav, onToggleFav, onDelete, viewMode }) =>
             alt={item.title}
           />
 
-          {item.type === "wohnung" && item.mode && (
+          {/* ✅ БЕЙДЖ: wohnung + job */}
+          {(item.type === "wohnung" || item.type === "job") && item.mode && (
             <span className={`listing-badge ${item.mode}`}>
               {item.mode === "offer" ? "Angebot" : "Gesuch"}
             </span>

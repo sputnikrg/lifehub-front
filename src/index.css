@@ -1223,3 +1223,26 @@ body.theme-dark .listing-detail-description-text {
   background: #ccc !important;
   cursor: not-allowed !important;
 }
+
+/* Цвета для бейджиков */
+.badge.offer {
+  background-color: #3498db !important; /* Синий для предложений */
+  color: white !important;
+}
+
+.badge.search {
+  background-color: #2ecc71 !important; /* Зеленый для поиска */
+  color: white !important;
+}
+
+/* Общий стиль бейджа, если его нет */
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  z-index: 10;
+}
