@@ -72,6 +72,12 @@ export const translations = {
     add_ad_general: 'Job / Dating',
     add_ad_immo_offer: 'Immobilie anbieten',
     add_ad_immo_search: 'Wohnung suchen',
+    job_offer: 'Stellenangebote',
+    job_search: 'Arbeit gesucht',
+    empty_job_offer: 'Noch keine Stellenangebote gefunden',
+    empty_job_search: 'Noch keine Stellengesuche gefunden',
+    btn_post_job_offer: 'Stelle anbieten',
+    btn_post_job_search: 'Job suchen',
 
   },
 
@@ -148,6 +154,12 @@ export const translations = {
     add_ad_general: 'Работа / Знакомства',
     add_ad_immo_offer: 'Предложить жильё',
     add_ad_immo_search: 'Ищу жильё',
+    job_offer: 'Вакансии',
+    job_search: 'Поиск работы',
+    empty_job_offer: 'Вакансий пока нет',
+    empty_job_search: 'Резюме пока нет',
+    btn_post_job_offer: 'Разместить вакансию',
+    btn_post_job_search: 'Найти работу',
 
 
   },
@@ -225,6 +237,12 @@ export const translations = {
     add_ad_general: 'Робота / Знайомства',
     add_ad_immo_offer: 'Запропонувати житло',
     add_ad_immo_search: 'Шукаю житло',
+    job_offer: 'Вакансії',
+    job_search: 'Пошук роботи',
+    empty_job_offer: 'Вакансій поки немає',
+    empty_job_search: 'Резюме поки немає',
+    btn_post_job_offer: 'Розмістити вакансію',
+    btn_post_job_search: 'Знайти роботу',
 
 
   }

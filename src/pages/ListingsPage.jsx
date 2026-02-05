@@ -226,7 +226,7 @@ const ListingsPage = ({
               <ListingCard
                 key={item.id}
                 item={item}
-                badge={immoBadge}
+                badge={modeBadge}
                 isFav={favorites.includes(item.id)}
                 onToggleFav={onToggleFav}
                 onDelete={onDelete}
