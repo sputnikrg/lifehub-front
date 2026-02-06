@@ -15,6 +15,7 @@ const PostJobSearch = ({ onAddListing, currentUser, t }) => {
         price: '',
         city: '',
         bundesland: '',
+        kontaktdaten: '',
     });
 
     const handleSubmit = async (e) => {
@@ -123,6 +124,16 @@ const PostJobSearch = ({ onAddListing, currentUser, t }) => {
                                     <option key={land.value} value={land.value}>{land.label}</option>
                                 ))}
                             </select>
+                        </div>
+
+                         <div className="filter-field">
+                            <label>Kontaktdaten</label>
+                            <textarea
+                                rows="3"
+                                placeholder={t.placeholder_contact || 'Telefon, E-Mail oder Telegram'}
+                                value={formData.kontaktdaten}
+                                onChange={(e) => setFormData({ ...formData, kontaktdaten: e.target.value })}
+                            />
                         </div>
 
                         {/* Юридический блок (как в PostAdPage) */}

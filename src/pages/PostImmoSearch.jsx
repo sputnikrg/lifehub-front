@@ -18,6 +18,7 @@ const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
     price: '',
     city: '',
     bundesland: '',
+    kontaktdaten: '',
   });
 
   useEffect(() => {
@@ -29,7 +30,8 @@ const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
           description: data.description,
           price: data.price,
           city: data.city,
-          bundesland: data.bundesland
+          bundesland: data.bundesland,
+          kontaktdaten: data.kontaktdaten || ''
         });
       };
       fetchListing();
@@ -118,6 +120,15 @@ const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
                 <option value="">{t.select_bundesland}</option>
                 {bundeslaender.map(land => <option key={land.value} value={land.value}>{land.label}</option>)}
               </select>
+            </div>
+            <div className="filter-field">
+              <label>Kontaktdaten</label>
+              <textarea
+                rows="2"
+                placeholder={t.placeholder_contact || 'Telefon, E-Mail oder Telegram'}
+                value={formData.kontaktdaten}
+                onChange={(e) => setFormData({ ...formData, kontaktdaten: e.target.value })}
+              />
             </div>
             <div style={{ marginTop: '20px', marginBottom: '20px' }}>
               <label style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', cursor: 'pointer' }}>

@@ -15,6 +15,7 @@ const PostJobOffer = ({ onAddListing, currentUser, t }) => {
         price: '',
         city: '',
         bundesland: '',
+        kontaktdaten: '',
     });
 
     const handleSubmit = async (e) => {
@@ -85,6 +86,8 @@ const PostJobOffer = ({ onAddListing, currentUser, t }) => {
                             />
                         </div>
 
+                        
+
                         <div style={{ display: 'flex', gap: '15px' }}>
                             <div className="filter-field" style={{ flex: 1 }}>
                                 <label>{t.label_price} (€)</label>
@@ -102,6 +105,16 @@ const PostJobOffer = ({ onAddListing, currentUser, t }) => {
                                 <option value="">{t.select_bundesland}</option>
                                 {bundeslaender.map(land => <option key={land.value} value={land.value}>{land.label}</option>)}
                             </select>
+                        </div>
+
+                        <div className="filter-field">
+                            <label>Kontaktdaten</label>
+                            <textarea
+                                rows="3"
+                                placeholder={t.placeholder_contact || 'Telefon, E-Mail oder Telegram'}
+                                value={formData.kontaktdaten}
+                                onChange={(e) => setFormData({ ...formData, kontaktdaten: e.target.value })}
+                            />
                         </div>
 
                         <div style={{ marginTop: '20px', marginBottom: '20px' }}>
