@@ -1246,3 +1246,51 @@ body.theme-dark .listing-detail-description-text {
   font-weight: bold;
   z-index: 10;
 }
+
+/* 1. Исправляем отступ фото (отодвигаем вправо на 5px) */
+.listing-card img, 
+.listing-item img,
+.mini-img-box img {
+    margin-left: 10px !important;
+    border-radius: 4px; /* опционально, для мягкости */
+}
+
+/* Фикс для кнопок управления: выравнивание и отступы */
+.card-actions, 
+.edit-controls, 
+.listing-actions {
+    display: flex !important;
+    flex-direction: row !important; /* Только в ряд */
+    flex-wrap: nowrap !important;   /* Запрещаем перенос (чтобы кнопка удаления не прыгала вниз) */
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 12px !important;           /* Расстояние между иконками */
+    
+    /* Позиционирование */
+    position: absolute !important;
+    right: 10px !important;          /* Отступ 10px от правого края для надежности */
+    bottom: 5px !important;
+    z-index: 10 !important;
+    
+    /* Фон, чтобы иконки были видны на любом фото */
+    background: rgba(255, 255, 255, 0.85) !important;
+    padding: 6px 10px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+}
+
+/* Принудительно показываем кнопки, если они были скрыты где-то в коде */
+.card-actions button, 
+.card-actions a,
+.card-actions .delete-btn {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #333 !important; /* Темный цвет, чтобы было видно на светлом фоне */
+}
+
+/* Отступ для фото слева (как ты просил) */
+.listing-card img, 
+.listing-item img {
+    margin-left: 5px !important;
+}

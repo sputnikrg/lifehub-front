@@ -1,145 +1,132 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import imageCompression from 'browser-image-compression';
+import { useNavigate, useParams } from 'react-router-dom';
 import { bundeslaender } from '../data/bundeslaender';
 
-const PostImmoSearch = ({ currentUser, t }) => {
+const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
 
+  const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false); // ДОБАВЛЕНО
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+
   const [formData, setFormData] = useState({
-    type: 'wohnung',
     title: '',
+    description: '',
+    price: '',
     city: '',
     bundesland: '',
-    budget: '',
-    description: '',
-    kontaktdaten: '',
-    images: []
   });
-
-  const [loading, setLoading] = useState(false);
-  const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
   useEffect(() => {
     if (isEditMode) {
       const fetchListing = async () => {
-        const { data } = await supabase
-          .from('listings')
-          .select('*')
-          .eq('id', id)
-          .single();
-
-        if (data) {
-          setFormData({
-            ...data,
-            budget: data.price ?? ''
-          });
-        }
+        const { data } = await supabase.from('listings').select('*').eq('id', id).single();
+        if (data) setFormData({
+          title: data.title,
+          description: data.description,
+          price: data.price,
+          city: data.city,
+          bundesland: data.bundesland
+        });
       };
       fetchListing();
     }
   }, [id, isEditMode]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!currentUser) {
-      alert('Bitte einloggen oder registrieren');
-      return;
-    }
-
     if (!privacyAccepted) return;
-
     setLoading(true);
 
-    try {
-      const finalData = {
-        type: 'wohnung',
-        mode: 'search',
-        title: formData.title,
-        city: formData.city,
-        bundesland: formData.bundesland,
-        description: formData.description,
-        kontaktdaten: formData.kontaktdaten,
-        price: Number(formData.budget),
-        images: [],
-        user_id: currentUser.id
-      };
+    const finalData = {
+      ...formData,
+      type: 'wohnung',
+      mode: 'search',
+      user_id: currentUser.id,
+      created_at: new Date().toISOString()
+    };
 
-      if (isEditMode && id) {
-        const { error } = await supabase
-          .from('listings')
-          .update(finalData)
-          .eq('id', id);
-
-        if (error) throw error;
-      } else {
-        const { error } = await supabase
-          .from('listings')
-          .insert([finalData]);
-
-        if (error) throw error;
-      }
-
-      navigate('/my-listings');
-    } catch (err) {
-      alert(err.message);
-    } finally {
-      setLoading(false);
+    let result;
+    if (isEditMode) {
+      result = await supabase.from('listings').update(finalData).eq('id', id).select();
+    } else {
+      result = await supabase.from('listings').insert([finalData]).select();
     }
+
+    if (result.error) {
+      alert("Ошибка: " + result.error.message);
+    } else {
+      if (onAddListing) onAddListing(result.data[0]);
+      setIsSubmitted(true); // ЗАМЕНЕНО с navigate
+    }
+    setLoading(false);
   };
+
+  // ДОБАВЛЕН БЛОК УСПЕШНОЙ ОТПРАВКИ
+  if (isSubmitted) {
+    return (
+      <main className="page-main">
+        <div className="container">
+          <div className="form-box" style={{ textAlign: 'center' }}>
+            <h2 style={{ fontSize: '40px' }}>✅</h2>
+            <h2>{t.post_success_title || 'Erfolgreich!'}</h2>
+            <p style={{ marginBottom: '20px' }}>{t.post_success_text}</p>
+            <button className="card-button" onClick={() => navigate('/my-listings')}>
+              {t.view_listings || 'Zur Liste'}
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="page-main">
       <div className="container">
         <div className="form-box">
-          <h2>{isEditMode ? t.form_title_edit : t.form_title_new}</h2>
+          {/* Исправленный блок заголовка */}
+          <h2 style={{ marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
+            {isEditMode ? (t.form_title_edit || 'Bearbeiten') : (t.immo_search || 'Immobilie gesucht')}
+          </h2>
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-
-            <label>{t.label_title}</label>
-            <input name="title" value={formData.title} onChange={handleChange} required />
-
-            <label>{t.label_city}</label>
-            <input name="city" value={formData.city} onChange={handleChange} required />
-
-            <label>{t.label_bundesland}</label>
-            <select name="bundesland" value={formData.bundesland} onChange={handleChange} required>
-              <option value="">{t.select_bundesland}</option>
-              {bundeslaender.map(bl => (
-                <option key={bl.value} value={bl.value}>{bl.label}</option>
-              ))}
-            </select>
-
-            <label>{t.label_budget}</label>
-            <input name="budget" type="number" value={formData.budget} onChange={handleChange} required />
-
-            <label>{t.label_desc}</label>
-            <textarea name="description" value={formData.description} onChange={handleChange} required />
-
-            <label>Kontaktdaten</label>
-            <textarea name="kontaktdaten" value={formData.kontaktdaten} onChange={handleChange} />
-
-            <label style={{ fontSize: '14px' }}>
-              <input
-                type="checkbox"
-                checked={privacyAccepted}
-                onChange={(e) => setPrivacyAccepted(e.target.checked)}
-                required
-              />{' '}
-              {t.consent_privacy}
-            </label>
-
-            <button type="submit" disabled={!privacyAccepted || loading}>
-              {loading ? '...' : t.btn_publish}
+          <form onSubmit={handleSubmit}>
+            <div className="filter-field">
+              <label>{t.label_title}</label>
+              {/* ... остальной код формы */}
+              <input required placeholder="z.B. Suche 2-Zimmer Wohnung" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
+            </div>
+            <div className="filter-field">
+              <label>{t.label_desc}</label>
+              <textarea required rows="6" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
+            </div>
+            <div style={{ display: 'flex', gap: '15px' }}>
+              <div className="filter-field" style={{ flex: 1 }}>
+                <label>{t.label_budget || 'Budget'} (€)</label>
+                <input type="number" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} />
+              </div>
+              <div className="filter-field" style={{ flex: 1 }}>
+                <label>{t.label_city}</label>
+                <input required value={formData.city} onChange={(e) => setFormData({ ...formData, city: e.target.value })} />
+              </div>
+            </div>
+            <div className="filter-field">
+              <label>{t.label_bundesland}</label>
+              <select required value={formData.bundesland} onChange={(e) => setFormData({ ...formData, bundesland: e.target.value })}>
+                <option value="">{t.select_bundesland}</option>
+                {bundeslaender.map(land => <option key={land.value} value={land.value}>{land.label}</option>)}
+              </select>
+            </div>
+            <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+              <label style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', cursor: 'pointer' }}>
+                <input type="checkbox" checked={privacyAccepted} onChange={(e) => setPrivacyAccepted(e.target.checked)} required />
+                <span style={{ fontSize: '13px' }}>{t.consent_privacy}</span>
+              </label>
+            </div>
+            <button type="submit" className="card-button" disabled={loading || !privacyAccepted}>
+              {loading ? '...' : (isEditMode ? t.btn_save : t.btn_publish)}
             </button>
           </form>
         </div>
