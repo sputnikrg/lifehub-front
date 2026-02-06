@@ -11,7 +11,7 @@ export const translations = {
     cat_job: "Jobs & Karriere",
     cat_dating: "Community",
 
-    form_title_new: "Neues Inserat erstellen",
+    form_title_new: "Neues Anzeige erstellen",
     form_title_edit: "Inserat bearbeiten",
     label_cat: "Kategorie wählen",
     label_title: "Titel der Anzeige",
