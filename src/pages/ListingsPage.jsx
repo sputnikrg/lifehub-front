@@ -24,7 +24,7 @@ const ListingsPage = ({
   const [cityFilter, setCityFilter] = useState("");
   const [bundeslandFilter, setBundeslandFilter] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
-  const [viewMode, setViewMode] = useState("grid");
+  const [viewMode, setViewMode] = useState("list");
 
   /* =====================
      ROUTE CONTEXT

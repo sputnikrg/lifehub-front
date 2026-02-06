@@ -588,7 +588,7 @@ body {
   display: inline-block;
   padding: 5px 0;
   /* Уменьшил высоту строки */
-  animation: marquee 15s linear infinite;
+  animation: marquee 25s linear infinite;
   font-weight: 500;
 }
 

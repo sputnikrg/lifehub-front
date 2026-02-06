@@ -624,3 +624,43 @@
   color: #fff;
 }
 
+/* Стили для двойных кнопок в карточках */
+.category-buttons-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  padding: 0 10px;
+}
+
+.card-button-mini {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.8rem;
+  transition: background-color 0.3s;
+  flex: 1; /* Чтобы кнопки были одинаковой ширины */
+  text-align: center;
+}
+
+.card-button-mini:hover {
+  background-color: #ff3333;
+}
+
+/* На мобилках кнопки могут стоять друг под другом, если мало места */
+@media (max-width: 480px) {
+  .category-buttons-group {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+/* Делаем кнопки управления видимыми на всех устройствах */
+.card-actions, .edit-controls {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}

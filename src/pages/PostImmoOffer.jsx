@@ -145,6 +145,9 @@ const PostImmoOffer = ({ currentUser, t }) => {
         await supabase.from('listings').insert([finalData]);
       }
 
+      // Добавляем простое уведомление
+      alert(isEditMode ? (t.edit_success || "Сохранено!") : (t.post_success_title || "Опубликовано!"));
+
       navigate('/my-listings', {
         state: { published: true }
       });

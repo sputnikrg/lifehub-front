@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'; // Добавил useState для данных
+import React, { useState, useEffect } from 'react'; 
 import { Link } from 'react-router-dom';
 import { Helmet } from "react-helmet-async";
-import { supabase } from '../supabaseClient'; // Добавил импорт базы
+import { supabase } from '../supabaseClient'; 
 
 const Home = ({ t, lang }) => {
   const [hotRent, setHotRent] = useState([]);
@@ -13,16 +13,13 @@ const Home = ({ t, lang }) => {
         ? "LifeHub — Anzeigen, Jobs und Community in Deutschland"
         : "LifeHub — объявления, работа и сообщество в Германии";
 
-    // Загружаем данные для боковых колонок
     fetchSideData();
   }, [lang]);
 
   const fetchSideData = async () => {
-    // Берем 4 свежих квартиры
     const { data: rent } = await supabase.from('listings').select('*').eq('type', 'wohnung').limit(4).order('created_at', { ascending: false });
     if (rent) setHotRent(rent);
 
-    // Берем 4 свежих анкеты
     const { data: dating } = await supabase.from('listings').select('*').eq('type', 'dating').limit(4).order('created_at', { ascending: false });
     if (dating) setTopDating(dating);
   };
@@ -48,10 +45,8 @@ const Home = ({ t, lang }) => {
         </div>
       </section>
 
-      {/* НОВАЯ СТРУКТУРА С БОКОВЫМИ ПАНЕЛЯМИ */}
       <div className="home-layout-wrapper">
-
-        {/* ЛЕВАЯ КОЛОНКА: HOT-IMMOBILE */}
+        {/* ЛЕВАЯ КОЛОНКА */}
         <aside className="home-side-widget">
           <h3 className="widget-title">Hot-Immobile</h3>
           <div className="mini-card-grid">
@@ -66,30 +61,46 @@ const Home = ({ t, lang }) => {
           </div>
         </aside>
 
-        {/* ЦЕНТР: ТВОИ ТЕКУЩИЕ КАТЕГОРИИ (БЕЗ ИЗМЕНЕНИЙ) */}
+        {/* ЦЕНТР: КАТЕГОРИИ */}
         <main className="home-center-main">
           <div className="cards">
             {categories.map((cat) => (
-              <Link
-                key={cat.type}
-                to={`/${cat.type}`}
-                className={`card ${cat.type} card-link`}
-              >
+              <div key={cat.type} className={`card ${cat.type}`}>
                 <img src={cat.img} alt={cat.title} />
                 <div className="overlay">
                   <h2>{cat.title}</h2>
                   <p>{cat.desc}</p>
-                  <span className="card-button">
-                    {t.cat_all}
-                  </span>
+                  
+                  {/* Логика кнопок: для жилья и работы разделяем на Offer/Search */}
+                  {(cat.type === 'wohnung' || cat.type === 'job') ? (
+                    <div style={{ display: 'flex', gap: '10px', marginTop: '10px', width: '100%', justifyContent: 'center' }}>
+                      <Link 
+                        to={cat.type === 'wohnung' ? '/immo/offer' : '/job/offer'} 
+                        className="card-button" 
+                        style={{ flex: 1, padding: '8px 5px', fontSize: '13px', textAlign: 'center' }}
+                      >
+                        {t.offer_label || (lang === 'de' ? 'Angebote' : 'Предложения')}
+                      </Link>
+                      <Link 
+                        to={cat.type === 'wohnung' ? '/immo/search' : '/job/search'} 
+                        className="card-button" 
+                        style={{ flex: 1, padding: '8px 5px', fontSize: '13px', textAlign: 'center' }}
+                      >
+                        {t.search_label || (lang === 'de' ? 'Gesuche' : 'Поиск')}
+                      </Link>
+                    </div>
+                  ) : (
+                    <Link to={`/${cat.type}`} className="card-button">
+                      {t.cat_all}
+                    </Link>
+                  )}
                 </div>
-              </Link>
+              </div>
             ))}
-
           </div>
         </main>
 
-        {/* ПРАВАЯ КОЛОНКА: TOP-DATING */}
+        {/* ПРАВАЯ КОЛОНКА */}
         <aside className="home-side-widget">
           <h3 className="widget-title">Top-Dating</h3>
           <div className="mini-card-grid">
@@ -103,10 +114,7 @@ const Home = ({ t, lang }) => {
             ))}
           </div>
         </aside>
-
       </div>
-
-      {/* Твой футер и заметки остаются ниже... */}
     </>
   );
 };

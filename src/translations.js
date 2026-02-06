@@ -89,6 +89,8 @@ export const translations = {
     placeholder_city: "Stadt (z.B. Berlin)",
     post_success_text_search: "Ihr Arbeitsgesuch wurde erfolgreich veröffentlicht.",
     error_accept_terms: "Bitte akzeptieren Sie die Nutzungsbedingungen, um fortzufahren.",
+    edit_success: "Erfolgreich gespeichert!",
+    post_success_title: "Anzeige veröffentlicht!",
 
   },
 
@@ -182,7 +184,8 @@ export const translations = {
     placeholder_city: "Город (напр. Берлин)",
     post_success_text_search: "Ваше резюме успешно опубликовано.",
     error_accept_terms: "Пожалуйста, подтвердите согласие с правилами, чтобы продолжить.",
-
+    edit_success: "Успешно сохранено!",
+    post_success_title: "Объявление опубликовано!",
 
   },
 
@@ -276,6 +279,10 @@ export const translations = {
     placeholder_city: "Місто (напр. Берлін)",
     post_success_text_search: "Ваше резюме успішно опубліковано.",
     error_accept_terms: "Будь ласка, підтвердіть згоду з правилами, щоб продовжити.",
+    offer_label: "Пропозиції",
+    search_label: "Пошук",
+    edit_success: "Успішно збережено!",
+    post_success_title: "Оголошення опубліковано!",
 
 
   }

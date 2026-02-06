@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { supabase } from './supabaseClient';
 import { translations } from './translations';
+import { useLocation } from 'react-router-dom';
 
 // ⬇️ ДОБАВЛЕНО
 import CookieBanner from './components/CookieBanner';
@@ -24,6 +25,13 @@ import Datenschutz from './pages/Datenschutz';
 import AGB from './pages/AGB';
 import AddAdModal from './components/AddAdModal';
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 function App() {
   const [listings, setListings] = useState([]);
@@ -130,6 +138,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       {/* ✅ CookieBanner использует ТОТ ЖЕ lang */}
       <CookieBanner lang={lang} />
 
