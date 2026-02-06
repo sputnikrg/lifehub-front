@@ -78,6 +78,60 @@ header {
   /* Синий цвет для активного языка */
 }
 
+.language-switcher {
+  position: relative;
+}
+
+.language-switcher__trigger {
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  color: #333;
+  cursor: pointer;
+}
+
+.language-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 160px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border-radius: 10px;
+  border: 1px solid #e6e6e6;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  z-index: 1100;
+}
+
+.language-dropdown__item {
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.language-dropdown__item:hover {
+  background: #f0f4ff;
+}
+
+.language-dropdown__item.is-active {
+  color: #0d47d9;
+  font-weight: 700;
+}
+
+.language-dropdown__label--mobile { 
+  display: none; }
+
 /* Контейнер для всех кнопок */
 .nav-actions {
   display: flex;
@@ -1293,4 +1347,83 @@ body.theme-dark .listing-detail-description-text {
 .listing-card img, 
 .listing-item img {
     margin-left: 5px !important;
+}
+
+.hero {
+  pointer-events: none;
+}
+
+/* ФИКС КЛИКАБЕЛЬНОСТИ ЯЗЫКОВОГО МЕНЮ */
+
+/* 1. Поднимаем шапку и заставляем её принимать клики */
+header {
+  position: sticky !important;
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+}
+
+/* 2. Гарантируем, что контейнер внутри шапки не блокирует нажатия */
+.header-inner {
+  position: relative !important;
+  z-index: 10000 !important;
+  pointer-events: auto !important;
+}
+
+/* 3. Вытаскиваем сам выпадающий список на самый передний план */
+/* Используй класс своего контейнера (обычно .dropdown-menu или .language-dropdown) */
+.language-switcher-dropdown, 
+.dropdown-menu {
+  position: absolute !important;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+}
+
+/* 4. Принудительно разрешаем клики по пунктам (Deutsch, Русский, Українська) */
+.language-switcher-dropdown button,
+.language-switcher-dropdown li,
+.dropdown-item {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+/* 5. Опускаем Hero-секцию ниже, чтобы она не перекрывала невидимым краем меню */
+.hero, .hero-section {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Фикс для кликабельности языков */
+.language-switcher {
+  position: relative !important;
+  z-index: 10001 !important; /* Выше всех остальных кнопок в хедере */
+}
+
+.language-dropdown {
+  position: absolute !important;
+  top: 100% !important;
+  right: 0 !important;
+  z-index: 10002 !important; /* Самый высокий приоритет */
+  pointer-events: auto !important; /* Принудительно разрешаем клики */
+  background: #fff !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+.language-dropdown button {
+  width: 100% !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 10003 !important;
+}
+
+/* Опускаем hero-секцию, чтобы её невидимый край не перекрывал меню */
+.hero, .hero-section {
+  z-index: 1 !important;
+}
+
+@media (max-width: 768px) {
+  .language-switcher__trigger { height: 30px; padding: 0 8px; font-size: 11px; }
+  .language-dropdown { top: calc(100% + 6px); left: 0; right: auto; min-width: 110px; }
+  .language-dropdown__label--desktop { display: none; }
+  .language-dropdown__label--mobile { display: inline; }
 }

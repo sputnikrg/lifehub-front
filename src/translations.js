@@ -5,12 +5,10 @@ export const translations = {
     nav_post_ad: "Anzeige erstellen",
     nav_login: "Anmelden",
     nav_logout: "Abmelden",
-
     cat_all: "Alle Anzeigen",
     cat_wohnung: "Immobilien",
     cat_job: "Jobs & Karriere",
     cat_dating: "Community",
-
     form_title_new: "Neues Anzeige erstellen",
     form_title_edit: "Inserat bearbeiten",
     label_cat: "Kategorie wählen",
@@ -36,22 +34,18 @@ export const translations = {
     no_my_ads: "Sie haben derzeit keine aktiven Inserate.",
     no_favs: "Ihre Merkliste ist noch leer.",
     back: "Zurück zur Übersicht",
-
     trust_telegram_title: "LifeHub ist ein Projekt im Aufbau",
     trust_telegram_text:
       "Wir entwickeln das Portal Schritt für Schritt und teilen Updates und hilfreiche Infos auch in unserem Telegram-Kanal.",
     trust_telegram_cta: "Zum Telegram-Kanal",
-
     hero_main_title: "Anzeigen, Jobs und Kontakte für alle, die derzeit in Deutschland leben",
     hero_main_subtitle: "LifeHub — Anzeigen, Jobs und Community auf Deutsch, Ukrainisch und Russisch",
-
     cat_wohnung_text:
       "Wohnungsangebote in deutschen Städten: Miete, WG, Zwischenmiete und Immobilien.",
     cat_job_text:
       "Jobangebote und Karrieremöglichkeiten in Deutschland.",
     cat_dating_text:
       "Community-Bereich für Kontakte, Austausch und gegenseitige Hilfe.",
-
     hint_job: "Möchten Sie eine Stellenanzeige aufgeben? Klicken Sie oben auf „Anzeige erstellen“.",
     hint_wohnung: "Möchten Sie eine Wohnungsanzeige aufgeben? Klicken Sie oben auf „Anzeige erstellen“.",
     hint_dating: "Möchten Sie eine Anzeige aufgeben? Klicken Sie oben auf „Anzeige erstellen“.",

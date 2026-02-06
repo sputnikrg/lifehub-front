@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import AddAdModal from './AddAdModal';
+import LanguageSwitcher from './LanguageSwitcher';
+
 
 const Header = ({ user, lang, onLangChange, t, onOpenAddModal }) => {
-  const [showAddModal, setShowAddModal] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -46,13 +46,7 @@ const Header = ({ user, lang, onLangChange, t, onOpenAddModal }) => {
 
         <nav className="header-right">
           {/* Языки */}
-          <div className="lang-switcher">
-            <span onClick={() => onLangChange('de')} className={lang === 'de' ? 'active' : ''}>DE</span>
-            <span className="separator"> | </span>
-            <span onClick={() => onLangChange('ru')} className={lang === 'ru' ? 'active' : ''}>RU</span>
-            <span className="separator"> | </span>
-            <span onClick={() => onLangChange('ua')} className={lang === 'ua' ? 'active' : ''}>UA</span>
-          </div>
+          <LanguageSwitcher lang={lang} onLangChange={onLangChange} />
 
           {/* Кнопки действий */}
           <div className="nav-actions">
