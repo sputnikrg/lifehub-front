@@ -40,18 +40,21 @@ const Home = ({ t, lang }) => {
   return (
     <>
       <Helmet>
-        <title>{lang === "de" ? "LifeHub — Anzeigen, Jobs und Community in Deutschland" : "LifeHub — объявления, работа и сообщество в Германии"}</title>
+        <title>
+          {lang === "de"
+            ? "LifeHub — Jobs, Immobilien und Community in Deutschland"
+            : lang === "ua"
+              ? "LifeHub — Робота, нерухомість та оголошення в Німеччині"
+              : "LifeHub — Работа, недвижимость и объявления в Германии"}
+        </title>
 
-        <meta name="description" content={
+        <meta name="description" content={t.seo_description} />
+
+        <meta name="keywords" content={
           lang === "de"
-            ? "Suchen und finden Sie aktuelle Stellenangebote, Mietwohnungen und neue Kontakte in Deutschland. LifeHub — Ihr lokaler Marktplatz für Arbeit, Immobilien und Community."
-            : "Ищите и находите актуальные вакансии, жилье и новые знакомства в Германии. LifeHub — ваша локальная платформа для поиска работы, недвижимости и общения."
+            ? "Jobs Deutschland, Wohnung mieten, Stuttgart Jobs, Arbeit finden"
+            : "Работа в Германии, Жилье в Германии, Квартира Штутгарт, Вакансии Германия"
         } />
-
-        {/* Добавим ключевые слова для поисковиков */}
-        <meta name="keywords" content="Работа в Германии, Жилье в Германии, Знакомства в Германии, Работа Штутгарт, Jobs in Deutschland, Wohnung mieten, Community Deutschland" />
-
-        <link rel="canonical" href="https://mylifehub.de/" />
       </Helmet>
 
       <section className="hero">
