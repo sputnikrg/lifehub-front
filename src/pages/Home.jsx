@@ -118,17 +118,15 @@ const Home = ({ t, lang }) => {
 
         {/* ПРАВАЯ КОЛОНКА */}
         <aside className="home-side-widget">
-          {/* Заголовок теперь берем из переводов */}
-          <h3 className="widget-title">{t.widget_jobs_title || "Jobs!"}</h3>
+          {/* Понятный заголовок для раздела работы */}
+          <h3 className="widget-title">{lang === 'de' ? 'Es gibt Arbeit!' : 'Есть работа!'}</h3>
           <div className="mini-card-grid">
             {topJobs.map(item => (
               <Link key={item.id} to={`/listing/job/${item.id}`} className="mini-item">
                 <div className="mini-img-box">
                   <img src={item.images?.[0] || "/assets/img/placeholder.jpg"} alt="" />
                 </div>
-                {/* Вместо возраста выводим название вакансии */}
                 <span className="mini-label">{item.title}</span>
-                {/* Если в вакансии есть цена/зарплата — выводим, если нет — пишем "Договорная" */}
                 <span className="mini-price">{item.price > 0 ? `${item.price} €` : (lang === 'de' ? 'VB' : 'Договорная')}</span>
                 <span className="mini-city">{item.city}</span>
               </Link>
