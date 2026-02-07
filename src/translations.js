@@ -85,6 +85,8 @@ export const translations = {
     error_accept_terms: "Bitte akzeptieren Sie die Nutzungsbedingungen, um fortzufahren.",
     edit_success: "Erfolgreich gespeichert!",
     post_success_title: "Anzeige veröffentlicht!",
+    widget_jobs_title: "Jobs!",
+    widget_jobs_label: "Es gibt Arbeit!",
 
   },
 
@@ -180,6 +182,8 @@ export const translations = {
     error_accept_terms: "Пожалуйста, подтвердите согласие с правилами, чтобы продолжить.",
     edit_success: "Успешно сохранено!",
     post_success_title: "Объявление опубликовано!",
+    widget_jobs_title: "Работа!",
+    widget_jobs_label: "Есть работа!",
 
   },
 
@@ -277,6 +281,8 @@ export const translations = {
     search_label: "Пошук",
     edit_success: "Успішно збережено!",
     post_success_title: "Оголошення опубліковано!",
+    widget_jobs_title: "Робота!",
+    widget_jobs_label: "Є робота!",
 
 
   }
