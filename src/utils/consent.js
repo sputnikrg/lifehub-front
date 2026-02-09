@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'lh_consent';
+const GA_ID = 'G-HCSTJ31YZ4'; // ← твой GA ID
 
 export function getStoredConsent() {
   try {
@@ -9,13 +10,27 @@ export function getStoredConsent() {
   }
 }
 
-export function applyConsent(analyticsGranted) {
-  if (!window.gtag) return;
+function loadGoogleAnalytics() {
+  if (window.gtag) return;
 
-  window.gtag('consent', 'update', {
-    analytics_storage: analyticsGranted ? 'granted' : 'denied'
+  const script = document.createElement('script');
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+  script.async = true;
+  document.head.appendChild(script);
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    window.dataLayer.push(arguments);
+  }
+  window.gtag = gtag;
+
+  window.gtag('js', new Date());
+  window.gtag('config', GA_ID, {
+    anonymize_ip: true
   });
+}
 
+export function applyConsent(analyticsGranted) {
   localStorage.setItem(
     STORAGE_KEY,
     JSON.stringify({
@@ -23,4 +38,8 @@ export function applyConsent(analyticsGranted) {
       timestamp: Date.now()
     })
   );
+
+  if (analyticsGranted === true) {
+    loadGoogleAnalytics();
+  }
 }
