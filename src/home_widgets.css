@@ -707,3 +707,53 @@
     opacity: 1 !important;
 }
 
+/* Базовое поведение для десктопа */
+.nav-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 15px !important;
+}
+
+.nav-row-top, .nav-row-bottom {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+/* МОБИЛЬНАЯ АДАПТАЦИЯ (две строки) */
+@media (max-width: 767px) {
+  .nav-actions {
+    flex-direction: column !important; /* Ряды друг под другом */
+    align-items: flex-end !important;   /* Прижимаем к правому краю */
+    gap: 10px !important;                /* Расстояние между рядами */
+    padding-right: 5px;
+  }
+
+  .nav-row-top {
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  .nav-row-bottom {
+    justify-content: flex-end;
+    width: 100%;
+    /* Небольшая разделительная линия сверху для визуальной чистоты */
+    border-top: 1px solid rgba(0,0,0,0.05); 
+    padding-top: 6px;
+  }
+
+  /* Сбрасываем возможные лишние отступы у кнопок */
+  .nav-row-bottom > * {
+    margin: 0 !important;
+  }
+}
+
+/* Фикс для больших экранов: убираем лишний бордер, если он появился */
+@media (min-width: 768px) {
+  .nav-row-bottom {
+    border-top: none !important;
+    padding-top: 0 !important;
+  }
+}
+
