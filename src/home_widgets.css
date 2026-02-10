@@ -721,30 +721,27 @@
   gap: 12px !important;
 }
 
-//* МОБИЛЬНАЯ АДАПТАЦИЯ (две строки) */
+/* МОБИЛЬНАЯ АДАПТАЦИЯ (две строки) */
 @media (max-width: 767px) {
   .nav-actions {
-    flex-direction: column !important;
-    align-items: center !important; /* МЕНЯЕМ с flex-end на center */
-    gap: 10px !important;
-    width: 100% !important;        /* Занимаем всю ширину */
-    padding: 0 !important;
+    flex-direction: column !important; /* Ряды друг под другом */
+    align-items: flex-end !important;   /* Прижимаем к правому краю */
+    gap: 10px !important;                /* Расстояние между рядами */
+    padding-right: 5px;
   }
 
   .nav-row-top {
-    display: flex !important;
-    justify-content: center !important; /* ЦЕНТРУЕМ СОЦСЕТИ И ЯЗЫК */
-    width: 100% !important;
+    justify-content: flex-end;
+    width: 100%;
   }
 
   .nav-row-bottom {
-    display: flex !important;
-    justify-content: center !important; /* ЦЕНТРУЕМ КНОПКИ ДЕЙСТВИЙ */
-    width: 100% !important;
+    justify-content: flex-end;
+    width: 100%;
+    /* Небольшая разделительная линия сверху для визуальной чистоты */
     border-top: 1px solid rgba(0,0,0,0.05); 
-    padding-top: 8px;
+    padding-top: 6px;
   }
-}
 
   /* Сбрасываем возможные лишние отступы у кнопок */
   .nav-row-bottom > * {
