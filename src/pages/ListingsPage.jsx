@@ -223,13 +223,15 @@ const ListingsPage = ({
           {/* ===== GRID ===== */}
           <div className={`listing-grid ${viewMode}`}>
             {filtered.map(item => (
+              // Стало:
               <ListingCard
                 key={item.id}
                 item={item}
                 badge={modeBadge}
                 isFav={favorites.includes(item.id)}
                 onToggleFav={onToggleFav}
-                onDelete={onDelete}
+                // Передает функцию только если пользователь авторизован и это его объявление
+                onDelete={(currentUser && (currentUser.id === item.user_id || currentUser.email === 'твой_админ_email')) ? onDelete : null}
                 viewMode={viewMode}
               />
             ))}
