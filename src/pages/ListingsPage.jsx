@@ -112,6 +112,7 @@ const ListingsPage = ({
               alignItems: 'center'
             }}
           >
+            {/* БЛОК ПЕРЕКЛЮЧАТЕЛЯ ANGEBOT / GESUCH */}
             {(isImmo || isJob) && (
               <div style={{ display: 'flex', gap: '8px', marginRight: '10px' }}>
                 <button
@@ -121,12 +122,14 @@ const ListingsPage = ({
                     borderRadius: '20px',
                     border: '1px solid #ddd',
                     cursor: 'pointer',
-                    background: isImmoOffer ? '#4a90e2' : '#f5f5f5',
-                    color: isImmoOffer ? '#fff' : '#333',
-                    fontWeight: 500
+                    // СИНИЙ цвет, если мы в режиме Предложения (Offer) для Immo или Job
+                    background: (isImmoOffer || isJobOffer) ? '#4a90e2' : '#f5f5f5',
+                    color: (isImmoOffer || isJobOffer) ? '#fff' : '#333',
+                    fontWeight: 500,
+                    transition: 'all 0.2s ease'
                   }}
                 >
-                  Angebot
+                  {t.label_offer || 'Angebot'}
                 </button>
 
                 <button
@@ -136,12 +139,14 @@ const ListingsPage = ({
                     borderRadius: '20px',
                     border: '1px solid #ddd',
                     cursor: 'pointer',
-                    background: isImmoSearch ? '#4a90e2' : '#f5f5f5',
-                    color: isImmoSearch ? '#fff' : '#333',
-                    fontWeight: 500
+                    // СИНИЙ цвет, если мы в режиме Поиска (Search) для Immo или Job
+                    background: (isImmoSearch || isJobSearch) ? '#4a90e2' : '#f5f5f5',
+                    color: (isImmoSearch || isJobSearch) ? '#fff' : '#333',
+                    fontWeight: 500,
+                    transition: 'all 0.2s ease'
                   }}
                 >
-                  Gesuch
+                  {t.label_search || 'Gesuch'}
                 </button>
               </div>
             )}
