@@ -1427,3 +1427,50 @@ header {
   .language-dropdown__label--desktop { display: none; }
   .language-dropdown__label--mobile { display: inline; }
 }
+
+/* =========================
+   FOOTER LAYOUT FIX
+========================= */
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-bottom {
+  margin-top: 8px;
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+  .footer-top {
+    flex-direction: row;
+  }
+}
+
+/* =========================
+   FOOTER MOBILE CENTER FIX
+========================= */
+
+@media (max-width: 768px) {
+
+  footer .container > div:first-child {
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 8px;
+  }
+
+}
+
+/* =========================
+   FOOTER ALIGN CENTER (ALL DEVICES)
+========================= */
+
+footer .container > div:first-child {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 20px !important;
+}

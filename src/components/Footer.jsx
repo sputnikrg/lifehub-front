@@ -21,8 +21,38 @@ const Footer = ({ t }) => {
       }}
     >
       <div className="container">
-        <p>© 2026 LifeHub. Alle Rechte vorbehalten.</p>
 
+        {/* ✅ Первая строка: копирайт + тема */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
+          <p style={{ margin: 0 }}>
+            © 2026 LifeHub. Alle Rechte vorbehalten.
+          </p>
+
+          <button
+            onClick={toggleTheme}
+            title="Dark mode"
+            style={{
+              background: 'none',
+              border: '1px solid #ccc',
+              borderRadius: '20px',
+              padding: '6px 12px',
+              cursor: 'pointer',
+              fontSize: '13px',
+              color: '#666',
+              lineHeight: '1'
+            }}
+          >
+            🌙 / ☀️
+          </button>
+        </div>
+
+        {/* ✅ Вторая строка: ссылки */}
         <div
           style={{
             marginTop: '10px',
@@ -54,23 +84,6 @@ const Footer = ({ t }) => {
           >
             {t.cookie_settings}
           </button>
-          <button
-            onClick={toggleTheme}
-            title="Dark mode"
-            style={{
-              background: 'none',
-              border: '1px solid #ccc',
-              borderRadius: '20px',
-              padding: '6px 12px',
-              cursor: 'pointer',
-              fontSize: '13px',
-              color: '#666',
-              lineHeight: '1'
-            }}
-          >
-            🌙 / ☀️
-          </button>
-
 
         </div>
       </div>
