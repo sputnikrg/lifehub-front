@@ -67,12 +67,14 @@ const PostJobOffer = ({ onAddListing, currentUser, t }) => {
                     <form onSubmit={handleSubmit}>
                         <div className="filter-field">
                             <label>{t.label_title}</label>
-                            <input
-                                required
-                                placeholder={t.placeholder_job_title || "z.B. Küchenhilfe"} // Используем перевод
-                                value={formData.title}
-                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                            <input required placeholder={t.placeholder_job_title || "z.B. Küchenhilfe"} value={formData.title} maxLength={40} onChange={(e) =>
+                                setFormData({ ...formData, title: e.target.value.slice(0, 40) })
+                            }
                             />
+                            <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>
+                                {formData.title.length}/40
+                            </div>
+
                         </div>
 
                         <div className="filter-field">
@@ -86,7 +88,7 @@ const PostJobOffer = ({ onAddListing, currentUser, t }) => {
                             />
                         </div>
 
-                        
+
 
                         <div style={{ display: 'flex', gap: '15px' }}>
                             <div className="filter-field" style={{ flex: 1 }}>
@@ -95,7 +97,14 @@ const PostJobOffer = ({ onAddListing, currentUser, t }) => {
                             </div>
                             <div className="filter-field" style={{ flex: 1 }}>
                                 <label>{t.label_city}</label>
-                                <input required value={formData.city} onChange={(e) => setFormData({ ...formData, city: e.target.value })} />
+                                <input required value={formData.city} maxLength={35} onChange={(e) =>
+                                        setFormData({ ...formData, city: e.target.value.slice(0, 35) })
+                                    }
+                                />
+                                <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>
+                                    {formData.city.length}/35
+                                </div>
+
                             </div>
                         </div>
 

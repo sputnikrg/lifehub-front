@@ -44,8 +44,20 @@ const PostImmoOffer = ({ currentUser, t }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+
+    let newValue = value;
+
+    if (name === 'title') {
+      newValue = value.slice(0, 40);
+    }
+
+    if (name === 'city') {
+      newValue = value.slice(0, 35);
+    }
+
+    setFormData(prev => ({ ...prev, [name]: newValue }));
   };
+
 
   const compressImage = async (file, index, total) => {
     const options = {
@@ -157,12 +169,13 @@ const PostImmoOffer = ({ currentUser, t }) => {
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
             <div className="filter-field">
               <label>{t.label_title}</label>
-              <input name="title" value={formData.title} onChange={handleChange} maxLength={52} required />
-              <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>{formData.title.length}/52</div>
+              <input name="title" value={formData.title} onChange={handleChange} maxLength={40} required />
+              <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>{formData.title.length}/40</div>
             </div>
             <div className="filter-field">
               <label>{t.label_city}</label>
-              <input name="city" value={formData.city} onChange={handleChange} required />
+              <input name="city" value={formData.city} onChange={handleChange} maxLength={35} required />
+
             </div>
             <div className="filter-field">
               <label style={{ color: '#3498db', fontWeight: 'bold' }}>{t.label_bundesland}</label>

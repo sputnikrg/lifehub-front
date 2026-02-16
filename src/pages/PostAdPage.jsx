@@ -46,8 +46,20 @@ const PostAdPage = ({ currentUser, t }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+
+    let newValue = value;
+
+    if (name === 'title') {
+      newValue = value.slice(0, 40);
+    }
+
+    if (name === 'city') {
+      newValue = value.slice(0, 35);
+    }
+
+    setFormData(prev => ({ ...prev, [name]: newValue }));
   };
+
 
   const compressImage = async (file, index, total) => {
     const options = {
@@ -171,18 +183,19 @@ const PostAdPage = ({ currentUser, t }) => {
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                maxLength={52}
+                maxLength={40}
                 required
               />
               <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>
-                {formData.title.length}/52
+                {formData.title.length}/40
               </div>
             </div>
 
 
             <div className="filter-field">
               <label>{t.label_city}</label>
-              <input name="city" value={formData.city} onChange={handleChange} required />
+              <input
+                name="city" value={formData.city} onChange={handleChange} maxLength={35} required />
             </div>
 
             <div className="filter-field">

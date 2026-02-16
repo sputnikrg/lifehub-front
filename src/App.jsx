@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { supabase } from './supabaseClient';
 import { translations } from './translations';
 import { useLocation } from 'react-router-dom';
+import './layout.css';
 
 // ⬇️ ДОБАВЛЕНО
 import CookieBanner from './components/CookieBanner';
@@ -24,6 +25,7 @@ import Impressum from './pages/Impressum';
 import Datenschutz from './pages/Datenschutz';
 import AGB from './pages/AGB';
 import AddAdModal from './components/AddAdModal';
+
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -137,8 +139,10 @@ function App() {
   };
 
   return (
-    <Router>
+  <Router>
+    <div className="app-layout">
       <ScrollToTop />
+
       {/* ✅ CookieBanner использует ТОТ ЖЕ lang */}
       <CookieBanner lang={lang} />
 
@@ -156,17 +160,33 @@ function App() {
         t={t}
       />
 
+      <div className="app-content">
+        <Routes>
+          <Route path="/" element={<Home t={t} lang={lang} />} />
 
-      <Routes>
-        <Route path="/" element={<Home t={t} lang={lang} />} />
+          {['wohnung', 'job', 'dating'].map((type) => (
+            <Route
+              key={type}
+              path={`/${type}`}
+              element={
+                <ListingsPage
+                  type={type}
+                  listings={listings}
+                  favorites={favorites}
+                  onToggleFav={toggleFavorite}
+                  onDelete={handleDeleteListing}
+                  currentUser={user}
+                  t={t}
+                />
+              }
+            />
+          ))}
 
-        {['wohnung', 'job', 'dating'].map((type) => (
           <Route
-            key={type}
-            path={`/${type}`}
+            path="/immo/offer"
             element={
               <ListingsPage
-                type={type}
+                type="immo_offer"
                 listings={listings}
                 favorites={favorites}
                 onToggleFav={toggleFavorite}
@@ -176,183 +196,168 @@ function App() {
               />
             }
           />
-        ))}
 
-        <Route
-          path="/immo/offer"
-          element={
-            <ListingsPage
-              type="immo_offer"
-              listings={listings}
-              favorites={favorites}
-              onToggleFav={toggleFavorite}
-              onDelete={handleDeleteListing}
-              currentUser={user}
-              t={t}
-            />
-          }
-        />
+          <Route
+            path="/immo/search"
+            element={
+              <ListingsPage
+                type="immo_search"
+                listings={listings}
+                favorites={favorites}
+                onToggleFav={toggleFavorite}
+                onDelete={handleDeleteListing}
+                currentUser={user}
+                t={t}
+              />
+            }
+          />
 
-        <Route
-          path="/immo/search"
-          element={
-            <ListingsPage
-              type="immo_search"
-              listings={listings}
-              favorites={favorites}
-              onToggleFav={toggleFavorite}
-              onDelete={handleDeleteListing}
-              currentUser={user}
-              t={t}
-            />
-          }
-        />
+          <Route
+            path="/job/offer"
+            element={
+              <ListingsPage
+                type="job"
+                mode="offer"
+                listings={listings}
+                favorites={favorites}
+                onToggleFav={toggleFavorite}
+                onDelete={handleDeleteListing}
+                currentUser={user}
+                t={t}
+              />
+            }
+          />
 
-        {/* --- JOB OFFER (ВАКАНСИИ) --- */}
-        <Route
-          path="/job/offer"
-          element={
-            <ListingsPage
-              type="job"
-              mode="offer"
-              listings={listings}
-              favorites={favorites}
-              onToggleFav={toggleFavorite}
-              onDelete={handleDeleteListing}
-              currentUser={user}
-              t={t}
-            />
-          }
-        />
+          <Route
+            path="/job/search"
+            element={
+              <ListingsPage
+                type="job"
+                mode="search"
+                listings={listings}
+                favorites={favorites}
+                onToggleFav={toggleFavorite}
+                onDelete={handleDeleteListing}
+                currentUser={user}
+                t={t}
+              />
+            }
+          />
 
-        {/* --- JOB SEARCH (РЕЗЮМЕ) --- */}
-        <Route
-          path="/job/search"
-          element={
-            <ListingsPage
-              type="job"
-              mode="search"
-              listings={listings}
-              favorites={favorites}
-              onToggleFav={toggleFavorite}
-              onDelete={handleDeleteListing}
-              currentUser={user}
-              t={t}
-            />
-          }
-        />
+          <Route
+            path="/favorites"
+            element={
+              <FavoritesPage
+                listings={listings}
+                favorites={favorites}
+                onToggleFav={toggleFavorite}
+                t={t}
+              />
+            }
+          />
 
-        <Route
-          path="/favorites"
-          element={
-            <FavoritesPage
-              listings={listings}
-              favorites={favorites}
-              onToggleFav={toggleFavorite}
-              t={t}
-            />
-          }
-        />
+          <Route
+            path="/my-listings"
+            element={
+              <MyListings
+                listings={listings}
+                currentUser={user}
+                favorites={favorites}
+                onToggleFav={toggleFavorite}
+                onDelete={handleDeleteListing}
+                t={t}
+              />
+            }
+          />
 
-        <Route
-          path="/my-listings"
-          element={
-            <MyListings
-              listings={listings}
-              currentUser={user}
-              favorites={favorites}
-              onToggleFav={toggleFavorite}
-              onDelete={handleDeleteListing}
-              t={t}
-            />
-          }
-        />
+          <Route
+            path="/listing/:type/:id"
+            element={
+              <ListingDetail
+                favorites={favorites}
+                onToggleFav={toggleFavorite}
+                t={t}
+              />
+            }
+          />
 
-        <Route
-          path="/listing/:type/:id"
-          element={
-            <ListingDetail
-              favorites={favorites}
-              onToggleFav={toggleFavorite}
-              t={t}
-            />
-          }
-        />
+          <Route
+            path="/immo/offer/post"
+            element={
+              <PostImmoOffer
+                onAddListing={handleAddListing}
+                currentUser={user}
+                t={t}
+              />
+            }
+          />
 
-        <Route
-          path="/immo/offer/post"
-          element={
-            <PostImmoOffer
-              onAddListing={handleAddListing}
-              currentUser={user}
-              t={t}
-            />
-          }
-        />
+          <Route
+            path="/immo/search/post"
+            element={
+              <PostImmoSearch
+                onAddListing={handleAddListing}
+                currentUser={user}
+                t={t}
+              />
+            }
+          />
 
-        <Route
-          path="/immo/search/post"
-          element={
-            <PostImmoSearch
-              onAddListing={handleAddListing}
-              currentUser={user}
-              t={t}
-            />
-          }
-        />
+          <Route
+            path="/job/offer/post"
+            element={
+              <PostJobOffer
+                onAddListing={handleAddListing}
+                currentUser={user}
+                t={t}
+              />
+            }
+          />
 
-        <Route
-          path="/job/offer/post"
-          element={
-            <PostJobOffer
-              onAddListing={handleAddListing}
-              currentUser={user}
-              t={t}
-            />
-          }
-        />
+          <Route
+            path="/job/search/post"
+            element={
+              <PostJobSearch
+                onAddListing={handleAddListing}
+                currentUser={user}
+                t={t}
+              />
+            }
+          />
 
-        <Route
-          path="/job/search/post"
-          element={
-            <PostJobSearch
-              onAddListing={handleAddListing}
-              currentUser={user}
-              t={t}
-            />
-          }
-        />
+          <Route
+            path="/post-ad"
+            element={
+              <PostAdPage
+                onAddListing={handleAddListing}
+                currentUser={user}
+                t={t}
+              />
+            }
+          />
 
-        <Route
-          path="/post-ad"
-          element={
-            <PostAdPage
-              onAddListing={handleAddListing}
-              currentUser={user}
-              t={t}
-            />
-          }
-        />
+          <Route
+            path="/edit/:id"
+            element={
+              <PostAdPage
+                onAddListing={handleAddListing}
+                currentUser={user}
+                t={t}
+              />
+            }
+          />
 
-        <Route
-          path="/edit/:id"
-          element={
-            <PostAdPage
-              onAddListing={handleAddListing}
-              currentUser={user}
-              t={t}
-            />
-          }
-        />
-
-        <Route path="/impressum" element={<Impressum />} />
-        <Route path="/datenschutz" element={<Datenschutz />} />
-        <Route path="/agb" element={<AGB />} />
-      </Routes>
+          <Route path="/impressum" element={<Impressum />} />
+          <Route path="/datenschutz" element={<Datenschutz />} />
+          <Route path="/agb" element={<AGB />} />
+        </Routes>
+      </div>
 
       <Footer t={t} />
-    </Router>
-  );
+    </div>
+  </Router>
+);
+
 }
 
 export default App;

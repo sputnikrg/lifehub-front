@@ -70,12 +70,14 @@ const PostJobSearch = ({ onAddListing, currentUser, t }) => {
                         {/* Заголовок */}
                         <div className="filter-field">
                             <label>{t.label_title}</label>
-                            <input
-                                required
-                                placeholder={t.placeholder_search_title || "z.B. Suche Arbeit als Fahrer"}
-                                value={formData.title}
-                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                            <input required placeholder={t.placeholder_search_title || "z.B. Suche Arbeit als Fahrer"} value={formData.title} maxLength={40} onChange={(e) =>
+                                setFormData({ ...formData, title: e.target.value.slice(0, 40) })
+                            }
                             />
+                            <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>
+                                {formData.title.length}/40
+                            </div>
+
                         </div>
 
                         <div className="filter-field">
@@ -102,12 +104,14 @@ const PostJobSearch = ({ onAddListing, currentUser, t }) => {
                             </div>
                             <div className="filter-field" style={{ flex: 1 }}>
                                 <label>{t.label_city}</label>
-                                <input
-                                    required
-                                    placeholder="Stadt"
-                                    value={formData.city}
-                                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                                <input required placeholder="Stadt" value={formData.city} maxLength={35} onChange={(e) =>
+                                        setFormData({ ...formData, city: e.target.value.slice(0, 35) })
+                                    }
                                 />
+                                <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>
+                                    {formData.city.length}/35
+                                </div>
+
                             </div>
                         </div>
 
@@ -126,7 +130,7 @@ const PostJobSearch = ({ onAddListing, currentUser, t }) => {
                             </select>
                         </div>
 
-                         <div className="filter-field">
+                        <div className="filter-field">
                             <label>Kontaktdaten</label>
                             <textarea
                                 rows="3"

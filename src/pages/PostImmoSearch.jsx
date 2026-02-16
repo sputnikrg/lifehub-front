@@ -98,7 +98,13 @@ const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
             <div className="filter-field">
               <label>{t.label_title}</label>
               {/* ... остальной код формы */}
-              <input required placeholder="z.B. Suche 2-Zimmer Wohnung" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
+              <input required placeholder="z.B. Suche 2-Zimmer Wohnung" value={formData.title} maxLength={40} onChange={(e) => setFormData({ ...formData, title: e.target.value.slice(0, 40) })
+              }
+              />
+              <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>
+                {formData.title.length}/40
+              </div>
+
             </div>
             <div className="filter-field">
               <label>{t.label_desc}</label>
@@ -111,7 +117,13 @@ const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
               </div>
               <div className="filter-field" style={{ flex: 1 }}>
                 <label>{t.label_city}</label>
-                <input required value={formData.city} onChange={(e) => setFormData({ ...formData, city: e.target.value })} />
+                <input required value={formData.city} maxLength={35} onChange={(e) => setFormData({ ...formData, city: e.target.value.slice(0, 35) })
+                  }
+                />
+                <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>
+                  {formData.city.length}/35
+                </div>
+
               </div>
             </div>
             <div className="filter-field">
