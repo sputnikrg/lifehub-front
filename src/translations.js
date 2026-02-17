@@ -88,7 +88,26 @@ export const translations = {
     widget_jobs_title: "Jobs in Deutschland",
     widget_jobs_label: "Es gibt Arbeit!",
     seo_description: "Jobs, Immobilien und Community in Deutschland. LifeHub hilft Ihnen bei der Suche nach Arbeit und Wohnraum.",
-  
+    blogTitle: "Materialien",
+    adminBlog: {
+      manage: "Materialien (Verwaltung)",
+      new: "Neues Material",
+      edit: "Bearbeiten",
+      delete: "Löschen",
+      save: "Speichern",
+      saveChanges: "Änderungen speichern",
+      publish: "Veröffentlichen",
+      title: "Titel",
+      slug: "Slug",
+      excerpt: "Kurzbeschreibung",
+      content: "Inhalt (Markdown)",
+      currentCover: "Aktuelles Titelbild",
+      newCover: "Neues Titelbild",
+      confirmDelete: "Material löschen?",
+      prev: "Zurück", // Добавь это
+      next: "Weiter"   // Добавь это
+    }
+
   },
 
   ru: {
@@ -186,6 +205,28 @@ export const translations = {
     widget_jobs_title: "Работа в Германии",
     widget_jobs_label: "Есть работа!",
     seo_description: "Работа, недвижимость и объявления в Германии. LifeHub помогает найти жилье, вакансии и общение.",
+    blogTitle: "Материалы",
+    adminBlog: {
+      manage: "Материалы (управление)",
+      new: "Новый материал",
+      edit: "Редактирование",
+      delete: "Удалить",
+      save: "Сохранить",
+      saveChanges: "Сохранить изменения",
+      publish: "Опубликовать",
+      title: "Заголовок",
+      slug: "Slug",
+      excerpt: "Краткое описание",
+      content: "Контент (Markdown)",
+      currentCover: "Текущая обложка",
+      newCover: "Новая обложка",
+      confirmDelete: "Удалить материал?",
+      prev: "Назад", // Добавь это
+      next: "Вперед"  // Добавь это
+    }
+
+    
+
 
   },
 
@@ -286,7 +327,24 @@ export const translations = {
     widget_jobs_title: "Робота в Німеччині",
     widget_jobs_label: "Є робота!",
     seo_description: "Робота, нерухомість та оголошення в Німеччині. LifeHub допомагає знайти житло, вакансії та спілкування.",
-
-
+    blogTitle: "Матеріали",
+    adminBlog: {
+      manage: "Матеріали (керування)",
+      new: "Новий матеріал",
+      edit: "Редагування",
+      delete: "Видалити",
+      save: "Зберегти",
+      saveChanges: "Зберегти зміни",
+      publish: "Опублікувати",
+      title: "Заголовок",
+      slug: "Slug",
+      excerpt: "Короткий опис",
+      content: "Контент (Markdown)",
+      currentCover: "Поточна обкладинка",
+      newCover: "Нова обкладинка",
+      confirmDelete: "Видалити матеріал?",
+      prev: "Назад", // Добавь это
+      next: "Вперед"
+    }
   }
 };

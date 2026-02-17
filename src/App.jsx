@@ -30,6 +30,7 @@ import BlogDetail from './pages/BlogDetail';
 import AdminBlogPage from "./pages/AdminBlogPage";
 import AdminBlogNew from "./pages/AdminBlogNew";
 import AdminBlogEdit from "./pages/AdminBlogEdit";
+import AdminGuard from './components/AdminGuard'
 
 
 
@@ -358,9 +359,12 @@ function App() {
             <Route path="/agb" element={<AGB />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogDetail />} />
-            <Route path="/admin/blog" element={<AdminBlogPage />} />
-            <Route path="/admin/blog/new" element={<AdminBlogNew />} />
-            <Route path="/admin/blog/edit/:id" element={<AdminBlogEdit />} />
+            {/* Все, что внутри AdminGuard, будет доступно ТОЛЬКО админу */}
+            <Route element={<AdminGuard />}>
+              <Route path="/admin/blog" element={<AdminBlogPage />} />
+              <Route path="/admin/blog/new" element={<AdminBlogNew />} />
+              <Route path="/admin/blog/edit/:id" element={<AdminBlogEdit />} />
+            </Route>
 
           </Routes>
         </div>

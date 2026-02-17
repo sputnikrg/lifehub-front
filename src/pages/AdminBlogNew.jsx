@@ -1,140 +1,144 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { useNavigate } from "react-router-dom";
+import { translations } from "../translations";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
 const AdminBlogNew = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [title, setTitle] = useState("");
-    const [slug, setSlug] = useState("");
-    const [excerpt, setExcerpt] = useState("");
-    const [content, setContent] = useState("");
-    const [published, setPublished] = useState(false);
-    const [coverFile, setCoverFile] = useState(null);
+  const lang = localStorage.getItem("lifehub_lang") || "ru";
+  const t = translations[lang];
 
-    useEffect(() => {
-  const checkAccess = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
+  const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
+  const [excerpt, setExcerpt] = useState("");
+  const [content, setContent] = useState("");
+  const [published, setPublished] = useState(false);
+  const [coverFile, setCoverFile] = useState(null);
 
-    if (!session || session.user.email !== "vpovolotskyi25@gmail.com") {
-      navigate("/");
-    }
+  const generateSlug = (text) =>
+    text
+      .toLowerCase()
+      .replace(/[^a-z0-9а-яё\s-]/gi, "")
+      .replace(/\s+/g, "-");
+
+  const handleTitleChange = (value) => {
+    setTitle(value);
+    setSlug(generateSlug(value));
   };
 
-  checkAccess();
-}, [navigate]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const generateSlug = (text) => {
-        return text
-            .toLowerCase()
-            .replace(/[^a-z0-9а-яё\s-]/gi, "")
-            .replace(/\s+/g, "-");
-    };
+    let coverUrl = null;
 
-    const handleTitleChange = (value) => {
-        setTitle(value);
-        setSlug(generateSlug(value));
-    };
+    if (coverFile) {
+      const fileExt = coverFile.name.split(".").pop();
+      const fileName = `${Date.now()}.${fileExt}`;
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+      const { error: uploadError } = await supabase.storage
+        .from("blog")
+        .upload(fileName, coverFile);
 
-        let coverUrl = null;
+      if (!uploadError) {
+        const { data } = supabase.storage
+          .from("blog")
+          .getPublicUrl(fileName);
 
-        if (coverFile) {
-            const fileExt = coverFile.name.split(".").pop();
-            const fileName = `${Date.now()}.${fileExt}`;
+        coverUrl = data.publicUrl;
+      }
+    }
 
-            const { error: uploadError } = await supabase.storage
-                .from("blog")
-                .upload(fileName, coverFile);
+    await supabase.from("blog_posts").insert([
+      {
+        title,
+        slug,
+        excerpt,
+        content,
+        published,
+        cover_image: coverUrl,
+      },
+    ]);
 
-            if (uploadError) {
-                console.error(uploadError);
-                return;
-            }
+    navigate("/admin/blog");
+  };
 
-            const { data } = supabase.storage
-                .from("blog")
-                .getPublicUrl(fileName);
+  return (
+    <main className="page-main">
+      <div className="container">
+        <h1>{t.adminBlog.new}</h1>
 
-            coverUrl = data.publicUrl;
-        }
+        <form onSubmit={handleSubmit} className="admin-form">
+          <label>{t.adminBlog.title}</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => handleTitleChange(e.target.value)}
+            required
+          />
 
-        const { error } = await supabase.from("blog_posts").insert([
-            {
-                title,
-                slug,
-                excerpt,
-                content,
-                published,
-                cover_image: coverUrl,
-            },
-        ]);
+          <label>{t.adminBlog.slug}</label>
+          <input type="text" value={slug} readOnly />
 
-        if (!error) {
-            navigate("/admin/blog");
-        } else {
-            console.error(error);
-        }
-    };
+          <label>{t.adminBlog.excerpt}</label>
+          <textarea
+            value={excerpt}
+            onChange={(e) => setExcerpt(e.target.value)}
+          />
 
+          <label>{t.adminBlog.newCover}</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setCoverFile(e.target.files[0])}
+          />
 
-    return (
-        <main className="page-main">
-            <div className="container">
-                <h1>Новый материал</h1>
+          <label>{t.adminBlog.content}</label>
+          <textarea
+            rows="10"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+          />
 
-                <form onSubmit={handleSubmit} className="admin-form">
-                    <label>Заголовок</label>
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => handleTitleChange(e.target.value)}
-                        required
-                    />
+          {/* Заголовок для превью */}
+          <label style={{ marginTop: '20px', color: '#666' }}>Предпросмотр:</label>
 
-                    <label>Slug</label>
-                    <input type="text" value={slug} readOnly />
+          {/* Окно превью с рамкой и отступами */}
+          <div className="markdown-preview" style={{
+            border: '1px solid #ddd',
+            padding: '15px',
+            borderRadius: '8px',
+            backgroundColor: '#f9f9f9',
+            minHeight: '200px'
+          }}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]}
+            >
+              {content}
+            </ReactMarkdown>
+          </div>
 
-                    <label>Краткое описание</label>
-                    <textarea
-                        value={excerpt}
-                        onChange={(e) => setExcerpt(e.target.value)}
-                    />
+          <label className="checkbox">
+            <input
+              type="checkbox"
+              checked={published}
+              onChange={(e) => setPublished(e.target.checked)}
+            />
+            {t.adminBlog.publish}
+          </label>
 
-                    <label>Обложка</label>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => setCoverFile(e.target.files[0])}
-                    />
-
-
-                    <label>Контент (Markdown)</label>
-                    <textarea
-                        rows="10"
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        required
-                    />
-
-                    <label className="checkbox">
-                        <input
-                            type="checkbox"
-                            checked={published}
-                            onChange={(e) => setPublished(e.target.checked)}
-                        />
-                        Опубликовать
-                    </label>
-
-                    <button type="submit" className="btn-primary">
-                        Сохранить
-                    </button>
-                </form>
-            </div>
-        </main>
-    );
+          <button type="submit" className="btn-primary">
+            {t.adminBlog.save}
+          </button>
+        </form>
+      </div>
+    </main>
+  );
 };
 
 export default AdminBlogNew;

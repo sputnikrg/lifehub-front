@@ -1,118 +1,106 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import { Link, useNavigate } from "react-router-dom";
+import { translations } from "../translations";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
 const AdminBlogPage = () => {
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const checkSessionAndFetch = async () => {
-            const {
-                data: { session },
-            } = await supabase.auth.getSession();
+  const lang = localStorage.getItem("lifehub_lang") || "ru";
+  const t = translations[lang];
 
-            if (!session || session.user.email !== "vpovolotskyi25@gmail.com") {
-                navigate("/");
-                return;
-            }
+  useEffect(() => {
+    const checkSessionAndFetch = async () => {
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("*")
+        .order("created_at", { ascending: false });
 
+      if (!error) {
+        setPosts(data || []);
+      }
 
-            const { data, error } = await supabase
-                .from("blog_posts")
-                .select("*")
-                .order("created_at", { ascending: false });
-
-            if (!error) {
-                setPosts(data || []);
-            } else {
-                console.error(error);
-            }
-
-            setLoading(false);
-        };
-
-        checkSessionAndFetch();
-    }, [navigate]);
-
-    const handleDelete = async (post) => {
-        const confirmDelete = window.confirm("Удалить материал?");
-        if (!confirmDelete) return;
-
-        // 1️⃣ Удаляем файл из Storage (если есть)
-        if (post.cover_image) {
-            try {
-                const filePath = post.cover_image.split("/blog/")[1];
-
-                if (filePath) {
-                    await supabase.storage
-                        .from("blog")
-                        .remove([filePath]);
-                }
-            } catch (err) {
-                console.error("Ошибка удаления изображения:", err);
-            }
-        }
-
-        // 2️⃣ Удаляем запись из таблицы
-        const { error } = await supabase
-            .from("blog_posts")
-            .delete()
-            .eq("id", post.id);
-
-        if (!error) {
-            setPosts((prev) => prev.filter((p) => p.id !== post.id));
-        } else {
-            console.error(error);
-        }
+      setLoading(false);
     };
 
-    if (loading) return null;
+    checkSessionAndFetch();
+  }, [navigate]);
 
-    return (
-        <main className="page-main">
-            <div className="container">
-                <div className="admin-header">
-                    <h1>Материалы (управление)</h1>
+  const handleDelete = async (post) => {
+    const confirmDelete = window.confirm(t.adminBlog.confirmDelete);
+    if (!confirmDelete) return;
 
-                    <Link to="/admin/blog/new" className="btn-primary">
-                        + Новый материал
-                    </Link>
-                </div>
+    if (post.cover_image) {
+      try {
+        const filePath = post.cover_image.split("/blog/")[1];
+        if (filePath) {
+          await supabase.storage.from("blog").remove([filePath]);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
 
-                <div className="admin-blog-list">
-                    {posts.map((post) => (
-                        <div key={post.id} className="admin-blog-card">
-                            <div>
-                                <h3>{post.title}</h3>
-                                <p className="admin-meta">
-                                    {post.published ? "Published" : "Draft"} •{" "}
-                                    {new Date(post.created_at).toLocaleDateString()}
-                                </p>
-                            </div>
+    const { error } = await supabase
+      .from("blog_posts")
+      .delete()
+      .eq("id", post.id);
 
-                            <div style={{ display: "flex", gap: "16px" }}>
-                                <Link
-                                    to={`/admin/blog/edit/${post.id}`}
-                                    className="admin-edit-link"
-                                >
-                                    Редактировать
-                                </Link>
+    if (!error) {
+      setPosts((prev) => prev.filter((p) => p.id !== post.id));
+    }
+  };
 
-                                <button
-                                    onClick={() => handleDelete(post)}
-                                    className="admin-delete-btn"
-                                >
-                                    Удалить
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+  if (loading) return null;
+
+  return (
+    <main className="page-main">
+      <div className="container">
+        <div className="admin-header">
+          <h1>{t.adminBlog.manage}</h1>
+
+          <Link to="/admin/blog/new" className="btn-primary">
+            + {t.adminBlog.new}
+          </Link>
+        </div>
+
+        <div className="admin-blog-list">
+          {posts.map((post) => (
+            <div key={post.id} className="admin-blog-card">
+              <div>
+                <h3>{post.title}</h3>
+                <p className="admin-meta">
+                  {post.published ? "Published" : "Draft"} •{" "}
+                  {new Date(post.created_at).toLocaleDateString()}
+                </p>
+              </div>
+
+              <div style={{ display: "flex", gap: "16px" }}>
+                <Link
+                  to={`/admin/blog/edit/${post.id}`}
+                  className="admin-edit-link"
+                >
+                  {t.adminBlog.edit}
+                </Link>
+
+                <button
+                  onClick={() => handleDelete(post)}
+                  className="admin-delete-btn"
+                >
+                  {t.adminBlog.delete}
+                </button>
+              </div>
             </div>
-        </main>
-    );
+          ))}
+        </div>
+      </div>
+    </main>
+  );
 };
 
 export default AdminBlogPage;

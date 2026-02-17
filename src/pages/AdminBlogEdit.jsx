@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import { useNavigate, useParams } from "react-router-dom";
+import { translations } from "../translations";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
 const AdminBlogEdit = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+
+    const lang = localStorage.getItem("lifehub_lang") || "ru";
+    const t = translations[lang];
 
     const [loading, setLoading] = useState(true);
 
@@ -16,19 +23,7 @@ const AdminBlogEdit = () => {
     const [coverFile, setCoverFile] = useState(null);
     const [existingCover, setExistingCover] = useState(null);
 
-    useEffect(() => {
-        const checkAccess = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-
-            if (!session || session.user.email !== "vpovolotskyi25@gmail.com") {
-                navigate("/");
-            }
-        };
-
-        checkAccess();
-    }, [navigate]);
-
-
+    // 📦 Загрузка поста
     useEffect(() => {
         const fetchPost = async () => {
             const { data, error } = await supabase
@@ -52,12 +47,11 @@ const AdminBlogEdit = () => {
         fetchPost();
     }, [id]);
 
-    const generateSlug = (text) => {
-        return text
+    const generateSlug = (text) =>
+        text
             .toLowerCase()
             .replace(/[^a-z0-9а-яё\s-]/gi, "")
             .replace(/\s+/g, "-");
-    };
 
     const handleTitleChange = (value) => {
         setTitle(value);
@@ -77,19 +71,16 @@ const AdminBlogEdit = () => {
                 .from("blog")
                 .upload(fileName, coverFile);
 
-            if (uploadError) {
-                console.error(uploadError);
-                return;
+            if (!uploadError) {
+                const { data } = supabase.storage
+                    .from("blog")
+                    .getPublicUrl(fileName);
+
+                coverUrl = data.publicUrl;
             }
-
-            const { data } = supabase.storage
-                .from("blog")
-                .getPublicUrl(fileName);
-
-            coverUrl = data.publicUrl;
         }
 
-        const { error } = await supabase
+        await supabase
             .from("blog_posts")
             .update({
                 title,
@@ -102,11 +93,7 @@ const AdminBlogEdit = () => {
             })
             .eq("id", id);
 
-        if (!error) {
-            navigate("/admin/blog");
-        } else {
-            console.error(error);
-        }
+        navigate("/admin/blog");
     };
 
     if (loading) return null;
@@ -114,10 +101,10 @@ const AdminBlogEdit = () => {
     return (
         <main className="page-main">
             <div className="container">
-                <h1>Редактирование</h1>
+                <h1>{t.adminBlog.edit}</h1>
 
                 <form onSubmit={handleSubmit} className="admin-form">
-                    <label>Заголовок</label>
+                    <label>{t.adminBlog.title}</label>
                     <input
                         type="text"
                         value={title}
@@ -125,14 +112,10 @@ const AdminBlogEdit = () => {
                         required
                     />
 
-                    <label>Slug</label>
-                    <input
-                        type="text"
-                        value={slug}
-                        readOnly
-                    />
+                    <label>{t.adminBlog.slug}</label>
+                    <input type="text" value={slug} readOnly />
 
-                    <label>Краткое описание</label>
+                    <label>{t.adminBlog.excerpt}</label>
                     <textarea
                         value={excerpt}
                         onChange={(e) => setExcerpt(e.target.value)}
@@ -140,7 +123,7 @@ const AdminBlogEdit = () => {
 
                     {existingCover && (
                         <>
-                            <label>Текущая обложка</label>
+                            <label>{t.adminBlog.currentCover}</label>
                             <img
                                 src={existingCover}
                                 alt=""
@@ -149,14 +132,14 @@ const AdminBlogEdit = () => {
                         </>
                     )}
 
-                    <label>Новая обложка</label>
+                    <label>{t.adminBlog.newCover}</label>
                     <input
                         type="file"
                         accept="image/*"
                         onChange={(e) => setCoverFile(e.target.files[0])}
                     />
 
-                    <label>Контент (Markdown)</label>
+                    <label>{t.adminBlog.content}</label>
                     <textarea
                         rows="10"
                         value={content}
@@ -164,17 +147,38 @@ const AdminBlogEdit = () => {
                         required
                     />
 
+                    {/* Окно предпросмотра */}
+                    <label style={{ marginTop: '20px', display: 'block', color: '#666', fontWeight: 'bold' }}>
+                        Предпросмотр:
+                    </label>
+                    <div className="markdown-preview" style={{
+                        border: '1px solid #ddd',
+                        padding: '15px',
+                        borderRadius: '8px',
+                        backgroundColor: '#fdfdfd',
+                        minHeight: '200px',
+                        marginTop: '10px',
+                        marginBottom: '20px'
+                    }}>
+                        <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            rehypePlugins={[rehypeRaw]}
+                        >
+                            {content}
+                        </ReactMarkdown>
+                    </div>
+
                     <label className="checkbox">
                         <input
                             type="checkbox"
                             checked={published}
                             onChange={(e) => setPublished(e.target.checked)}
                         />
-                        Опубликовать
+                        {t.adminBlog.publish}
                     </label>
 
                     <button type="submit" className="btn-primary">
-                        Сохранить изменения
+                        {t.adminBlog.saveChanges}
                     </button>
                 </form>
             </div>
