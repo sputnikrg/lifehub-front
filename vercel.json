@@ -1,5 +1,19 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "User-Agent",
+          "value": "(.*googlebot|.*TelegramBot|.*twitterbot|.*facebookexternalhit|.*WhatsApp.*)"
+        }
+      ],
+      "destination": "https://service.prerender.io/https://mylifehub.de/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
   ]
 }
