@@ -25,6 +25,17 @@ const AdminBlogNew = () => {
       .replace(/[^a-z0-9а-яё\s-]/gi, "")
       .replace(/\s+/g, "-");
 
+  const generateExcerpt = (text) => {
+    // Убираем спецсимволы Markdown, чтобы в описание попал чистый текст
+    const plainText = text
+      .replace(/[#*`_~]/g, '')        // Убираем решетки, звезды и т.д.
+      .replace(/\[.*?\]\(.*?\)/g, '') // Убираем ссылки
+      .trim();
+
+    // Берем первые 150 символов и добавляем троеточие
+    return plainText.slice(0, 150) + (plainText.length > 150 ? "..." : "");
+  };
+
   const handleTitleChange = (value) => {
     setTitle(value);
     setSlug(generateSlug(value));
@@ -100,7 +111,14 @@ const AdminBlogNew = () => {
           <textarea
             rows="10"
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setContent(value);
+              // Если поле "Краткое описание" еще пустое, заполняем его автоматически
+              if (!excerpt) {
+                setExcerpt(generateExcerpt(value));
+              }
+            }}
             required
           />
 

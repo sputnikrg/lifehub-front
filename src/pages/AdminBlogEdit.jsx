@@ -53,6 +53,11 @@ const AdminBlogEdit = () => {
             .replace(/[^a-z0-9а-яё\s-]/gi, "")
             .replace(/\s+/g, "-");
 
+    const generateExcerpt = (text) => {
+        const plainText = text.replace(/[#*`_~]/g, '').replace(/\[.*?\]\(.*?\)/g, '').trim();
+        return plainText.slice(0, 150) + (plainText.length > 150 ? "..." : "");
+    };
+
     const handleTitleChange = (value) => {
         setTitle(value);
         setSlug(generateSlug(value));
@@ -143,7 +148,14 @@ const AdminBlogEdit = () => {
                     <textarea
                         rows="10"
                         value={content}
-                        onChange={(e) => setContent(e.target.value)}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            setContent(value);
+                            // Авто-заполнение, если описание пустое
+                            if (!excerpt) {
+                                setExcerpt(generateExcerpt(value));
+                            }
+                        }}
                         required
                     />
 

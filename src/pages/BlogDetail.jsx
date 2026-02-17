@@ -4,6 +4,7 @@ import { supabase } from '../supabaseClient';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import { Helmet } from "react-helmet-async"; // Добавляем импорт
 import '../blog.css';
 
 const BlogDetail = () => {
@@ -28,6 +29,25 @@ const BlogDetail = () => {
 
   return (
     <main className="page-main">
+      {/* Секция SEO */}
+      <Helmet>
+        <title>{post.title} | LifeHub</title>
+        <meta name="description" content={post.excerpt || ""} />
+
+        {/* Open Graph / Facebook / Telegram */}
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.excerpt || ""} />
+        <meta property="og:image" content={post.cover_image || ""} />
+        <meta property="og:url" content={window.location.href} />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.excerpt || ""} />
+        <meta name="twitter:image" content={post.cover_image || ""} />
+      </Helmet>
+
       <div className="container blog-container">
         <h1 className="blog-title">{post.title}</h1>
 
