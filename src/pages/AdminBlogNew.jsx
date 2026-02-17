@@ -41,9 +41,10 @@ const AdminBlogNew = () => {
   };
 
   const generateExcerpt = (text) => {
+    // Убираем спецсимволы Markdown, чтобы в описание попал чистый текст
     const plainText = text
-      .replace(/[#*`_~]/g, '')
-      .replace(/\[.*?\]\(.*?\)/g, '')
+      .replace(/[#*`_~]/g, '')        
+      .replace(/\[.*?\]\(.*?\)/g, '') 
       .trim();
     return plainText.slice(0, 150) + (plainText.length > 150 ? "..." : "");
   };
@@ -126,6 +127,7 @@ const AdminBlogNew = () => {
             onChange={(e) => {
               const value = e.target.value;
               setContent(value);
+              // Если поле "Краткое описание" еще пустое, заполняем его автоматически
               if (!excerpt) {
                 setExcerpt(generateExcerpt(value));
               }

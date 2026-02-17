@@ -23,6 +23,7 @@ const AdminBlogEdit = () => {
     const [coverFile, setCoverFile] = useState(null);
     const [existingCover, setExistingCover] = useState(null);
 
+    // Загрузка поста
     useEffect(() => {
         const fetchPost = async () => {
             const { data, error } = await supabase
