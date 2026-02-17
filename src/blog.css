@@ -1,0 +1,291 @@
+/* ===== BLOG LAYOUT ===== */
+
+.blog-container {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.blog-title {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.blog-cover {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.blog-content {
+  font-size: 17px;
+  line-height: 1.7;
+  color: #333;
+}
+
+.blog-content h2 {
+  margin-top: 30px;
+}
+
+.blog-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.blog-content iframe {
+  width: 100%;
+  height: 420px;
+  margin: 20px 0;
+  border-radius: 10px;
+}
+
+/* ===== BLOG LIST CARDS ===== */
+
+.blog-card {
+  margin-bottom: 40px;
+}
+
+.blog-card-image {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.blog-card h2 {
+  margin: 10px 0;
+}
+
+.blog-card a {
+  text-decoration: none;
+  color: #111;
+}
+
+.blog-card a:hover {
+  text-decoration: underline;
+}
+
+.blog-excerpt {
+  color: #666;
+  font-size: 15px;
+}
+
+/* ===== BLOG GRID ===== */
+
+.blog-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+/* ===== CARD ===== */
+
+.blog-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.blog-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+/* ===== IMAGE ===== */
+
+.blog-card-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* ===== CONTENT ===== */
+
+.blog-card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.blog-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.blog-card-excerpt {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.blog-card-meta {
+  font-size: 13px;
+  color: #888;
+}
+
+/* ===== BLOG GRID ===== */
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 32px;
+  margin-top: 40px;
+}
+
+/* ===== CARD ===== */
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+}
+
+.blog-card-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.blog-card-body {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.blog-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.blog-card-excerpt {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.blog-content {
+  margin-top: 30px;
+}
+
+.blog-content h2 {
+  margin-top: 40px;
+  margin-bottom: 16px;
+  font-size: 24px;
+}
+
+.blog-content p {
+  font-size: 17px;
+  line-height: 1.8;
+  margin-bottom: 18px;
+}
+
+.blog-content ul {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.blog-cover {
+  margin-top: 20px;
+  border-radius: 16px;
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+}
+
+.page-main {
+  background: #f7f8fb;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.admin-blog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-blog-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+
+.admin-meta {
+  font-size: 14px;
+  color: #777;
+}
+
+.admin-edit-link {
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 700px;
+}
+
+.admin-form input,
+.admin-form textarea {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-delete-btn {
+  background: none;
+  border: none;
+  color: #d9534f;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.admin-delete-btn:hover {
+  text-decoration: underline;
+}
