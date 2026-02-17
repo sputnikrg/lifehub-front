@@ -6,6 +6,7 @@ import { supabase } from '../supabaseClient';
 const Home = ({ t, lang }) => {
   const [hotRent, setHotRent] = useState([]);
   const [topJobs, setTopJobs] = useState([]);
+  const [latestPosts, setLatestPosts] = useState([]);
 
   useEffect(() => {
     document.title =
@@ -29,6 +30,17 @@ const Home = ({ t, lang }) => {
       .order('created_at', { ascending: false });
 
     if (jobs) setTopJobs(jobs);
+
+    // --- ДОБАВЬ ЭТОТ КУСОК ---
+    const { data: posts } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('published', true)
+      .order('created_at', { ascending: false })
+      .limit(4);
+
+    if (posts) setLatestPosts(posts);
+    // -------------------------
   };
 
   const categories = [
@@ -137,6 +149,42 @@ const Home = ({ t, lang }) => {
           </div>
         </aside>
       </div>
+      {/* Газетная верстка материалов */}
+      <section className="home-blog-section">
+        <div className="container">
+          <div className="home-blog-header">
+            <h2>{t.adminBlog.latest}</h2>
+            <Link to="/blog" className="home-blog-link">
+              {t.adminBlog.readAll} →
+            </Link>
+          </div>
+
+          <div className="home-blog-grid-alt">
+            {latestPosts.map((post) => (
+              <Link key={post.id} to={`/blog/${post.slug}`} className="blog-item-alt">
+                {/* 1. Заголовок всегда сверху */}
+                <h3 className="blog-item-title-alt">{post.title}</h3>
+
+                <div className="blog-item-content-alt">
+                  {/* 2. Фото слева */}
+                  {post.cover_image && (
+                    <div className="blog-item-img-alt">
+                      <img src={post.cover_image} alt={post.title} />
+                    </div>
+                  )}
+
+                  {/* 3. Анонс справа */}
+                  <div className="blog-item-text-alt">
+                    <p>{post.excerpt}</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* КОНЕЦ ШАГА 2 */}
+
     </>
   );
 };

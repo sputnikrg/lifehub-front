@@ -104,8 +104,10 @@ export const translations = {
       currentCover: "Aktuelles Titelbild",
       newCover: "Neues Titelbild",
       confirmDelete: "Material löschen?",
-      prev: "Zurück", // Добавь это
-      next: "Weiter"   // Добавь это
+      prev: "Zurück", 
+      next: "Weiter",
+      latest: "Neuestes im Blog", // Добавь это
+      readAll: "Alle Materialien lesen" 
     }
 
   },
@@ -221,8 +223,10 @@ export const translations = {
       currentCover: "Текущая обложка",
       newCover: "Новая обложка",
       confirmDelete: "Удалить материал?",
-      prev: "Назад", // Добавь это
-      next: "Вперед"  // Добавь это
+      prev: "Назад", 
+      next: "Вперед",
+      latest: "Последнее в блоге", // Добавь это
+      readAll: "Читать все материалы"
     }
 
     
@@ -343,8 +347,10 @@ export const translations = {
       currentCover: "Поточна обкладинка",
       newCover: "Нова обкладинка",
       confirmDelete: "Видалити матеріал?",
-      prev: "Назад", // Добавь это
-      next: "Вперед"
+      prev: "Назад", 
+      next: "Вперед",
+      latest: "Останнє у блозі", 
+      readAll: "Читати всі матеріали"
     }
   }
 };
