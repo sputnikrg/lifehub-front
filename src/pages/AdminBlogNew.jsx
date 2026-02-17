@@ -19,20 +19,32 @@ const AdminBlogNew = () => {
   const [published, setPublished] = useState(false);
   const [coverFile, setCoverFile] = useState(null);
 
-  const generateSlug = (text) =>
-    text
+  // Исправленная функция генерации Slug с транслитерацией
+  const generateSlug = (text) => {
+    const map = {
+      'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh',
+      'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o',
+      'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'ts',
+      'ч': 'ch', 'ш': 'sh', 'щ': 'sch', 'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya',
+      'і': 'i', 'ї': 'yi', 'є': 'ye', 'ґ': 'g'
+    };
+
+    return text
       .toLowerCase()
-      .replace(/[^a-z0-9а-яё\s-]/gi, "")
-      .replace(/\s+/g, "-");
+      .split('')
+      .map(char => map[char] || char)
+      .join('')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  };
 
   const generateExcerpt = (text) => {
-    // Убираем спецсимволы Markdown, чтобы в описание попал чистый текст
     const plainText = text
-      .replace(/[#*`_~]/g, '')        // Убираем решетки, звезды и т.д.
-      .replace(/\[.*?\]\(.*?\)/g, '') // Убираем ссылки
+      .replace(/[#*`_~]/g, '')
+      .replace(/\[.*?\]\(.*?\)/g, '')
       .trim();
-
-    // Берем первые 150 символов и добавляем троеточие
     return plainText.slice(0, 150) + (plainText.length > 150 ? "..." : "");
   };
 
@@ -114,7 +126,6 @@ const AdminBlogNew = () => {
             onChange={(e) => {
               const value = e.target.value;
               setContent(value);
-              // Если поле "Краткое описание" еще пустое, заполняем его автоматически
               if (!excerpt) {
                 setExcerpt(generateExcerpt(value));
               }
@@ -122,10 +133,7 @@ const AdminBlogNew = () => {
             required
           />
 
-          {/* Заголовок для превью */}
           <label style={{ marginTop: '20px', color: '#666' }}>Предпросмотр:</label>
-
-          {/* Окно превью с рамкой и отступами */}
           <div className="markdown-preview" style={{
             border: '1px solid #ddd',
             padding: '15px',

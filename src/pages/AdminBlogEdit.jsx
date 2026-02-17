@@ -23,7 +23,6 @@ const AdminBlogEdit = () => {
     const [coverFile, setCoverFile] = useState(null);
     const [existingCover, setExistingCover] = useState(null);
 
-    // 📦 Загрузка поста
     useEffect(() => {
         const fetchPost = async () => {
             const { data, error } = await supabase
@@ -47,11 +46,26 @@ const AdminBlogEdit = () => {
         fetchPost();
     }, [id]);
 
-    const generateSlug = (text) =>
-        text
-            .toLowerCase()
-            .replace(/[^a-z0-9а-яё\s-]/gi, "")
-            .replace(/\s+/g, "-");
+    // Исправленная функция генерации Slug с транслитерацией
+    const generateSlug = (text) => {
+      const map = {
+        'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh',
+        'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o',
+        'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'ts',
+        'ч': 'ch', 'ш': 'sh', 'щ': 'sch', 'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya',
+        'і': 'i', 'ї': 'yi', 'є': 'ye', 'ґ': 'g'
+      };
+
+      return text
+        .toLowerCase()
+        .split('')
+        .map(char => map[char] || char)
+        .join('')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+    };
 
     const generateExcerpt = (text) => {
         const plainText = text.replace(/[#*`_~]/g, '').replace(/\[.*?\]\(.*?\)/g, '').trim();
@@ -151,7 +165,6 @@ const AdminBlogEdit = () => {
                         onChange={(e) => {
                             const value = e.target.value;
                             setContent(value);
-                            // Авто-заполнение, если описание пустое
                             if (!excerpt) {
                                 setExcerpt(generateExcerpt(value));
                             }
@@ -159,7 +172,6 @@ const AdminBlogEdit = () => {
                         required
                     />
 
-                    {/* Окно предпросмотра */}
                     <label style={{ marginTop: '20px', display: 'block', color: '#666', fontWeight: 'bold' }}>
                         Предпросмотр:
                     </label>
