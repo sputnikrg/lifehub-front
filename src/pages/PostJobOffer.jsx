@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import { bundeslaender } from '../data/bundeslaender';
+import CityAutocomplete from '../components/CityAutocomplete';
 
 const PostJobOffer = ({ onAddListing, currentUser, t }) => {
     const navigate = useNavigate();
@@ -95,16 +96,15 @@ const PostJobOffer = ({ onAddListing, currentUser, t }) => {
                                 <label>{t.label_price} (€)</label>
                                 <input type="number" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} />
                             </div>
-                            <div className="filter-field" style={{ flex: 1 }}>
+                            <div className="filter-field">
                                 <label>{t.label_city}</label>
-                                <input required value={formData.city} maxLength={35} onChange={(e) =>
-                                        setFormData({ ...formData, city: e.target.value.slice(0, 35) })
-                                    }
+                                <CityAutocomplete
+                                    value={formData.city}
+                                    onChange={(val) => setFormData({ ...formData, city: val.slice(0, 35) })}
+                                    placeholder={t.placeholder_city || t.label_city}
                                 />
-                                <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>
-                                    {formData.city.length}/35
-                                </div>
-
+                                {/* Если хочешь добавить счетчик и сюда, раскомментируй строку ниже */}
+                                {/* <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>{formData.city.length}/35</div> */}
                             </div>
                         </div>
 

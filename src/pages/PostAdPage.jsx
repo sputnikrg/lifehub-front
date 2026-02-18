@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import imageCompression from 'browser-image-compression';
 import { bundeslaender } from '../data/bundeslaender';
+import CityAutocomplete from '../components/CityAutocomplete';
 
 const PostAdPage = ({ currentUser, t }) => {
   const { id } = useParams();
@@ -194,8 +195,11 @@ const PostAdPage = ({ currentUser, t }) => {
 
             <div className="filter-field">
               <label>{t.label_city}</label>
-              <input
-                name="city" value={formData.city} onChange={handleChange} maxLength={35} required />
+              <CityAutocomplete
+                value={formData.city}
+                onChange={(val) => setFormData({ ...formData, city: val })}
+                placeholder={t.label_city || "Stadt / PLZ"}
+              />
             </div>
 
             <div className="filter-field">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate, useParams } from 'react-router-dom';
 import { bundeslaender } from '../data/bundeslaender';
+import CityAutocomplete from '../components/CityAutocomplete';
 
 const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
   const { id } = useParams();
@@ -117,13 +118,14 @@ const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
               </div>
               <div className="filter-field" style={{ flex: 1 }}>
                 <label>{t.label_city}</label>
-                <input required value={formData.city} maxLength={35} onChange={(e) => setFormData({ ...formData, city: e.target.value.slice(0, 35) })
-                  }
+                <CityAutocomplete
+                  value={formData.city}
+                  onChange={(val) => setFormData({ ...formData, city: val.slice(0, 35) })}
+                  placeholder={t.label_city}
                 />
                 <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>
                   {formData.city.length}/35
                 </div>
-
               </div>
             </div>
             <div className="filter-field">
