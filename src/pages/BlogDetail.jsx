@@ -12,6 +12,9 @@ const BlogDetail = () => {
   const [post, setPost] = useState(null);
 
   useEffect(() => {
+    // 1. Сбрасываем флаг готовности при каждом переходе на новую статью
+    window.prerenderReady = false;
+
     const fetchPost = async () => {
       const { data } = await supabase
         .from('blog_posts')
@@ -19,7 +22,14 @@ const BlogDetail = () => {
         .eq('slug', slug)
         .single();
 
-      setPost(data);
+      if (data) {
+        setPost(data);
+        // 2. 🚀 Сообщаем Prerender, что данные загружены и Helmet может подставить теги
+        // Даем небольшую задержку в 100мс, чтобы Helmet успел обновить DOM
+        setTimeout(() => {
+          window.prerenderReady = true;
+        }, 100);
+      }
     };
 
     fetchPost();
@@ -29,20 +39,18 @@ const BlogDetail = () => {
 
   return (
     <main className="page-main">
-      {/* 🚀 Секция SEO для соцсетей и мессенджеров */}
       <Helmet>
-        {/* Заголовок страницы во вкладке браузера */}
         <title>{post.title} | LifeHub</title>
         <meta name="description" content={post.excerpt || ""} />
 
-        {/* Настройки Open Graph (для Telegram, WhatsApp, Facebook) */}
+        {/* Open Graph / Facebook / Telegram */}
         <meta property="og:type" content="article" />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt || ""} />
         <meta property="og:image" content={post.cover_image || ""} />
         <meta property="og:url" content={window.location.href} />
 
-        {/* Настройки для Twitter */}
+        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={post.excerpt || ""} />
