@@ -358,7 +358,7 @@ function App() {
             <Route path="/datenschutz" element={<Datenschutz />} />
             <Route path="/agb" element={<AGB />} />
             <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:slug" element={<BlogDetail />} />
+            <Route path="/blog/:slug" element={<BlogDetail currentUser={user} />} />
             {/* Все, что внутри AdminGuard, будет доступно ТОЛЬКО админу */}
             <Route element={<AdminGuard />}>
               <Route path="/admin/blog" element={<AdminBlogPage />} />
