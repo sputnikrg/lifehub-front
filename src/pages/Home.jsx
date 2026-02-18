@@ -151,32 +151,26 @@ const Home = ({ t, lang }) => {
       </div>
       {/* Газетная верстка материалов */}
       <section className="home-blog-section">
-        <div className="container">
+        <div className="home-blog-container-custom">
           <div className="home-blog-header">
-            <h2>{t.adminBlog.latest}</h2>
-            <Link to="/blog" className="home-blog-link">
-              {t.adminBlog.readAll} →
+            <h2 className="blog-section-title">{t.adminBlog.latest}</h2>
+            <Link to="/blog" className="btn-blog-all">
+              {t.adminBlog.readAll}
             </Link>
           </div>
 
-          <div className="home-blog-grid-alt">
-            {latestPosts.map((post) => (
-              <Link key={post.id} to={`/blog/${post.slug}`} className="blog-item-alt">
-                {/* 1. Заголовок всегда сверху */}
-                <h3 className="blog-item-title-alt">{post.title}</h3>
-
-                <div className="blog-item-content-alt">
-                  {/* 2. Фото слева */}
+          <div className="home-blog-grid-horizontal">
+            {/* На мобилках показываем только 1 последний пост, на ПК — все 3 */}
+            {(window.innerWidth < 768 ? latestPosts.slice(0, 1) : latestPosts).map((post) => (
+              <Link key={post.id} to={`/blog/${post.slug}`} className="blog-card-wide">
+                <div className="blog-card-img-container">
                   {post.cover_image && (
-                    <div className="blog-item-img-alt">
-                      <img src={post.cover_image} alt={post.title} />
-                    </div>
+                    <img src={post.cover_image} alt={post.title} className="blog-card-img" />
                   )}
-
-                  {/* 3. Анонс справа */}
-                  <div className="blog-item-text-alt">
-                    <p>{post.excerpt}</p>
-                  </div>
+                </div>
+                <div className="blog-card-content">
+                  <h3 className="blog-card-title">{post.title}</h3>
+                  <p className="blog-card-excerpt">{post.excerpt}</p>
                 </div>
               </Link>
             ))}

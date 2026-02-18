@@ -758,3 +758,120 @@
   }
 }
 
+/* Расширяем секцию блога до границ виджетов */
+.home-blog-section {
+    max-width: 1600px !important; /* Соответствует home-layout-wrapper */
+    margin: 40px auto !important;
+    padding: 0 40px !important;
+}
+
+/* Сетка карточек на всю ширину */
+.home-blog-grid-alt {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+    width: 100% !important;
+}
+
+/* --- НОВЫЙ ЧИСТЫЙ БЛОК БЛОГА (БЕЗ ТЕМНОГО РЕЖИМА) --- */
+.home-blog-section {
+    width: 100%;
+    max-width: 1600px;
+    margin: 40px auto;
+    padding: 0 40px;
+}
+
+.home-blog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.blog-section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #222 !important;
+    margin: 0;
+}
+
+.btn-blog-all {
+    padding: 10px 24px;
+    background: #1a73e8;
+    color: #fff !important; 
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: opacity 0.2s;
+}
+
+.home-blog-grid-horizontal {
+    display: flex;
+    gap: 20px;
+}
+
+.blog-card-wide {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff !important; /* Гарантированный белый фон */
+    border: 1px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: #222 !important;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.blog-card-wide:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.blog-card-img-container {
+    width: 100%;
+    height: 180px;
+    background: #f0f0f0;
+}
+
+.blog-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.blog-card-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.blog-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #222 !important;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.blog-card-excerpt {
+    font-size: 14px;
+    color: #555 !important;
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .home-blog-grid-horizontal {
+        flex-direction: column;
+    }
+    .home-blog-section {
+        padding: 0 20px;
+    }
+}
