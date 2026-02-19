@@ -101,3 +101,20 @@
     border-color: #444;
   }
 }
+
+.form-row-mobile {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+}
+
+.price-field { flex: 1; }
+.city-field { flex: 2; }
+
+@media (max-width: 600px) {
+  .form-row-mobile {
+    flex-direction: column;
+    gap: 0;
+  }
+  .price-field, .city-field { width: 100%; }
+}

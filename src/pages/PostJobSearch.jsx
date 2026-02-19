@@ -93,17 +93,17 @@ const PostJobSearch = ({ onAddListing, currentUser, t }) => {
                         </div>
 
                         {/* Цена и Город в один ряд */}
-                        <div style={{ display: 'flex', gap: '15px' }}>
-                            <div className="filter-field" style={{ flex: 1 }}>
+                        <div className="form-row-mobile">
+                            <div className="filter-field price-field">
                                 <label>{t.label_price} (€)</label>
                                 <input
                                     type="number"
-                                    placeholder="Gehalt pro Stunde oder Monat"
+                                    placeholder="Gehalt"
                                     value={formData.price}
                                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                                 />
                             </div>
-                            <div className="filter-field">
+                            <div className="filter-field city-field">
                                 <label>{t.label_city}</label>
                                 <CityAutocomplete
                                     value={formData.city}

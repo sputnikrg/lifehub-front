@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Добавили Link сюда
 import { bundeslaender } from '../data/bundeslaender';
 import CityAutocomplete from '../components/CityAutocomplete';
 
@@ -75,7 +75,6 @@ const PostJobOffer = ({ onAddListing, currentUser, t }) => {
                             <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>
                                 {formData.title.length}/40
                             </div>
-
                         </div>
 
                         <div className="filter-field">
@@ -89,22 +88,18 @@ const PostJobOffer = ({ onAddListing, currentUser, t }) => {
                             />
                         </div>
 
-
-
-                        <div style={{ display: 'flex', gap: '15px' }}>
-                            <div className="filter-field" style={{ flex: 1 }}>
+                        <div className="form-row-mobile">
+                            <div className="filter-field price-field">
                                 <label>{t.label_price} (€)</label>
                                 <input type="number" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} />
                             </div>
-                            <div className="filter-field">
+                            <div className="filter-field city-field">
                                 <label>{t.label_city}</label>
                                 <CityAutocomplete
                                     value={formData.city}
                                     onChange={(val) => setFormData({ ...formData, city: val.slice(0, 35) })}
                                     placeholder={t.placeholder_city || t.label_city}
                                 />
-                                {/* Если хочешь добавить счетчик и сюда, раскомментируй строку ниже */}
-                                {/* <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>{formData.city.length}/35</div> */}
                             </div>
                         </div>
 
@@ -126,14 +121,31 @@ const PostJobOffer = ({ onAddListing, currentUser, t }) => {
                             />
                         </div>
 
-                        <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+                        {/* Исправленный блок с чекбоксом и ссылками */}
+                        <div style={{ marginTop: '25px', padding: '15px', background: '#f9f9f9', borderRadius: '8px' }}>
                             <label style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', cursor: 'pointer' }}>
-                                <input type="checkbox" checked={privacyAccepted} onChange={(e) => setPrivacyAccepted(e.target.checked)} required />
-                                <span style={{ fontSize: '13px' }}>{t.consent_privacy || "Я согласен с правилами"}</span>
+                                <input
+                                    type="checkbox"
+                                    checked={privacyAccepted}
+                                    onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                                    required
+                                    style={{ marginTop: '4px' }}
+                                />
+                                <span style={{ fontSize: '13px', lineHeight: '1.4', color: '#444' }}>
+                                    {t.consent_privacy}{' '}
+                                    <Link to="/datenschutz" target="_blank" style={{ color: '#3498db', textDecoration: 'underline' }}>
+                                        {t.link_privacy || 'Datenschutz'}
+                                    </Link>.
+                                </span>
                             </label>
+                            <div style={{ marginTop: '10px', fontSize: '12px', paddingLeft: '24px' }}>
+                                <Link to="/impressum" target="_blank" style={{ color: '#888' }}>{t.link_impressum || 'Impressum'}</Link>
+                                <span style={{ margin: '0 8px', color: '#ccc' }}>|</span>
+                                <Link to="/agb" target="_blank" style={{ color: '#888' }}>{t.link_terms || 'AGB'}</Link>
+                            </div>
                         </div>
 
-                        <button type="submit" className="card-button" disabled={loading || !privacyAccepted}>
+                        <button type="submit" className="card-button" disabled={loading || !privacyAccepted} style={{ marginTop: '20px' }}>
                             {loading ? '...' : t.btn_publish}
                         </button>
                     </form>

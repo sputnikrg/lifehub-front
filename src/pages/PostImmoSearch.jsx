@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom'; // Добавлен Link
 import { bundeslaender } from '../data/bundeslaender';
 import CityAutocomplete from '../components/CityAutocomplete';
 
@@ -10,7 +10,7 @@ const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
   const isEditMode = Boolean(id);
 
   const [loading, setLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false); // ДОБАВЛЕНО
+  const [isSubmitted, setIsSubmitted] = useState(false); 
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -63,12 +63,11 @@ const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
       alert("Ошибка: " + result.error.message);
     } else {
       if (onAddListing) onAddListing(result.data[0]);
-      setIsSubmitted(true); // ЗАМЕНЕНО с navigate
+      setIsSubmitted(true);
     }
     setLoading(false);
   };
 
-  // ДОБАВЛЕН БЛОК УСПЕШНОЙ ОТПРАВКИ
   if (isSubmitted) {
     return (
       <main className="page-main">
@@ -90,7 +89,6 @@ const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
     <main className="page-main">
       <div className="container">
         <div className="form-box">
-          {/* Исправленный блок заголовка */}
           <h2 style={{ marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
             {isEditMode ? (t.form_title_edit || 'Bearbeiten') : (t.immo_search || 'Immobilie gesucht')}
           </h2>
@@ -98,25 +96,39 @@ const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
           <form onSubmit={handleSubmit}>
             <div className="filter-field">
               <label>{t.label_title}</label>
-              {/* ... остальной код формы */}
-              <input required placeholder="z.B. Suche 2-Zimmer Wohnung" value={formData.title} maxLength={40} onChange={(e) => setFormData({ ...formData, title: e.target.value.slice(0, 40) })
-              }
+              <input 
+                required 
+                placeholder="z.B. Suche 2-Zimmer Wohnung" 
+                value={formData.title} 
+                maxLength={40} 
+                onChange={(e) => setFormData({ ...formData, title: e.target.value.slice(0, 40) })}
               />
               <div style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>
                 {formData.title.length}/40
               </div>
-
             </div>
+
             <div className="filter-field">
               <label>{t.label_desc}</label>
-              <textarea required rows="6" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
+              <textarea 
+                required 
+                rows="6" 
+                value={formData.description} 
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })} 
+              />
             </div>
-            <div style={{ display: 'flex', gap: '15px' }}>
-              <div className="filter-field" style={{ flex: 1 }}>
+
+            {/* Исправленный блок: Цена и Город с адаптацией */}
+            <div className="form-row-mobile">
+              <div className="filter-field price-field">
                 <label>{t.label_budget || 'Budget'} (€)</label>
-                <input type="number" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} />
+                <input 
+                  type="number" 
+                  value={formData.price} 
+                  onChange={(e) => setFormData({ ...formData, price: e.target.value })} 
+                />
               </div>
-              <div className="filter-field" style={{ flex: 1 }}>
+              <div className="filter-field city-field">
                 <label>{t.label_city}</label>
                 <CityAutocomplete
                   value={formData.city}
@@ -128,6 +140,7 @@ const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
                 </div>
               </div>
             </div>
+
             <div className="filter-field">
               <label>{t.label_bundesland}</label>
               <select required value={formData.bundesland} onChange={(e) => setFormData({ ...formData, bundesland: e.target.value })}>
@@ -135,6 +148,7 @@ const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
                 {bundeslaender.map(land => <option key={land.value} value={land.value}>{land.label}</option>)}
               </select>
             </div>
+
             <div className="filter-field">
               <label>Kontaktdaten</label>
               <textarea
@@ -144,13 +158,32 @@ const PostImmoSearch = ({ onAddListing, currentUser, t }) => {
                 onChange={(e) => setFormData({ ...formData, kontaktdaten: e.target.value })}
               />
             </div>
-            <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+
+            {/* Исправленный юридический блок */}
+            <div style={{ marginTop: '25px', padding: '15px', background: '#f9f9f9', borderRadius: '8px' }}>
               <label style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', cursor: 'pointer' }}>
-                <input type="checkbox" checked={privacyAccepted} onChange={(e) => setPrivacyAccepted(e.target.checked)} required />
-                <span style={{ fontSize: '13px' }}>{t.consent_privacy}</span>
+                <input
+                  type="checkbox"
+                  checked={privacyAccepted}
+                  onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                  required
+                  style={{ marginTop: '4px' }}
+                />
+                <span style={{ fontSize: '13px', lineHeight: '1.4', color: '#444' }}>
+                  {t.consent_privacy}{' '}
+                  <Link to="/datenschutz" target="_blank" style={{ color: '#3498db', textDecoration: 'underline' }}>
+                    {t.link_privacy || 'Datenschutz'}
+                  </Link>.
+                </span>
               </label>
+              <div style={{ marginTop: '10px', fontSize: '12px', paddingLeft: '24px' }}>
+                <Link to="/impressum" target="_blank" style={{ color: '#888' }}>{t.link_impressum || 'Impressum'}</Link>
+                <span style={{ margin: '0 8px', color: '#ccc' }}>|</span>
+                <Link to="/agb" target="_blank" style={{ color: '#888' }}>{t.link_terms || 'AGB'}</Link>
+              </div>
             </div>
-            <button type="submit" className="card-button" disabled={loading || !privacyAccepted}>
+
+            <button type="submit" className="card-button" disabled={loading || !privacyAccepted} style={{ marginTop: '20px' }}>
               {loading ? '...' : (isEditMode ? t.btn_save : t.btn_publish)}
             </button>
           </form>
