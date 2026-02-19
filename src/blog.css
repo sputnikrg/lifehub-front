@@ -107,84 +107,13 @@
   line-height: 1.6;
 }
 
-/* ===== ADMIN PANEL ===== */
-
-.page-main {
-  background: #f7f8fb;
-}
-
-.admin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-}
-
-.admin-blog-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.admin-blog-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px;
-  border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-}
-
-.admin-meta {
-  font-size: 14px;
-  color: #777;
-}
-
-.admin-edit-link {
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.admin-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 700px;
-}
-
-.admin-form input,
-.admin-form textarea {
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  font-size: 14px;
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.admin-delete-btn {
-  background: none;
-  border: none;
-  color: #d9534f;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.admin-delete-btn:hover {
-  text-decoration: underline;
-}
-
-/* ===== БЛОК БЛОГА НА ГЛАВНОЙ (ГАЗЕТНАЯ ВЕРСТКА) ===== */
+/* ===== БЛОК БЛОГА НА ГЛАВНОЙ (ВОЗВРАТ К ОРИГИНАЛУ) ===== */
 
 .home-blog-section {
-  padding: 60px 0;
-  background-color: #f9f9f9;
-  border-top: 1px solid #eee;
+  width: 100%;
+  max-width: 1600px;
+  margin: 40px auto;
+  padding: 0 40px;
 }
 
 .home-blog-header {
@@ -194,7 +123,6 @@
   margin-bottom: 30px;
 }
 
-/* Сетка на 4 карточки в ряд */
 .home-blog-grid-alt {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -202,7 +130,6 @@
   margin-top: 20px;
 }
 
-/* Сама карточка газетного типа */
 .blog-item-alt {
   display: flex;
   flex-direction: column;
@@ -266,45 +193,7 @@
   overflow: hidden;
 }
 
-/* ===== АДАПТИВНОСТЬ ===== */
-
-@media (max-width: 1024px) {
-  .home-blog-grid-alt {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-
-  /* Переключаем на одну колонку */
-  .home-blog-grid-alt {
-    grid-template-columns: 1fr;
-  }
-
-  /* Скрываем все, кроме первой новости */
-  .blog-item-alt:not(:first-child) {
-    display: none;
-  }
-
-  /* На мобилке фото делаем сверху для красоты единственной карточки */
-  .blog-item-content-alt {
-    flex-direction: column;
-  }
-
-  .blog-item-img-alt {
-    flex: none;
-    width: 100%;
-  }
-
-  .blog-item-img-alt img {
-    width: 100%;
-    height: 180px;
-  }
-
-  .home-blog-section {
-    padding: 40px 15px;
-  }
-}
+/* ===== КОММЕНТАРИИ ===== */
 
 .comments-section {
   margin-top: 50px;
@@ -323,15 +212,6 @@
   resize: vertical;
 }
 
-.comment-form-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 8px;
-  font-size: 12px;
-  color: #888;
-}
-
 .btn-send {
   background: #1a73e8;
   color: white;
@@ -342,44 +222,12 @@
   font-weight: 600;
 }
 
-.btn-send:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-.comments-list {
-  margin-top: 30px;
-}
-
 .comment-item {
   background: #f9f9f9;
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 15px;
   position: relative;
-}
-
-.comment-header {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 8px;
-  font-size: 13px;
-}
-
-.comment-author {
-  font-weight: 700;
-  color: #222;
-}
-
-.comment-date {
-  color: #999;
-}
-
-.comment-body {
-  line-height: 1.5;
-  color: #444;
-  white-space: pre-wrap;
 }
 
 .comment-delete-btn {
@@ -391,17 +239,48 @@
   font-size: 20px;
   color: #ccc;
   cursor: pointer;
-  line-height: 1;
 }
 
-.comment-delete-btn:hover {
-  color: #ff4d4f;
+/* ===== АДАПТИВНОСТЬ И ТЕМНАЯ ТЕМА ДЛЯ МОБИЛОК ===== */
+
+@media (max-width: 1024px) {
+  .home-blog-grid-alt {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.comment-auth-notice {
-  background: #fffbe6;
-  border: 1px solid #ffe58f;
-  padding: 15px;
-  border-radius: 8px;
-  text-align: center;
+@media (max-width: 768px) {
+  .home-blog-section {
+    padding: 0 20px;
+    margin: 40px 0;
+  }
+
+  .home-blog-grid-alt {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-item-alt:not(:first-child) {
+    display: none;
+  }
+
+  /* ТЕМНЫЙ РЕЖИМ: ТОЧЕЧНЫЙ ФИКС ДЛЯ МОБИЛЬНЫХ КОММЕНТАРИЕВ */
+  .theme-dark .comments-section {
+    margin: 20px 15px;
+    padding: 20px;
+    background: #1e1e1e; /* Темный фон вместо белого */
+    border-radius: 16px; /* Красивые углы */
+    border: 1px solid #333;
+    color: #fff;
+  }
+
+  .theme-dark .comment-item {
+    background: #2a2a2a;
+    color: #eee;
+  }
+
+  .theme-dark .comment-form textarea {
+    background: #2a2a2a;
+    color: #fff;
+    border-color: #444;
+  }
 }

@@ -89,6 +89,13 @@ export const translations = {
     widget_jobs_label: "Es gibt Arbeit!",
     seo_description: "Jobs, Immobilien und Community in Deutschland. LifeHub hilft Ihnen bei der Suche nach Arbeit und Wohnraum.",
     blogTitle: "Materialien",
+    blog_comments_title: "Kommentare",
+    blog_auth_pre: "Um einen Kommentar zu hinterlassen, bitte ",
+    blog_auth_link: "anmelden",
+    blog_no_comments: "Noch keine Kommentare. Schreiben Sie den ersten!",
+    blog_placeholder: "Was denken Sie darüber?...",
+    blog_send: "Veröffentlichen",
+    blog_sending: "Wird gesendet...",
     adminBlog: {
       manage: "Materialien (Verwaltung)",
       new: "Neues Material",
@@ -104,11 +111,12 @@ export const translations = {
       currentCover: "Aktuelles Titelbild",
       newCover: "Neues Titelbild",
       confirmDelete: "Material löschen?",
-      prev: "Zurück", 
+      prev: "Zurück",
       next: "Weiter",
       latest: "Neuestes im Blog", // Добавь это
-      readAll: "Alle Materialien lesen" 
+      readAll: "Alle Materialien lesen"
     }
+
 
   },
 
@@ -208,6 +216,13 @@ export const translations = {
     widget_jobs_label: "Есть работа!",
     seo_description: "Работа, недвижимость и объявления в Германии. LifeHub помогает найти жилье, вакансии и общение.",
     blogTitle: "Материалы",
+    blog_comments_title: "Комментарии",
+    blog_auth_pre: "Чтобы оставить комментарий, пожалуйста, ",
+    blog_auth_link: "войдите в систему",
+    blog_no_comments: "Пока нет комментариев. Будьте первым!",
+    blog_placeholder: "Напишите, что вы думаете...",
+    blog_send: "Опубликовать",
+    blog_sending: "Отправка...",
     adminBlog: {
       manage: "Материалы (управление)",
       new: "Новый материал",
@@ -223,13 +238,14 @@ export const translations = {
       currentCover: "Текущая обложка",
       newCover: "Новая обложка",
       confirmDelete: "Удалить материал?",
-      prev: "Назад", 
+      prev: "Назад",
       next: "Вперед",
       latest: "Последнее в блоге", // Добавь это
       readAll: "Читать все материалы"
     }
 
-    
+
+
 
 
   },
@@ -332,6 +348,13 @@ export const translations = {
     widget_jobs_label: "Є робота!",
     seo_description: "Робота, нерухомість та оголошення в Німеччині. LifeHub допомагає знайти житло, вакансії та спілкування.",
     blogTitle: "Матеріали",
+    blog_comments_title: "Коментарі",
+    blog_auth_pre: "Щоб залишити коментар, будь ласка, ",
+    blog_auth_link: "увійдіть в систему",
+    blog_no_comments: "Поки що немає коментарів. Будьте першим!",
+    blog_placeholder: "Напишіть, що ви думаєте...",
+    blog_send: "Опублікувати",
+    blog_sending: "Надсилається...",
     adminBlog: {
       manage: "Матеріали (керування)",
       new: "Новий матеріал",
@@ -347,9 +370,9 @@ export const translations = {
       currentCover: "Поточна обкладинка",
       newCover: "Нова обкладинка",
       confirmDelete: "Видалити матеріал?",
-      prev: "Назад", 
+      prev: "Назад",
       next: "Вперед",
-      latest: "Останнє у блозі", 
+      latest: "Останнє у блозі",
       readAll: "Читати всі матеріали"
     }
   }
