@@ -96,6 +96,7 @@ export const translations = {
     blog_placeholder: "Was denken Sie darüber?...",
     blog_send: "Veröffentlichen",
     blog_sending: "Wird gesendet...",
+    blog_reply: "Antworten",
     adminBlog: {
       manage: "Materialien (Verwaltung)",
       new: "Neues Material",
@@ -222,7 +223,9 @@ export const translations = {
     blog_no_comments: "Пока нет комментариев. Будьте первым!",
     blog_placeholder: "Напишите, что вы думаете...",
     blog_send: "Опубликовать",
+    blog_reply: "Ответить",
     blog_sending: "Отправка...",
+    
     adminBlog: {
       manage: "Материалы (управление)",
       new: "Новый материал",
@@ -355,6 +358,7 @@ export const translations = {
     blog_placeholder: "Напишіть, що ви думаєте...",
     blog_send: "Опублікувати",
     blog_sending: "Надсилається...",
+    blog_reply: "Відповісти",
     adminBlog: {
       manage: "Матеріали (керування)",
       new: "Новий матеріал",
