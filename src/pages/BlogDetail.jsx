@@ -85,6 +85,7 @@ const BlogDetail = ({ currentUser, t }) => {
     <main className="page-main">
       <Helmet>
         <title>{post.title} | LifeHub</title>
+        <link rel="canonical" href={`https://mylifehub.de/blog/${slug}`} />
         <meta name="description" content={post.excerpt || ""} />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={post.title} />
