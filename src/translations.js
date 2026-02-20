@@ -21,15 +21,12 @@ export const translations = {
     photos: "Fotos hochladen",
     btn_publish: "Jetzt veröffentlichen",
     btn_save: "Änderungen speichern",
-
     sort_newest: "Neueste zuerst",
     sort_price_asc: "Günstigste zuerst",
     sort_price_desc: "Höchster Preis zuerst",
     no_results: "Keine Ergebnisse gefunden",
-
     hero_title: "Ihr Hub für das Leben in Deutschland",
     hero_subtitle: "Finden Sie Immobilien, Jobs und Anschluss in Ihrer Nähe",
-
     my_ads_subtitle: "Hier verwalten Sie Ihre veröffentlichten Inserate",
     no_my_ads: "Sie haben derzeit keine aktiven Inserate.",
     no_favs: "Ihre Merkliste ist noch leer.",
@@ -97,6 +94,17 @@ export const translations = {
     blog_send: "Veröffentlichen",
     blog_sending: "Wird gesendet...",
     blog_reply: "Antworten",
+    home: "Home",
+    nav_blog: "Materialien",
+    nav_job: "Arbeit",
+    nav_wohnung: "Wohnen",
+    nav_immo: "Immobilien",
+    nav_offer: "Angebote",
+    nav_search: "Gesuche",
+    nav_favorites: "Favoriten",
+    nav_impressum: "Impressum",
+    nav_datenschutz: "Datenschutz",
+    nav_agb: "AGB",
     adminBlog: {
       manage: "Materialien (Verwaltung)",
       new: "Neues Material",
@@ -127,12 +135,10 @@ export const translations = {
     nav_post_ad: "Подать объявление",
     nav_login: "Войти",
     nav_logout: "Выйти",
-
     cat_all: "Все объявления",
     cat_wohnung: "Недвижимость",
     cat_job: "Работа",
     cat_dating: "Общение",
-
     form_title_new: "Создание объявления",
     form_title_edit: "Редактирование",
     label_cat: "Выберите категорию",
@@ -145,28 +151,22 @@ export const translations = {
     photos: "Загрузить фотографии",
     btn_publish: "Опубликовать",
     btn_save: "Сохранить изменения",
-
     sort_newest: "Сначала новые",
     sort_price_asc: "Сначала дешёвые",
     sort_price_desc: "Сначала дорогие",
     no_results: "Ничего не найдено",
-
     hero_title: "Ваш центр жизни в Германии",
     hero_subtitle: "Жильё, работа и общение рядом с вами",
-
     my_ads_subtitle: "Управление вашими объявлениями",
     no_my_ads: "У вас пока нет объявлений.",
     no_favs: "Список избранного пуст.",
     back: "Назад",
-
     trust_telegram_title: "LifeHub — проект в развитии",
     trust_telegram_text:
       "Мы развиваем портал шаг за шагом и делимся опытом жизни в Германии в Telegram.",
     trust_telegram_cta: "Перейти в Telegram",
-
     hero_main_title: "Объявления, работа и контакты для всех, кто сейчас в Германии",
     hero_main_subtitle: "LifeHub — объявления, работа и общение на немецком, украинском и русском языках",
-
     cat_wohnung_text:
       "Аренда и недвижимость в городах Германии.",
     cat_job_text:
@@ -225,7 +225,17 @@ export const translations = {
     blog_send: "Опубликовать",
     blog_reply: "Ответить",
     blog_sending: "Отправка...",
-    
+    home: "Главная",
+    nav_blog: "Материалы",
+    nav_job: "Работа",
+    nav_wohnung: "Жилье",
+    nav_immo: "Недвижимость",
+    nav_offer: "Предложения",
+    nav_search: "Поиск",
+    nav_favorites: "Избранное",
+    nav_impressum: "Импрессум",
+    nav_datenschutz: "Конфиденциальность",
+    nav_agb: "Условия",    
     adminBlog: {
       manage: "Материалы (управление)",
       new: "Новый материал",
@@ -259,12 +269,10 @@ export const translations = {
     nav_post_ad: "Подати оголошення",
     nav_login: "Увійти",
     nav_logout: "Вийти",
-
     cat_all: "Усі оголошення",
     cat_wohnung: "Нерухомість",
     cat_job: "Робота",
     cat_dating: "Спільнота",
-
     form_title_new: "Створення оголошення",
     form_title_edit: "Редагування",
     label_cat: "Оберіть категорію",
@@ -277,35 +285,28 @@ export const translations = {
     photos: "Завантажити фото",
     btn_publish: "Опублікувати",
     btn_save: "Зберегти зміни",
-
     sort_newest: "Спочатку нові",
     sort_price_asc: "Спочатку дешеві",
     sort_price_desc: "Спочатку дорогі",
     no_results: "Нічого не знайдено",
-
     hero_title: "Ваш центр життя в Німеччині",
     hero_subtitle: "Житло, робота та спільнота поруч",
-
     my_ads_subtitle: "Керуйте своїми оголошеннями",
     no_my_ads: "У вас поки немає оголошень.",
     no_favs: "Список обраного порожній.",
     back: "Назад",
-
     trust_telegram_title: "LifeHub — проєкт у розвитку",
     trust_telegram_text:
       "Ми розвиваємо портал крок за кроком і ділимося корисною інформацією в Telegram.",
     trust_telegram_cta: "Перейти до Telegram",
-
     hero_main_title: "Оголошення, робота та контакти для всіх, хто зараз у Німеччині",
     hero_main_subtitle: "LifeHub — оголошення, робота та спілкування німецькою, українською та російською мовами",
-
     cat_wohnung_text:
       "Оренда та нерухомість у містах Німеччини.",
     cat_job_text:
       "Актуальні вакансії та пропозиції роботи.",
     cat_dating_text:
       "Спільнота для спілкування та взаємодопомоги.",
-
     hint_job: "Хочете подати оголошення про роботу? Натисніть зверху «Подати оголошення».",
     hint_wohnung: "Хочете подати оголошення про житло? Натисніть зверху «Подати оголошення».",
     hint_dating: "Хочете подати оголошення? Натисніть зверху «Подати оголошення».",
@@ -359,6 +360,17 @@ export const translations = {
     blog_send: "Опублікувати",
     blog_sending: "Надсилається...",
     blog_reply: "Відповісти",
+    home: "Головна",
+    nav_blog: "Матеріали",
+    nav_job: "Робота",
+    nav_wohnung: "Житло",
+    nav_immo: "Нерухомість",
+    nav_offer: "Пропозиції",
+    nav_search: "Пошук",
+    nav_favorites: "Обране",
+    nav_impressum: "Імпрессум",
+    nav_datenschutz: "Конфіденційність",
+    nav_agb: "Умови",
     adminBlog: {
       manage: "Матеріали (керування)",
       new: "Новий матеріал",

@@ -31,8 +31,7 @@ import AdminBlogPage from "./pages/AdminBlogPage";
 import AdminBlogNew from "./pages/AdminBlogNew";
 import AdminBlogEdit from "./pages/AdminBlogEdit";
 import AdminGuard from './components/AdminGuard'
-
-
+import Breadcrumbs from './components/Breadcrumbs'; // Импорт крошек
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -48,7 +47,6 @@ function App() {
 
   const [showAddModal, setShowAddModal] = useState(false);
 
-  // ⬇️ ТВОЯ строка — НЕ ТРОГАЕМ
   const [lang, setLang] = useState(localStorage.getItem('lifehub_lang') || 'de');
 
   const t = translations[lang];
@@ -60,9 +58,6 @@ function App() {
 
   const ADMIN_EMAIL = "vpovolotskyi25@gmail.com";
 
-  /* ======================================================
-     🟢 АВТОДЕТЕКТ ЯЗЫКА (ДОБАВЛЕНО)
-     ====================================================== */
   useEffect(() => {
     const savedLang = localStorage.getItem('lifehub_lang');
     if (savedLang) return;
@@ -77,11 +72,7 @@ function App() {
     localStorage.setItem('lifehub_lang', detectedLang);
     setLang(detectedLang);
   }, []);
-  /* ====================================================== */
 
-  /* ======================================================
-   🌙 DARK MODE — restore saved theme
-   ====================================================== */
   useEffect(() => {
     const savedTheme = localStorage.getItem('lifehub_theme');
     if (savedTheme === 'dark') {
@@ -139,7 +130,6 @@ function App() {
     });
   };
 
-  // ⬇️ ТВОЯ функция — НЕ МЕНЯЕМ
   const toggleLang = (newLang) => {
     setLang(newLang);
     localStorage.setItem('lifehub_lang', newLang);
@@ -150,7 +140,6 @@ function App() {
       <div className="app-layout">
         <ScrollToTop />
 
-        {/* ✅ CookieBanner использует ТОТ ЖЕ lang */}
         <CookieBanner lang={lang} />
 
         <Header
@@ -168,6 +157,9 @@ function App() {
         />
 
         <div className="app-content">
+          {/* Хлебные крошки добавлены сюда */}
+          <Breadcrumbs t={t} />
+
           <Routes>
             <Route path="/" element={<Home t={t} lang={lang} />} />
 
@@ -359,21 +351,20 @@ function App() {
             <Route path="/agb" element={<AGB />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogDetail currentUser={user} t={t} />} />
-            {/* Все, что внутри AdminGuard, будет доступно ТОЛЬКО админу */}
+            
             <Route element={<AdminGuard />}>
               <Route path="/admin/blog" element={<AdminBlogPage />} />
               <Route path="/admin/blog/new" element={<AdminBlogNew />} />
               <Route path="/admin/blog/edit/:id" element={<AdminBlogEdit />} />
             </Route>
 
-          </Routes>
+          </Routes> {/* Тег Routes закрыт корректно */}
         </div>
 
         <Footer t={t} />
       </div>
     </Router>
   );
-
 }
 
 export default App;

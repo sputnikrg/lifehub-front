@@ -2,11 +2,13 @@
 .blog-container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 60px 20px;
+  padding: 20px 20px 60px 20px;
 }
 .blog-title {
   font-size: 32px;
   margin-bottom: 20px;
+  margin-top: 10px; 
+  margin-bottom: 15px;
 }
 .blog-cover {
   margin-top: 20px;
@@ -219,4 +221,91 @@
     gap: 20px;
     padding: 0 10px;
   }
+}
+
+.breadcrumb-nav {
+  padding: 5px 0;
+  background: transparent;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+.breadcrumb-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #888;
+}
+.breadcrumb-list li + li::before {
+  content: "/";
+  margin: 0 10px;
+  color: #ccc;
+}
+.breadcrumb-list a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+.breadcrumb-list a:hover {
+  text-decoration: underline;
+}
+.breadcrumb-list li.active {
+  color: #555;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px; /* Чтобы длинные заголовки статей не ломали строку */
+}
+
+/* Темная тема */
+.theme-dark .breadcrumb-list li.active { color: #aaa; }
+.theme-dark li + li::before { color: #444; }
+
+/* Стили для хлебных крошек в одну строку */
+.breadcrumb-nav {
+  padding: 15px 0;
+  margin-bottom: 10px;
+}
+
+.breadcrumb-list {
+  display: flex; /* Выстраивает в строку */
+  list-style: none; /* Убирает точки */
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.breadcrumb-list li + li::before {
+  content: "/"; /* Добавляет разделитель между ссылками */
+  margin-right: 10px;
+  color: #ccc;
+}
+
+.breadcrumb-list a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.breadcrumb-list a:hover {
+  text-decoration: underline;
+}
+
+/* Цвет для темной темы */
+.theme-dark .breadcrumb-list {
+  color: #aaa;
+}
+
+/* Сокращение расстояния между крошками и заголовком */
+.breadcrumb-nav {
+  padding-top: 10px !important;
+  padding-bottom: 0 !important;
+}
+
+.blog-container {
+  padding-top: 10px !important;
+}
+
+.blog-title {
+  margin-top: 0 !important;
 }
