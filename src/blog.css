@@ -118,3 +118,105 @@
   }
   .price-field, .city-field { width: 100%; }
 }
+
+/* ===== ОБЩИЙ СПИСОК БЛОГОВ (/blogs) ===== */
+
+/* Сетка карточек */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Компактная ширина */
+  gap: 25px;
+  margin-top: 40px;
+}
+
+/* Сама карточка */
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 16px; /* Закругленные углы */
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Легкая тень */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Анимация */
+  border: 1px solid #eee;
+}
+
+/* Анимация при наведении */
+.blog-card:hover {
+  transform: translateY(-5px); /* Всплытие */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); /* Усиление тени */
+  border-color: #d1d1d1;
+}
+
+/* Изображение в карточке */
+.blog-card-image {
+  width: 100%;
+  height: 180px; /* Фиксированная высота для компактности */
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+/* Текстовая часть карточки */
+.blog-card-body {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.blog-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0;
+  color: #222;
+  /* Ограничение заголовка двумя строками */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.blog-card-excerpt {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+  /* Ограничение текста тремя строками */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===== АДАПТАЦИЯ ПОД ТЕМНУЮ ТЕМУ ===== */
+
+.theme-dark .blog-card {
+  background: #1e1e1e;
+  border-color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.theme-dark .blog-card-title {
+  color: #eee;
+}
+
+.theme-dark .blog-card-excerpt {
+  color: #aaa;
+}
+
+.theme-dark .blog-card:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+  border-color: #444;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 600px) {
+  .blog-grid {
+    grid-template-columns: 1fr; /* Одна колонка на узких экранах */
+    gap: 20px;
+    padding: 0 10px;
+  }
+}
