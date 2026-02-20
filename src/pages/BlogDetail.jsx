@@ -33,7 +33,7 @@ const BlogDetail = ({ currentUser, t }) => {
       if (data) {
         setPost(data);
         fetchComments(data.id);
-        setTimeout(() => { window.prerenderReady = true; }, 100);
+        setTimeout(() => { window.prerenderReady = true; }, 500);
       }
     };
     fetchPost();
